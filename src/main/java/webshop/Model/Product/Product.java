@@ -33,16 +33,18 @@ public class Product {
     public Product() {
     }
 
-    public Product(String name, String description, long price, Locale locale, boolean isInPromotion, boolean isOutOfStock, boolean isOutOfSeason, Unit unit, int categoryID) {
+    public Product(String name, String description, long price,Unit unit, Locale locale, int categoryID, boolean isInPromotion, boolean isOutOfStock, boolean isOutOfSeason) {
         this.name = name;
         this.description = description;
         this.price = price;
+        this.unit=unit;
         this.locale = locale;
+        this.categoryID=categoryID;
         this.isInPromotion = isInPromotion;
         this.isOutOfStock = isOutOfStock;
         this.isOutOfSeason = isOutOfSeason;
-        this.unit=unit;
-        this.categoryID=categoryID;
+
+
     }
 
     public String getName() {

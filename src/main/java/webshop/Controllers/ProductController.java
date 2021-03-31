@@ -13,20 +13,24 @@ import webshop.Services.ProductService;
 
 @RestController
 public class ProductController {
-@Autowired
-ProductService productService;
+
+private final ProductService productService;
+private final ProductRepo productRepo;
+
+    @Autowired
+    public ProductController(ProductService productService, ProductRepo productRepo) {
+        this.productService = productService;
+        this.productRepo = productRepo;
+    }
 
     @PostMapping("/product/new")
     public ResponseEntity<?> addProduct(@RequestBody Product product) throws ProductAddedException {//Spring converts JSON to user object following the fields
         try {
-           productService.addProduct(product.getName(),product.getDescription(), product.getPrice(),product.getUnit(),
+            productService.addProduct(product.getName(),product.getDescription(), product.getPrice(),product.getUnit(),
                    product.getLocale(),product.getCategoryID(), product.isInPromotion(),product.isOutOfStock(),
                    product.isOutOfSeason());
-
-
             return ResponseEntity.ok(new FeedbackToFrontend(true));
         } catch (Exception e) {
-
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
         }
     }

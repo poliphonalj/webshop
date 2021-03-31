@@ -3,6 +3,7 @@ package webshop.Services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import webshop.Exceptions.ProductAddedException;
 import webshop.Model.Product.Product;
 import webshop.Model.Product.Unit;
 import webshop.Repository.ProductRepo;
@@ -25,19 +26,24 @@ public class ProductService {
     public void addProduct(String productName, String productDescription, long productPrice, Unit productUnit,
                            Locale productLocale, int productCategoryID, boolean productIsInPromotion,
                            boolean productIsOutOfStock, boolean productIsOutOfSeason
-    ) {
-        Product p = new Product();
-        p.setName(productName);
-        p.setDescription(productDescription);
-        p.setPrice(productPrice);
-        p.setUnit(productUnit);
-        p.setLocale(productLocale);
-        p.setCategoryID(productCategoryID);
-        p.setInPromotion(productIsInPromotion);
-        p.setOutOfStock(productIsOutOfStock);
-        p.setOutOfSeason(productIsOutOfSeason);
+    ) throws ProductAddedException {
 
-        productRepo.saveAndFlush(p);
+        if (productRepo.findProductByName(productName) != null) {
+            throw new ProductAddedException();
+        } else {
+            Product p = new Product();
 
+            p.setName(productName);
+            p.setDescription(productDescription);
+            p.setPrice(productPrice);
+            p.setUnit(productUnit);
+            p.setLocale(productLocale);
+            p.setCategoryID(productCategoryID);
+            p.setInPromotion(productIsInPromotion);
+            p.setOutOfStock(productIsOutOfStock);
+            p.setOutOfSeason(productIsOutOfSeason);
+
+            productRepo.saveAndFlush(p);
+        }
     }
 }
