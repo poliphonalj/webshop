@@ -53,7 +53,7 @@ public class ProductService {
     }
 
     @Transactional
-    public void setPromotion(List<ProductsForPromotionDTO>list) {
+    public void setPromotion(List<ProductsForPromotionDTO> list) {
         for (int i = 0; i < list.size(); i++) {
             Product p = productRepo.findProductByID(list.get(i).getID());
             p.setPrice(list.get(i).getPromotedPrice());
@@ -63,19 +63,19 @@ public class ProductService {
         }
     }
 
-    public List<PromotedProductDTO> getPromotedList(){
-       List<PromotedProductDTO>listToReturn=new ArrayList<>();
-        List<Product> list=productRepo.findByIsInPromotion(true);
+    public List<PromotedProductDTO> getPromotedList() {
+        List<PromotedProductDTO> listToReturn = new ArrayList<>();
+        List<Product> list = productRepo.findByIsInPromotion(true);
         for (Product actualProduct : list) {
-            listToReturn.add(new PromotedProductDTO(actualProduct.getID(),actualProduct.getPromotedPrice(),
-                    actualProduct.getPrice(),actualProduct.getPromotionDescription()));
+            listToReturn.add(new PromotedProductDTO(actualProduct.getID(), actualProduct.getPromotedPrice(),
+                    actualProduct.getPrice(), actualProduct.getPromotionDescription()));
         }
         return listToReturn;
     }
 
 
     @Transactional
-    public void setEndOfPromotion(List<EndOfPromotionDTO>list) {
+    public void setEndOfPromotion(List<EndOfPromotionDTO> list) {
         for (int i = 0; i < list.size(); i++) {
             Product p = productRepo.findProductByID(list.get(i).getID());
             p.setPrice(list.get(i).getNewPrice());
@@ -102,6 +102,12 @@ public class ProductService {
             p.setPrice(actualDTO.getNewPrice());
             productRepo.saveAndFlush(p);
         }
+    }
+
+    @Transactional
+    public long getPrice(long ID) {
+        Product p = productRepo.findProductByID(ID);
+        return p.getPrice();
     }
 
 

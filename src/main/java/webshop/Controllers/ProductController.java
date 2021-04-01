@@ -66,8 +66,6 @@ public class ProductController {
         }
     }
 
-
-
     @GetMapping("/product/unitsList")   //returns all the units for drop box
     public Unit[] getUnitsList() {
         Unit[] array = productService.getUnitsList();
@@ -90,7 +88,13 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/product/getPrice/{ID}")
+    public long getPrice(@PathVariable long ID){
+       return productService.getPrice(ID);
+    }
 
+//TODO
+  //  image eleresi uttal
 
 
 
