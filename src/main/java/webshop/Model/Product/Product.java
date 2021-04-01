@@ -21,6 +21,9 @@ public class Product {
     private Unit unit;
     private int categoryID;
 
+    private long promotedPrice;
+    private String promotionDescription;
+
     @OneToMany(mappedBy = "product")
     private List<Image> imageList;
 
@@ -117,5 +120,29 @@ public class Product {
 
     public void setCategoryID(int categoryID) {
         this.categoryID = categoryID;
+    }
+
+    public long getID() {
+        return ID;
+    }
+
+    public void setID(long ID) {
+        this.ID = ID;
+    }
+
+    public long getPromotedPrice() {
+        return promotedPrice;
+    }
+
+    public void setPromotedPrice(long promotedPrice) {
+        this.promotedPrice = promotedPrice;
+    }
+
+    public String getPromotionDescription() {
+        return promotionDescription;
+    }
+
+    public void setPromotionDescription(String promotionDescription) {
+        this.promotionDescription = promotionDescription;
     }
 }
