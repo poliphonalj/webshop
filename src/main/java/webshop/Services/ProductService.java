@@ -10,6 +10,7 @@ import webshop.DTOs.PromotedProductDTO;
 import webshop.Exceptions.ProductAddedException;
 import webshop.Model.Product.Product;
 import webshop.Model.Product.Unit;
+import webshop.Repository.CategoryRepo;
 import webshop.Repository.ProductRepo;
 
 import java.util.ArrayList;
@@ -20,9 +21,11 @@ import java.util.Locale;
 public class ProductService {
 
     private final ProductRepo productRepo;
+    private final CategoryRepo categoryRepo;
 
     @Autowired
-    public ProductService(ProductRepo productRepo) {
+    public ProductService(ProductRepo productRepo, CategoryRepo categoryRepo) {
+        this.categoryRepo=categoryRepo;
         this.productRepo = productRepo;
     }
 
@@ -110,5 +113,28 @@ public class ProductService {
         return p.getPrice();
     }
 
+    @Transactional
+    public Product getProductByID(long ID) {
+        Product p = productRepo.findProductByID(ID);
+        return p;
+    }
 
+    @Transactional
+    public List<Product> getProductsByName(String name) {
+       List<Product>list  = productRepo.findProductsByNameIsContaining(name);
+        return list;
+    }
+
+    @Transactional
+    public List<Product> getProductsByCategory(String name) {
+        long ID=categoryRepo.findCategoryByCategoryName(name).getID();
+        List<Product>list  = productRepo.findProductsByCategoryID(ID);
+        return list;
+    }
+
+    @Transactional
+    public List<Product> getAllProducts() {
+        List<Product>list  = productRepo.findAll();
+        return list;
+    }
 }

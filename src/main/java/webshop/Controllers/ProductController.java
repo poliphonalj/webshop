@@ -11,7 +11,6 @@ import webshop.Exceptions.ProductAddedException;
 import webshop.Model.FeedbackToFrontend;
 import webshop.Model.Product.Product;
 import webshop.Model.Product.Unit;
-import webshop.Repository.ProductRepo;
 import webshop.Services.ProductService;
 
 import java.util.List;
@@ -20,12 +19,10 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
-    private final ProductRepo productRepo;
 
     @Autowired
-    public ProductController(ProductService productService, ProductRepo productRepo) {
+    public ProductController(ProductService productService) {
         this.productService = productService;
-        this.productRepo = productRepo;
     }
 
     @PostMapping("/product/new")
@@ -41,7 +38,7 @@ public class ProductController {
     }
 
     @PostMapping("/product/setPromotion")//returns a list with the promoted items and their price
-    public ResponseEntity<?> setPromotion(@RequestBody List<ProductsForPromotionDTO>list ) {
+    public ResponseEntity<?> setPromotion(@RequestBody List<ProductsForPromotionDTO> list) {
         try {
             productService.setPromotion(list);
             return ResponseEntity.ok(new FeedbackToFrontend(true));
@@ -52,12 +49,12 @@ public class ProductController {
 
     @GetMapping("/product/promotedList")   //returns all the promoted items in a list
     public List<PromotedProductDTO> getPromotedList() {
-         return productService.getPromotedList();
+        return productService.getPromotedList();
     }
 
 
     @PostMapping("/product/endOfPromotion")//finishes the list for the proted items, and add them a new price
-    public ResponseEntity<?> setEndOfPromotion(@RequestBody List<EndOfPromotionDTO>list ) {
+    public ResponseEntity<?> setEndOfPromotion(@RequestBody List<EndOfPromotionDTO> list) {
         try {
             productService.setEndOfPromotion(list);
             return ResponseEntity.ok(new FeedbackToFrontend(true));
@@ -74,7 +71,7 @@ public class ProductController {
 
     @GetMapping("/product/unit/{productID}")   //returns the units for the suitable product
     public Unit getUnitByProductID(@PathVariable int productID) {
-        Unit unit= productService.getUnitByProductID(productID);
+        Unit unit = productService.getUnitByProductID(productID);
         return unit;
     }
 
@@ -88,14 +85,37 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/product/getPrice/{ID}")
-    public long getPrice(@PathVariable long ID){
-       return productService.getPrice(ID);
+    @GetMapping("/product/getPrice/{ID}")   //get the price of a product by Id
+    public long getPrice(@PathVariable long ID) {
+        return productService.getPrice(ID);
     }
 
-//TODO
-  //  image eleresi uttal
+    @GetMapping("/product/getProductByID/{ID}")   //get  a product by Id
+    public Product getProductByID( @PathVariable long ID) {
+        return productService.getProductByID(ID);
+    }
 
+    @GetMapping("/product/getProductByName/{name}")   //get  a list of products containing "name"
+    public List<Product> getProductsByName(@PathVariable String name) {
+        return productService.getProductsByName(name);
+    }
+
+    @GetMapping("/product/getProductByCategory/{categoryName}")   //get  a list of products with a categoryname
+    public List<Product> getProductsByCategory(@PathVariable String categoryName) {
+        return productService.getProductsByCategory(categoryName);
+    }
+
+    @GetMapping("/product/getAllProducts")   //get  a list of all products
+    public List<Product> getAllProducts(){
+        return productService.getAllProducts();
+    }
+
+
+    //TODO
+    //  image eleresi uttal be ki
+
+    //sold out
+    //out of season
 
 
 

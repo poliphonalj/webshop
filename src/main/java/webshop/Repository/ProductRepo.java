@@ -11,4 +11,6 @@ public interface ProductRepo extends JpaRepository<Product, Integer> {
     Product findProductByName(String productName);
     Product findProductByID(long ID);
     List<Product>findByIsInPromotion(boolean b);
+    List<Product>findProductsByNameIsContaining(String s);
+    List<Product>findProductsByCategoryID(long ID);
 }

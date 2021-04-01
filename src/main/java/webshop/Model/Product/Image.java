@@ -9,10 +9,10 @@ public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long ID;
-    private String name;
+    private String fileName;
     private String tooltip;
     private long size;
-    private char images;//Blob???????????????????????????????????????????InputStream
+
 
     @ManyToOne
     private Product product;
@@ -20,18 +20,18 @@ public class Image {
     public Image() {
     }
 
-    public Image(String name, String tooltip, long size) {
-        this.name = name;
+    public Image(String fileName, String tooltip, long size) {
+        this.fileName = fileName;
         this.tooltip = tooltip;
         this.size = size;
     }
 
-    public String getName() {
-        return name;
+    public String getFileName() {
+        return fileName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFileName(String name) {
+        this.fileName = name;
     }
 
     public String getTooltip() {
