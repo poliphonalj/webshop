@@ -127,7 +127,7 @@ public class ProductService {
 
     @Transactional
     public List<Product> getProductsByCategory(String name) {
-        long ID=categoryRepo.findCategoryByCategoryName(name).getID();
+        long ID=categoryRepo.findCategoryByCategoryName(name).getID();//ha nem egyedui a name akkor elromlik keressunk id alapjan
         List<Product>list  = productRepo.findProductsByCategoryID(ID);
         return list;
     }

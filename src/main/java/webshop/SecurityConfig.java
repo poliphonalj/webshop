@@ -38,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors()         //kell az angularral valo osszekapcsolodashoz
                 .and().csrf().disable().
-                authorizeRequests().antMatchers("/authenticate", "/v2/api-docs/**",
+                authorizeRequests().antMatchers("/time","/authenticate", "/v2/api-docs/**",
                 "/swagger-resources/**",
                 "/swagger-ui.html",
                 "/v3/api-docs/**",

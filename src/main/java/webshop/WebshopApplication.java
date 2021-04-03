@@ -6,9 +6,8 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 import org.springframework.context.annotation.ComponentScan;
 
 
-@SpringBootApplication(exclude = {
-		org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class}
-)
+@SpringBootApplication
+
 public class WebshopApplication {
 
 	public static void main(String[] args) {

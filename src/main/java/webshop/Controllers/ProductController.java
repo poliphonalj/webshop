@@ -1,6 +1,7 @@
 package webshop.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import webshop.DTOs.EndOfPromotionDTO;
@@ -13,6 +14,7 @@ import webshop.Model.Product.Product;
 import webshop.Model.Product.Unit;
 import webshop.Services.ProductService;
 
+import java.time.Instant;
 import java.util.List;
 
 @RestController
@@ -23,6 +25,13 @@ public class ProductController {
     @Autowired
     public ProductController(ProductService productService) {
         this.productService = productService;
+    }
+
+    @GetMapping("/time")
+
+    public String getCurrentTime() {
+
+        return "majom";
     }
 
     @PostMapping("/product/new")
