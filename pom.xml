@@ -60,10 +60,7 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<dependency>
-			<groupId>com.querydsl</groupId>
-			<artifactId>querydsl-jpa</artifactId>
-		</dependency>
+
 
 
 		<dependency>
@@ -138,18 +135,10 @@
 			<artifactId>jakarta.mail</artifactId>
 			<version>1.6.5</version>
 		</dependency>
-		<dependency>
-			<groupId>webshop</groupId>
-			<artifactId>webshop_backend</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
+
 
 		<!--For Excel-->
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi</artifactId>
-			<version>3.15</version>
-		</dependency>
+
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
