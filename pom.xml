@@ -143,8 +143,8 @@
 			<version>1.6.5</version>
 		</dependency>
 		<dependency>
-			<groupId>BazisPrint</groupId>
-			<artifactId>BazisPrint_Backend</artifactId>
+			<groupId>webshop</groupId>
+			<artifactId>webshop</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
