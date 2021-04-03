@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>webshop</groupId>
-	<artifactId>webshop</artifactId>
+	<artifactId>webshop_backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>webshop</name>
+	<name>webshop_backend</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
@@ -140,7 +140,7 @@
 		</dependency>
 		<dependency>
 			<groupId>webshop</groupId>
-			<artifactId>webshop</artifactId>
+			<artifactId>webshop_backend</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
