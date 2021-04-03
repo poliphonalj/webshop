@@ -32,7 +32,7 @@ public class ProductService {
 
     @Transactional
     public void addProduct(String productName, String productDescription, long productPrice, Unit productUnit,
-                           Locale productLocale, int productCategoryID, boolean productIsInPromotion,
+                           Locale productLocale, long productCategoryID, boolean productIsInPromotion,
                            boolean productIsOutOfStock, boolean productIsOutOfSeason
     ) throws ProductAddedException {
 
@@ -55,11 +55,12 @@ public class ProductService {
         }
     }
 
+
     @Transactional
     public void setPromotion(List<ProductsForPromotionDTO> list) {
         for (int i = 0; i < list.size(); i++) {
             Product p = productRepo.findProductByID(list.get(i).getID());
-            p.setPrice(list.get(i).getPromotedPrice());
+            p.setPromotedPrice(list.get(i).getPromotedPrice());
             p.setPromotionDescription(list.get(i).getPromotionDescription());
             p.setInPromotion(true);
             productRepo.saveAndFlush(p);
@@ -95,7 +96,8 @@ public class ProductService {
     @Transactional
     public Unit getUnitByProductID(long ID) {
         Product p = productRepo.findProductByID(ID);
-        return p.getUnit();
+        Unit u=p.getUnit();
+        return u;
     }
 
     @Transactional
@@ -126,15 +128,13 @@ public class ProductService {
     }
 
     @Transactional
-    public List<Product> getProductsByCategory(String name) {
-        long ID=categoryRepo.findCategoryByCategoryName(name).getID();//ha nem egyedui a name akkor elromlik keressunk id alapjan
-        List<Product>list  = productRepo.findProductsByCategoryID(ID);
-        return list;
+    public List<Product> getProductsByCategoryID(long ID) {
+        return productRepo.findAllByCategoryIDAndIsInPromotionFalseAndIsOutOfSeasonFalseAndIsOutOfStockFalse(ID);///miert csak az almat adja ki
     }
 
     @Transactional
     public List<Product> getAllProducts() {
-        List<Product>list  = productRepo.findAll();
+        List<Product>list = productRepo.findAllByIsInPromotionFalseAndIsOutOfSeasonFalseAndIsOutOfStockFalse();
         return list;
     }
 }

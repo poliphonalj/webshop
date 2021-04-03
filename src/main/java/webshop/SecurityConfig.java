@@ -38,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors()         //kell az angularral valo osszekapcsolodashoz
                 .and().csrf().disable().
-                authorizeRequests().antMatchers("/time","/authenticate", "/v2/api-docs/**",
+                authorizeRequests().antMatchers("/**","/time","/authenticate", "/v2/api-docs/**",
                 "/swagger-resources/**",
                 "/swagger-ui.html",
                 "/v3/api-docs/**",
@@ -63,7 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
         configuration.setAllowCredentials(true);
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200", "https://farmfalat.herokuapp.com"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200", "https://farmfalatb.herokuapp.com"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST","DELETE","PUT","PATCH","HEAD","OPTIONS"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

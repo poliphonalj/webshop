@@ -1,3 +1,7 @@
+//az entitasokbol letrejott db bol le lehet kerdezni ok
+//de beirashoz mar kell a db datasource url
+
+
 package webshop.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +32,11 @@ public class ProductController {
     }
 
     @GetMapping("/time")
-
     public String getCurrentTime() {
-
         return "majom";
     }
 
+    //-)
     @PostMapping("/product/new")
     public ResponseEntity<?> addProduct(@RequestBody Product product) throws ProductAddedException {//Spring converts JSON to user object following the fields
         try {
@@ -46,6 +49,9 @@ public class ProductController {
         }
     }
 
+
+    //-)
+    //ID, promotedPrice, promotionDescription listat var a requestben
     @PostMapping("/product/setPromotion")//returns a list with the promoted items and their price
     public ResponseEntity<?> setPromotion(@RequestBody List<ProductsForPromotionDTO> list) {
         try {
@@ -56,6 +62,7 @@ public class ProductController {
         }
     }
 
+    //-)
     @GetMapping("/product/promotedList")   //returns all the promoted items in a list
     public List<PromotedProductDTO> getPromotedList() {
         return productService.getPromotedList();
@@ -72,19 +79,23 @@ public class ProductController {
         }
     }
 
+    //-)
     @GetMapping("/product/unitsList")   //returns all the units for drop box
     public Unit[] getUnitsList() {
         Unit[] array = productService.getUnitsList();
         return array;
     }
 
-    @GetMapping("/product/unit/{productID}")   //returns the units for the suitable product
-    public Unit getUnitByProductID(@PathVariable int productID) {
+
+    //-)
+    @GetMapping("/product/unit/{productID}")   //returns the unit String for the suitable product
+    public Unit getUnitByProductID(@PathVariable long productID) {
         Unit unit = productService.getUnitByProductID(productID);
         return unit;
     }
 
-    @PostMapping("/product/newPrice")//modifies the price of a product with a DTO in a list
+    //-)      needs a JSON LIST in the requestbody
+    @PostMapping("/product/newPrice")//modifies the price of the LIST of products with a DTO
     public ResponseEntity<?> setNewPrice(@RequestBody List<NewProductPriceDTO> list) {
         try {
             productService.setNewPrice(list);
@@ -94,27 +105,34 @@ public class ProductController {
         }
     }
 
+
+    //-)
     @GetMapping("/product/getPrice/{ID}")   //get the price of a product by Id
     public long getPrice(@PathVariable long ID) {
         return productService.getPrice(ID);
     }
 
+    //-)
     @GetMapping("/product/getProductByID/{ID}")   //get  a product by Id
     public Product getProductByID( @PathVariable long ID) {
         return productService.getProductByID(ID);
     }
 
+
+    //-)  contains alapján keres
     @GetMapping("/product/getProductByName/{name}")   //get  a list of products containing "name"
     public List<Product> getProductsByName(@PathVariable String name) {
         return productService.getProductsByName(name);
     }
 
-    @GetMapping("/product/getProductByCategory/{categoryName}")   //get  a list of products with a categoryname
-    public List<Product> getProductsByCategory(@PathVariable String categoryName) {
-        return productService.getProductsByCategory(categoryName);
+    //-)
+    @GetMapping("/product/getProductsByCategoryID/{categoryID}")   //get  a list of products with a category ID, only actives
+    public List<Product> getProductsByCategory(@PathVariable("categoryID") long categoryID) {
+        return productService.getProductsByCategoryID(categoryID);
     }
 
-    @GetMapping("/product/getAllProducts")   //get  a list of all products
+    //-)
+    @GetMapping("/product/getAllProducts")   //get  a list of all products-only the actives!!!!!!!!
     public List<Product> getAllProducts(){
         return productService.getAllProducts();
     }
