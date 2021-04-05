@@ -18,20 +18,24 @@ public class SloganService {
         this.sloganRepo = sloganRepo;
     }
 
-    public Slogan getRandomSlogan(){
-       int amount=sloganRepo.findAll().size();
-       Random r=new Random();
-       int i=r.nextInt(amount);
-       return sloganRepo.findSloganByID(i);
+    public Slogan getRandomSlogan() {
+        int amount = sloganRepo.findAll().size();
+        Random r = new Random();
+        int i = r.nextInt(amount);
+        return sloganRepo.findSloganByIDAndIsActiveTrue(i);
     }
 
-    public void addSlogan(String slogan){
-        Slogan s=new Slogan();
+    public void addSlogan(String slogan) {
+        Slogan s = new Slogan();
         s.setText(slogan);
         sloganRepo.saveAndFlush(s);
     }
 
-
+    public void removeSlogan(long ID) {
+        Slogan s = new Slogan();
+        s.setActive(false);
+        sloganRepo.saveAndFlush(s);
+    }
 
 
 }

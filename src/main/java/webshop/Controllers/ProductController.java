@@ -19,7 +19,9 @@ import webshop.Model.Product.Unit;
 import webshop.Services.ProductService;
 
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class ProductController {
@@ -114,7 +116,7 @@ public class ProductController {
 
     //-)
     @GetMapping("/product/getProductByID/{ID}")   //get  a product by Id
-    public Product getProductByID( @PathVariable long ID) {
+    public Product getProductByID(@PathVariable long ID) {
         return productService.getProductByID(ID);
     }
 
@@ -126,23 +128,30 @@ public class ProductController {
     }
 
     //-)
-    @GetMapping("/product/getProductsByCategoryID/{categoryID}")   //get  a list of products with a category ID, only actives
+    @GetMapping("/product/getProductsByCategoryID/{categoryID}")
+    //get  a list of products with a category ID, only actives
     public List<Product> getProductsByCategory(@PathVariable("categoryID") long categoryID) {
         return productService.getProductsByCategoryID(categoryID);
     }
 
     //-)
     @GetMapping("/product/getAllProducts")   //get  a list of all products-only the actives!!!!!!!!
-    public List<Product> getAllProducts(){
-        return productService.getAllProducts();
-    }
+    public ResponseEntity<?> getAllProducts() {
+        List<Product> list = productService.getAllProducts();
+        if (!(list.isEmpty())) {
+            HashMap<String, List<Product>> hMap = new HashMap<>();
+            hMap.put("list", list);
+            return ResponseEntity.ok().body(hMap);
+        }
+        return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
+}
 
 
-    //TODO
-    //  image eleresi uttal be ki
+//TODO
+//  image eleresi uttal be ki
 
-    //sold out
-    //out of season
+//sold out
+//out of season
 
 
 

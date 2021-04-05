@@ -5,5 +5,5 @@ import webshop.Model.Slogan;
 import webshop.Model.UsersandRole.Role;
 
 public interface SloganRepo  extends JpaRepository<Slogan, Integer>{
-        Slogan findSloganByID(int ID);
+        Slogan findSloganByIDAndIsActiveTrue(int ID);
     }

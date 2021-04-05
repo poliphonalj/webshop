@@ -9,17 +9,18 @@ import javax.persistence.*;
 public class Slogan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int ID;
+    private long ID;
     private String text;
+    private boolean isActive=true;
 
     public Slogan() {
     }
 
-    public int getID() {
+    public long getID() {
         return ID;
     }
 
-    public void setID(int ID) {
+    public void setID(long ID) {
         this.ID = ID;
     }
 
@@ -29,5 +30,13 @@ public class Slogan {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 }

@@ -12,6 +12,7 @@ public class Image {
     private String fileName;
     private String tooltip;
     private long size;
+    private boolean isActive;
 
 
     @ManyToOne
@@ -24,6 +25,7 @@ public class Image {
         this.fileName = fileName;
         this.tooltip = tooltip;
         this.size = size;
+        isActive=true;
     }
 
     public String getFileName() {
@@ -48,5 +50,29 @@ public class Image {
 
     public void setSize(long size) {
         this.size = size;
+    }
+
+    public long getID() {
+        return ID;
+    }
+
+    public void setID(long ID) {
+        this.ID = ID;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 }
