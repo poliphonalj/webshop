@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "addresses")
-public class Addres {
+public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long ID;
@@ -23,10 +23,10 @@ public class Addres {
     @ManyToOne
     MyUser myUser;
 
-    public Addres() {
+    public Address() {
     }
 
-    public Addres(String country, String county, String postCode, String city, String name, String houseNumber, PlaceType placeType, String comment, String simpleAddress, AddressType addressType) {
+    public Address(String country, String county, String postCode, String city, String name, String houseNumber, PlaceType placeType, String comment, String simpleAddress, AddressType addressType) {
         this.country = country;
         this.county = county;
         this.postCode = postCode;
@@ -118,4 +118,22 @@ public class Addres {
     public void setAddressType(AddressType addressType) {
         this.addressType = addressType;
     }
+
+    public long getID() {
+        return ID;
+    }
+
+    public void setID(long ID) {
+        this.ID = ID;
+    }
+
+    public MyUser getMyUser() {
+        return myUser;
+    }
+
+    public void setMyUser(MyUser myUser) {
+        this.myUser = myUser;
+    }
+
+
 }

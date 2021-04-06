@@ -3,6 +3,9 @@ THis class represents the user table in the db. It connects to Roles table with 
 It even connects to the address table with a one to many relation.
  */
 
+
+
+
 package webshop.Model.UsersandRole;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -29,12 +32,13 @@ public class MyUser implements UserDetails {
     private LocalDateTime lastPurchasedAt;
     private boolean isActive;
     private Locale locale;
+    private String password;
 
     @OneToMany(mappedBy = "myUser")
     private List<Role> roleList;
 
     @OneToMany(mappedBy = "myUser")
-    private List<Addres> myAddressList;
+    private List<Address> myAddressList;
 
     @OneToMany(mappedBy = "myUser")
     private List<Order> orderList;
@@ -42,12 +46,14 @@ public class MyUser implements UserDetails {
 
     public MyUser() {}
 
-    public MyUser(String firstName, String lastName, String email, int phoneNumber) {
+    public MyUser(String firstName, String lastName, String email, int phoneNumber,String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
     }
+
+
 
     public long getID() {
         return ID;
@@ -55,6 +61,10 @@ public class MyUser implements UserDetails {
 
     public void setID(long ID) {
         this.ID = ID;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getFirstName() {
@@ -154,5 +164,13 @@ public class MyUser implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public List<Address> getMyAddressList() {
+        return myAddressList;
+    }
+
+    public void setMyAddressList(List<Address> myAddressList) {
+        this.myAddressList = myAddressList;
     }
 }

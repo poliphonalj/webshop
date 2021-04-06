@@ -6,4 +6,5 @@ import webshop.Model.Product.Product;
 
 public interface ImageRepo extends JpaRepository<Image, Integer> {
     Image findImageByID(long ID);
+    Image findByName(String imageName);
 }

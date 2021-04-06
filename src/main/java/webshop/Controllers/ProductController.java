@@ -19,6 +19,7 @@ import webshop.Model.Product.Unit;
 import webshop.Services.ProductService;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,10 +67,15 @@ public class ProductController {
 
     //-)
     @GetMapping("/product/promotedList")   //returns all the promoted items in a list
-    public List<PromotedProductDTO> getPromotedList() {
-        return productService.getPromotedList();
+    public ResponseEntity<?> getPromotedList() {
+        List<PromotedProductDTO> list =(productService.getPromotedList());
+        if (!(list.isEmpty())) {
+            HashMap<String, List<PromotedProductDTO>> hMap = new HashMap<>();
+            hMap.put("list", list);
+            return ResponseEntity.ok().body(hMap);
+        }
+        return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
     }
-
 
     @PostMapping("/product/endOfPromotion")//finishes the list for the proted items, and add them a new price
     public ResponseEntity<?> setEndOfPromotion(@RequestBody List<EndOfPromotionDTO> list) {
@@ -83,17 +89,27 @@ public class ProductController {
 
     //-)
     @GetMapping("/product/unitsList")   //returns all the units for drop box
-    public Unit[] getUnitsList() {
+    public ResponseEntity<?> getUnitsList() {
         Unit[] array = productService.getUnitsList();
-        return array;
+        if (array.length != 0) {
+            HashMap<String, Unit[]> hMap = new HashMap<>();
+            hMap.put("list", array);
+            return ResponseEntity.ok().body(hMap);
+        }
+        return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
     }
 
 
     //-)
     @GetMapping("/product/unit/{productID}")   //returns the unit String for the suitable product
-    public Unit getUnitByProductID(@PathVariable long productID) {
+    public ResponseEntity<?> getUnitByProductID(@PathVariable long productID) {
         Unit unit = productService.getUnitByProductID(productID);
-        return unit;
+        if (unit != null) {
+            HashMap<String, Unit> hMap = new HashMap<>();
+            hMap.put("list", unit);
+            return ResponseEntity.ok().body(hMap);
+        }
+        return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
     }
 
     //-)      needs a JSON LIST in the requestbody
@@ -110,49 +126,56 @@ public class ProductController {
 
     //-)
     @GetMapping("/product/getPrice/{ID}")   //get the price of a product by Id
-    public long getPrice(@PathVariable long ID) {
-        return productService.getPrice(ID);
+    public ResponseEntity<?> getPrice(@PathVariable long ID) {
+        List<Long> list = new ArrayList<>();
+        list.add(productService.getPrice(ID));
+        if (!(list.isEmpty())) {
+            HashMap<String, List<Long>> hMap = new HashMap<>();
+            hMap.put("list", list);
+            return ResponseEntity.ok().body(hMap);
+        }
+        return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
     }
+
 
     //-)
     @GetMapping("/product/getProductByID/{ID}")   //get  a product by Id
-    public Product getProductByID(@PathVariable long ID) {
-        return productService.getProductByID(ID);
+    public void getProductByID(@PathVariable long ID) {
+        List<Product> list = new ArrayList<>();
+        list.add(productService.getProductByID(ID));
+        standartisedReturn(list);
     }
 
 
     //-)  contains alapján keres
     @GetMapping("/product/getProductByName/{name}")   //get  a list of products containing "name"
-    public List<Product> getProductsByName(@PathVariable String name) {
-        return productService.getProductsByName(name);
+    public void getProductsByName(@PathVariable String name) {
+        List<Product> list = productService.getProductsByName(name);
+        standartisedReturn(list);
     }
 
     //-)
     @GetMapping("/product/getProductsByCategoryID/{categoryID}")
     //get  a list of products with a category ID, only actives
-    public List<Product> getProductsByCategory(@PathVariable("categoryID") long categoryID) {
-        return productService.getProductsByCategoryID(categoryID);
+    public void getProductsByCategory(@PathVariable("categoryID") long categoryID) {
+        List<Product> list = productService.getProductsByCategoryID(categoryID);
+        standartisedReturn(list);
     }
 
     //-)
     @GetMapping("/product/getAllProducts")   //get  a list of all products-only the actives!!!!!!!!
-    public ResponseEntity<?> getAllProducts() {
+    public void getAllProducts() {
         List<Product> list = productService.getAllProducts();
+        standartisedReturn(list);
+    }
+
+
+    public ResponseEntity<?> standartisedReturn(List<Product> list) {
         if (!(list.isEmpty())) {
             HashMap<String, List<Product>> hMap = new HashMap<>();
             hMap.put("list", list);
             return ResponseEntity.ok().body(hMap);
         }
         return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
-}
-
-
-//TODO
-//  image eleresi uttal be ki
-
-//sold out
-//out of season
-
-
-
+    }
 }

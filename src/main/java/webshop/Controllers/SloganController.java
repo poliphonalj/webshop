@@ -8,9 +8,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import webshop.DTOs.ProductsForPromotionDTO;
 import webshop.Model.FeedbackToFrontend;
+import webshop.Model.Product.Product;
 import webshop.Model.Slogan;
 import webshop.Services.SloganService;
 
+import java.util.HashMap;
 import java.util.List;
 @RestController
 public class SloganController {
@@ -22,8 +24,14 @@ public class SloganController {
     }
 
     @GetMapping("/slogan/random")   //return a random slogan from the db
-    public Slogan getRandom(){
-        return sloganService.getRandomSlogan();
+    public ResponseEntity<?> getRandom(){
+        Slogan s=sloganService.getRandomSlogan();
+        if (s!=null) {
+            HashMap<String, Slogan> hMap = new HashMap<>();
+            hMap.put("list", s);
+            return ResponseEntity.ok().body(hMap);
+        }
+        return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
     }
 
     @PostMapping("/slogan/add") //adding a slogan to thee db

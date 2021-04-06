@@ -2,13 +2,13 @@ package webshop.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import webshop.Model.FeedbackToFrontend;
 import webshop.Model.Product.Image;
 import webshop.Services.ImageService;
+
+import java.io.IOException;
 
 @RestController
 public class ImageController {
@@ -20,13 +20,23 @@ public class ImageController {
     }
 
     @PostMapping("/image/new")
-        public ResponseEntity<?> addImage(@RequestBody Image image){
+        public ResponseEntity<?> addImage(@RequestBody MultipartFile file, long productID, String description, String tooltip) throws IOException {
            try{
-            imageservice.addImage(image);
+            imageservice.addImage(file, productID, description, tooltip);
                return ResponseEntity.ok(new FeedbackToFrontend(true));
            } catch (Exception e) {
                return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
            }
+    }
+
+    @PostMapping("/image/get/{imageName}")
+    public ResponseEntity<?> getImage(@RequestParam String imageName) throws IOException {
+        try{
+            imageservice.getImage(imageName);
+            return ResponseEntity.ok(new FeedbackToFrontend(true));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
+        }
     }
 
 }

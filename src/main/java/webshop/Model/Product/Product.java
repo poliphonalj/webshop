@@ -1,6 +1,7 @@
 package webshop.Model.Product;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -145,5 +146,29 @@ public class Product {
 
     public void setPromotionDescription(String promotionDescription) {
         this.promotionDescription = promotionDescription;
+    }
+
+    public List<Image> getImageList() {
+        return imageList;
+    }
+
+    public void setImageList(List<Image> imageList) {
+        this.imageList = imageList;
+    }
+
+    public List<Product_Translation> getTranlationsList() {
+        return tranlationsList;
+    }
+
+    public void setTranlationsList(List<Product_Translation> tranlationsList) {
+        this.tranlationsList = tranlationsList;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }

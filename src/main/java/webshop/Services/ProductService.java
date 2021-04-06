@@ -88,7 +88,6 @@ public class ProductService {
         }
     }
 
-
     public Unit[] getUnitsList() {
         return Unit.values();
     }
