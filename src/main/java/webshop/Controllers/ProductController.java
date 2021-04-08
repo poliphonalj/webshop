@@ -164,14 +164,19 @@ public class ProductController {
 
     //-)
     @GetMapping("/product/getAllProducts")   //get  a list of all products-only the actives!!!!!!!!
-    public void getAllProducts() {
+    public ResponseEntity<?> getAllProducts() {
         List<Product> list = productService.getAllProducts();
-        standartisedReturn(list);
+       // if (!(list.isEmpty())) {
+         //   HashMap<String, List<Product>> hMap = new HashMap<>();
+           // hMap.put("list", list);
+            //return ResponseEntity.ok().body(hMap);}
+       return standartisedReturn(list);
+        // return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
     }
 
 
     public ResponseEntity<?> standartisedReturn(List<Product> list) {
-        if (!(list.isEmpty())) {
+       if (!(list.isEmpty())) {
             HashMap<String, List<Product>> hMap = new HashMap<>();
             hMap.put("list", list);
             return ResponseEntity.ok().body(hMap);
