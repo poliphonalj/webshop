@@ -28,7 +28,7 @@ public class ProductService {
 
     @Autowired
     public ProductService(ProductRepo productRepo, CategoryRepo categoryRepo) {
-        this.categoryRepo=categoryRepo;
+        this.categoryRepo = categoryRepo;
         this.productRepo = productRepo;
     }
 
@@ -91,6 +91,12 @@ public class ProductService {
         }
     }
 
+    @Transactional
+    public void modifyProduct(Product product) {
+        productRepo.saveAndFlush(product);
+    }
+
+
     public Unit[] getUnitsList() {
         return Unit.values();
     }
@@ -98,7 +104,7 @@ public class ProductService {
     @Transactional
     public Unit getUnitByProductID(long ID) {
         Product p = productRepo.findProductByID(ID);
-        Unit u=p.getUnit();
+        Unit u = p.getUnit();
         return u;
     }
 
@@ -125,7 +131,7 @@ public class ProductService {
 
     @Transactional
     public List<Product> getProductsByName(String name) {
-       List<Product>list  = productRepo.findProductsByNameIsContaining(name);
+        List<Product> list = productRepo.findProductsByNameIsContaining(name);
         return list;
     }
 
@@ -136,7 +142,7 @@ public class ProductService {
 
     @Transactional
     public List<Product> getAllProducts() {
-        List<Product>list = productRepo.findAllByIsInPromotionFalseAndIsOutOfSeasonFalseAndIsOutOfStockFalse();
+        List<Product> list = productRepo.findAllByIsInPromotionFalseAndIsOutOfSeasonFalseAndIsOutOfStockFalse();
         return list;
     }
 }

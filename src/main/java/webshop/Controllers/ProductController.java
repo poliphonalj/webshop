@@ -175,6 +175,18 @@ public class ProductController {
     }
 
 
+    @PostMapping("/product/modifyProduct")//modifies the price of the LIST of products with a DTO
+    public ResponseEntity<?> setNewPrice(@RequestBody Product product) {
+        try {
+            productService.modifyProduct(product);
+            return ResponseEntity.ok(new FeedbackToFrontend(true));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
+        }
+    }
+
+
+
     public ResponseEntity<?> standartisedReturn(List<Product> list) {
        if (!(list.isEmpty())) {
             HashMap<String, List<Product>> hMap = new HashMap<>();
