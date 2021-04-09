@@ -10,5 +10,6 @@ import java.util.List;
 public interface UserRepo extends JpaRepository<MyUser, Integer> {
     MyUser findUserByFirstName(String name);
     MyUser findUserByID(long ID);
+    MyUser findUserByUsername(String username);
     List<MyUser>findAllByIsActiveTrue();
 }

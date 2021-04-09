@@ -2,7 +2,9 @@ package webshop.Services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import webshop.Model.UsersandRole.Address;
+import webshop.Model.UsersandRole.AddressType;
 import webshop.Model.UsersandRole.MyUser;
 import webshop.Repository.AddressRepo;
 import webshop.Repository.UserRepo;
@@ -20,7 +22,7 @@ public class AddressService {
         this.userRepo=userRepo;
     }
 
-    public void addAddress(Address address, long ID){
+    public void addAddress( long ID,Address address){
         Address a=new Address();
         a.setPostCode(address.getPostCode());
         a.setSimpleAddress(address.getSimpleAddress());
@@ -28,12 +30,17 @@ public class AddressService {
         a.setAddressType(address.getAddressType());
         a.setMyUser(userRepo.findUserByID(ID));
 
-        MyUser myUser=userRepo.findUserByID(ID);
-        List<Address> list=myUser.getMyAddressList();
-        list.add(a);
-        myUser.setMyAddressList(list);
+        System.out.println(ID+address.getComment());
+       // MyUser m=userRepo.findUserByUsername(username);
+        //List<Address> list=m.getMyAddressList();
+        //list.add(a);
+        //m.setMyAddressList(list);
 
-        userRepo.saveAndFlush(myUser);
+       //userRepo.saveAndFlush(m);
         addressRepo.saveAndFlush(a);
+    }
+
+    public AddressType[] listTheTypes(){
+        return AddressType.values();
     }
 }

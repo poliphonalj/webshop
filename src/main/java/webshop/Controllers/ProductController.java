@@ -140,38 +140,38 @@ public class ProductController {
 
     //-)
     @GetMapping("/product/getProductByID/{ID}")   //get  a product by Id
-    public void getProductByID(@PathVariable long ID) {
+    public ResponseEntity<?> getProductByID(@PathVariable long ID) {
         List<Product> list = new ArrayList<>();
         list.add(productService.getProductByID(ID));
-        standartisedReturn(list);
+        return standartisedReturn(list);
     }
 
 
     //-)  contains alapján keres
     @GetMapping("/product/getProductByName/{name}")   //get  a list of products containing "name"
-    public void getProductsByName(@PathVariable String name) {
+    public ResponseEntity<?> getProductsByName(@PathVariable String name) {
         List<Product> list = productService.getProductsByName(name);
-        standartisedReturn(list);
+        return standartisedReturn(list);
     }
 
     //-)
     @GetMapping("/product/getProductsByCategoryID/{categoryID}")
     //get  a list of products with a category ID, only actives
-    public void getProductsByCategory(@PathVariable("categoryID") long categoryID) {
+    public ResponseEntity<?> getProductsByCategory(@PathVariable("categoryID") long categoryID) {
         List<Product> list = productService.getProductsByCategoryID(categoryID);
-        standartisedReturn(list);
+        return standartisedReturn(list);
     }
 
     //-)
     @GetMapping("/product/getAllProducts")   //get  a list of all products-only the actives!!!!!!!!
     public ResponseEntity<?> getAllProducts() {
         List<Product> list = productService.getAllProducts();
-       if (!(list.isEmpty())) {
-          HashMap<String, List<Product>> hMap = new HashMap<>();
-            hMap.put("list", list);
-            return ResponseEntity.ok().body(hMap);}
-       //return standartisedReturn(list);
-        return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
+       // if (!(list.isEmpty())) {
+         //   HashMap<String, List<Product>> hMap = new HashMap<>();
+           // hMap.put("list", list);
+            //return ResponseEntity.ok().body(hMap);}
+       return standartisedReturn(list);
+       // return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
     }
 
 

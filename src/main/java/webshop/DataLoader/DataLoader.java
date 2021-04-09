@@ -47,8 +47,8 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        createRoles();
         createUser();
+        createRoles();
         createProducts();
         createCategories();
     }
@@ -77,10 +77,12 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
         if (userRepo.count() == 0) {
             sanyi = new MyUser();
             sanyi.setActive(true);
-            sanyi.setEmail("sanyi@gmail.hu");
+            sanyi.setUsername("a");
             sanyi.setLocale(Locale.ENGLISH);
-            sanyi.setFirstName("Sandor");
-            sanyi.setLastName("nagy");
+            sanyi.setFirstName("user");
+            sanyi.setLastName("user");
+            sanyi.setPassword("a");
+            sanyi.setPhoneNumber("1233456");
             sanyi = userRepo.saveAndFlush(sanyi);
         } else {
            sanyi = userRepo.findUserByFirstName("Sandor");

@@ -26,8 +26,8 @@ public class MyUser implements UserDetails {
     private long ID;
     private String firstName;
     private String lastName;
-    private String email;
-    private int phoneNumber;
+    private String username;
+    private String phoneNumber;
     private LocalDateTime lastLoggedInAt;
     private LocalDateTime lastPurchasedAt;
     private boolean isActive;
@@ -46,11 +46,12 @@ public class MyUser implements UserDetails {
 
     public MyUser() {}
 
-    public MyUser(String firstName, String lastName, String email, int phoneNumber,String password) {
+    public MyUser(String firstName, String lastName, String username, String phoneNumber,String password) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = email;
+        this.username = username;
         this.phoneNumber = phoneNumber;
+        this.password=password;
     }
 
 
@@ -64,7 +65,7 @@ public class MyUser implements UserDetails {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+    this.password=password;
     }
 
     public String getFirstName() {
@@ -83,19 +84,16 @@ public class MyUser implements UserDetails {
         this.lastName = lastName;
     }
 
-    public String getEmail() {
-        return email;
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -138,12 +136,12 @@ public class MyUser implements UserDetails {
 
     @Override
     public String getPassword() {
-        return null;
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return username;
     }
 
     @Override
@@ -173,4 +171,6 @@ public class MyUser implements UserDetails {
     public void setMyAddressList(List<Address> myAddressList) {
         this.myAddressList = myAddressList;
     }
+
+
 }
