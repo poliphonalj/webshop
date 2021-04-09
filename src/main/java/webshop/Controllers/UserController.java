@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import webshop.DTOs.AuthenticationRequestDTO;
 import webshop.DTOs.AuthenticationResponseDTO;
+import webshop.DTOs.NewUserDTO;
 import webshop.Model.FeedbackToFrontend;
 import webshop.Model.UsersandRole.Address;
 import webshop.Model.UsersandRole.MyUser;
@@ -35,7 +36,7 @@ public class UserController {
                           AddressService addressService) {
         this.myUserDetailsService = myUserDetailsService;
         this.authenticationManager = authenticationManager;
-        this.addressService=addressService;
+        this.addressService = addressService;
     }
 
 
@@ -43,18 +44,18 @@ public class UserController {
     public ResponseEntity<?> createAuthenticationToken(HttpServletResponse response,
                                                        @RequestBody AuthenticationRequestDTO authenticationRequestDTO) {
         try {
-          // Authentication authenticate= authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+            // Authentication authenticate= authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
             //        , authenticationRequestDTO.getPassword()));
 
-            Authentication authenticate= authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequestDTO.getUsername(),
+            Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequestDTO.getUsername(),
                     authenticationRequestDTO.getPassword()));
             //if (authenticate.isAuthenticated()) {
-              //  SecurityContextHolder.getContext().setAuthentication(authenticate);
-                //return ResponseEntity.ok(new FeedbackToFrontend(true));
+            //  SecurityContextHolder.getContext().setAuthentication(authenticate);
+            //return ResponseEntity.ok(new FeedbackToFrontend(true));
             //}
-           SecurityContextHolder.getContext().getAuthentication().getPrincipal();//automatikusan csinalja
+            SecurityContextHolder.getContext().getAuthentication().getPrincipal();//automatikusan csinalja
 
-                return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
+            return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
 
         } catch (BadCredentialsException e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
@@ -62,11 +63,28 @@ public class UserController {
     }
 
     @PostMapping("/user/new")
-    public ResponseEntity<?> addUser(@RequestBody MyUser myUser, Address address) {
+    public ResponseEntity<?> addUser(@RequestBody NewUserDTO newUserDTO) {
         try {
+            Address address = new Address();
+            MyUser myUser = new MyUser();
+
+            myUser.setFirstName(newUserDTO.getFirstName());
+            myUser.setLastName(newUserDTO.getLastName());
+            myUser.setUsername(newUserDTO.getUsername());
+            myUser.setActive(true);
+            myUser.setPhoneNumber(newUserDTO.getPhoneNumber());
+            myUser.setPassword(newUserDTO.getPassword());
+            myUser.setLocale(newUserDTO.getLocale());
             myUserDetailsService.addUser(myUser);
-            System.out.println(address.getComment());
-           // addressService.addAddress(myUser.getID(),address);
+
+
+            address.setPostCode(newUserDTO.getPostCode());
+            address.setSimpleAddress(newUserDTO.getSimpleAddress());
+            address.setComment(newUserDTO.getComment());
+            address.setAddressType(newUserDTO.getAddressType());
+            address.setMyUser(myUser);
+            addressService.addAddress(address);
+
             return ResponseEntity.ok(new FeedbackToFrontend(true));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));

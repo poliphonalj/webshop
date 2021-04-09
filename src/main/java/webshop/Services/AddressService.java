@@ -22,21 +22,13 @@ public class AddressService {
         this.userRepo=userRepo;
     }
 
-    public void addAddress( long ID,Address address){
+    public void addAddress( Address address){
         Address a=new Address();
         a.setPostCode(address.getPostCode());
         a.setSimpleAddress(address.getSimpleAddress());
         a.setComment(address.getComment());
         a.setAddressType(address.getAddressType());
-        a.setMyUser(userRepo.findUserByID(ID));
-
-        System.out.println(ID+address.getComment());
-       // MyUser m=userRepo.findUserByUsername(username);
-        //List<Address> list=m.getMyAddressList();
-        //list.add(a);
-        //m.setMyAddressList(list);
-
-       //userRepo.saveAndFlush(m);
+        a.setMyUser(userRepo.findUserByUsername(address.getMyUser().getUsername()));
         addressRepo.saveAndFlush(a);
     }
 

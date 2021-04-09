@@ -23,16 +23,17 @@ public class AddressController {
         this.addressService = addressService;
     }
 
+    /*
     @PostMapping("/address/new")
     public ResponseEntity<?> addAddresss(@RequestParam long ID, @RequestBody  Address address) throws IOException {
         try{
-            addressService.addAddress(ID, address);
+            addressService.addAddress(address);
             return ResponseEntity.ok(new FeedbackToFrontend(true));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
         }
     }
-
+*/
     @GetMapping("/address/types/list")
     public ResponseEntity<?> listActiveUsers() {
        AddressType[] list = addressService.listTheTypes();
