@@ -40,6 +40,7 @@ public class MyUserDetailsService implements UserDetailsService {
         u.setUsername(myUser.getUsername());
         u.setPhoneNumber(myUser.getPhoneNumber());
         u.setPassword(myUser.getPassword());
+        u.setRole(myUser.getRole());
         u.setActive(true);
 
         userRepo.saveAndFlush(u);

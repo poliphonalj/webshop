@@ -175,10 +175,10 @@ public class ProductController {
     }
 
 
-    @PostMapping("/product/modifyProduct")//modifies the price of the LIST of products with a DTO
-    public ResponseEntity<?> setNewPrice(@RequestBody Product product) {
+    @PutMapping("/product/modifyProduct/{ID}")//modifies the price of the LIST of products with a DTO
+    public ResponseEntity<?> setNewPrice(@RequestBody Product product, @PathVariable("ID") long ID) {
         try {
-            productService.modifyProduct(product);
+            productService.modifyProduct(product,ID);
             return ResponseEntity.ok(new FeedbackToFrontend(true));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));

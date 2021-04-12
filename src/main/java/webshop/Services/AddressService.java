@@ -24,12 +24,8 @@ public class AddressService {
 
     public void addAddress( Address address){
         Address a=new Address();
-        a.setPostCode(address.getPostCode());
-        a.setSimpleAddress(address.getSimpleAddress());
-        a.setComment(address.getComment());
-        a.setAddressType(address.getAddressType());
-        a.setMyUser(userRepo.findUserByUsername(address.getMyUser().getUsername()));
-        addressRepo.saveAndFlush(a);
+
+        addressRepo.saveAndFlush(address);
     }
 
     public AddressType[] listTheTypes(){

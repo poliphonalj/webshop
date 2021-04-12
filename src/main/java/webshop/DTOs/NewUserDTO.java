@@ -18,7 +18,6 @@ public class NewUserDTO {
     private boolean isActive;
     private Locale locale;
     private String password;
-    private List<Role> roleList;
     private List<Address> myAddressList;
 
     private String country;
@@ -32,11 +31,12 @@ public class NewUserDTO {
     private String simpleAddress;    //name+placeTypte+houseNumber
     private AddressType addressType;
     private MyUser myUser;
+    private Role role;
 
     public NewUserDTO() {
     }
 
-    public NewUserDTO(String firstName, String lastName, String username, String phoneNumber, LocalDateTime lastLoggedInAt, LocalDateTime lastPurchasedAt, boolean isActive, Locale locale, String password, List<Role> roleList, List<Address> myAddressList, String country, String county, String postCode, String city, String name, String houseNumber, PlaceType placeType, String comment, String simpleAddress, AddressType addressType, MyUser myUser) {
+    public NewUserDTO(String firstName, String lastName, String username, String phoneNumber, LocalDateTime lastLoggedInAt, LocalDateTime lastPurchasedAt, boolean isActive, Locale locale, String password, Role role, List<Address> myAddressList, String country, String county, String postCode, String city, String name, String houseNumber, PlaceType placeType, String comment, String simpleAddress, AddressType addressType, MyUser myUser) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
@@ -46,7 +46,7 @@ public class NewUserDTO {
         this.isActive = isActive;
         this.locale = locale;
         this.password = password;
-        this.roleList = roleList;
+        this.role = role;
 
         this.myAddressList = myAddressList;
         this.country = country;
@@ -142,12 +142,12 @@ public class NewUserDTO {
         this.password = password;
     }
 
-    public List<Role> getRoleList() {
-        return roleList;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoleList(List<Role> roleList) {
-        this.roleList = roleList;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public List<Address> getMyAddressList() {

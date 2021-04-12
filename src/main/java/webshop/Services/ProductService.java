@@ -92,8 +92,23 @@ public class ProductService {
     }
 
     @Transactional
-    public void modifyProduct(Product product) {
-        productRepo.saveAndFlush(product);
+    public void modifyProduct(Product product,long ID) {
+
+        Product p=productRepo.findProductByID(ID);
+        p.setImageList(product.getImageList());
+        p.setPrice(product.getPrice());
+        p.setPromotionDescription(product.getPromotionDescription());
+        p.setLocale(product.getLocale());
+        p.setUnit(product.getUnit());
+        p.setName(product.getName());
+        p.setDescription(product.getDescription());
+        p.setOutOfStock(product.isOutOfStock());
+        p.setOutOfSeason(product.isOutOfSeason());
+        p.setInPromotion(product.isInPromotion());
+        p.setPromotedPrice(product.getPromotedPrice());
+        p.setCategory(product.getCategory());
+
+        productRepo.saveAndFlush(p);
     }
 
 

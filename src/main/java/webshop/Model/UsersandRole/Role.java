@@ -1,9 +1,10 @@
 package webshop.Model.UsersandRole;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
-@Table(name="roles")
+@Table(name = "roles")
 public class Role {
 
     @Id
@@ -11,8 +12,8 @@ public class Role {
     private long ID;
     private String roleName;
 
-@ManyToOne
-MyUser myUser;
+    @OneToMany(mappedBy = "role")
+    private List<MyUser> myUserList;
 
 
     public Role(String role) {
@@ -30,12 +31,12 @@ MyUser myUser;
         this.roleName = role;
     }
 
-    public MyUser getMyUser() {
-        return myUser;
+    public List<MyUser>getMyUserList() {
+        return myUserList;
     }
 
-    public void setMyUser(MyUser myUser) {
-        this.myUser = myUser;
+    public void setMyUserList(List<MyUser >myUserList) {
+        this.myUserList = myUserList;
     }
 
     public long getID() {

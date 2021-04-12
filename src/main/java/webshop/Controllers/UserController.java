@@ -55,7 +55,7 @@ public class UserController {
             //}
             SecurityContextHolder.getContext().getAuthentication().getPrincipal();//automatikusan csinalja
 
-            return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
+            return ResponseEntity.ok(new FeedbackToFrontend(true));
 
         } catch (BadCredentialsException e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
@@ -75,6 +75,9 @@ public class UserController {
             myUser.setPhoneNumber(newUserDTO.getPhoneNumber());
             myUser.setPassword(newUserDTO.getPassword());
             myUser.setLocale(newUserDTO.getLocale());
+            myUser.setRole(newUserDTO.getRole());
+
+
             myUserDetailsService.addUser(myUser);
 
 
