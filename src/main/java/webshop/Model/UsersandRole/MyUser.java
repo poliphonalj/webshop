@@ -8,6 +8,7 @@ It even connects to the address table with a one to many relation.
 
 package webshop.Model.UsersandRole;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -36,8 +37,14 @@ public class MyUser implements UserDetails {
     private Locale locale;
     private String password;
 
-    @ManyToOne
-    private Role role;
+
+
+    @ManyToMany
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "users_ID"),
+            inverseJoinColumns = @JoinColumn(name = "roles_ID"))
+    private List<Role> roleList;
 
 
     @OneToMany(mappedBy = "myUser")
@@ -135,7 +142,9 @@ public class MyUser implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
+        for (Role actualRole : roleList) {
+            authorities.add(new SimpleGrantedAuthority(actualRole.getRoleName()));
+        }
         return authorities;
     }
 
@@ -177,11 +186,11 @@ public class MyUser implements UserDetails {
         this.myAddressList = myAddressList;
     }
 
-    public Role getRole() {
-        return role;
+    public List<Role> getRoleList() {
+        return roleList;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRoleList(List<Role> roleList) {
+        this.roleList = roleList;
     }
 }
