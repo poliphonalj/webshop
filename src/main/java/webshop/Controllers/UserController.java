@@ -1,15 +1,8 @@
 package webshop.Controllers;
 
-
-//kepes dto
-//email
-
 //TODO method for return
 
 
-import org.json.simple.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,60 +10,51 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 import webshop.DTOs.AuthenticationRequestDTO;
-import webshop.DTOs.NewPasswordDTO;
-import webshop.DTOs.NewPhoneNumberDTO;
 import webshop.DTOs.NewUserDTO;
 import webshop.Model.FeedbackToFrontend;
 import webshop.Model.UsersandRole.MyUser;
 import webshop.Services.AddressService;
-import webshop.Services.EmailService;
 import webshop.Services.MyUserDetailsService;
 
-import java.security.Principal;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 
-
 @RestController
 public class UserController {
-
-    static Logger l = LoggerFactory.getLogger(UserController.class);
     MyUserDetailsService myUserDetailsService;
     AuthenticationManager authenticationManager;
     AddressService addressService;
-    EmailService emailService;
-
 
     @Autowired
     public UserController(MyUserDetailsService myUserDetailsService, AuthenticationManager authenticationManager,
-                          AddressService addressService, EmailService emailService) {
+                          AddressService addressService) {
         this.myUserDetailsService = myUserDetailsService;
         this.authenticationManager = authenticationManager;
         this.addressService = addressService;
-        this.emailService = emailService;
     }
 
 
-    ///This method deals with the user authentication.
-    ///It is also responsible for setting the lastTimeLoggedIn field.
-
     @PostMapping("/authenticate")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequestDTO authenticationRequestDTO) {
+    public ResponseEntity<?> createAuthenticationToken(HttpServletResponse response,
+                                                       @RequestBody AuthenticationRequestDTO authenticationRequestDTO) {
         try {
+            // Authentication authenticate= authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+            //        , authenticationRequestDTO.getPassword()));
+
             Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequestDTO.getUsername(),
                     authenticationRequestDTO.getPassword()));
-            UserDetails userDetails = (UserDetails) authenticate.getPrincipal();
-            String username = userDetails.getUsername();
-            MyUser myUser = myUserDetailsService.loadUserByUsername(username);
-            JSONObject jObj = myUserDetailsService.returnForSuccedLogin(myUser.getFirstName(),
-                    ((List) (authenticate.getAuthorities())).get(0).toString(),
-                    username, myUser.getID());
+            //if (authenticate.isAuthenticated()) {
+            //  SecurityContextHolder.getContext().setAuthentication(authenticate);
+            //return ResponseEntity.ok(new FeedbackToFrontend(true));
+            //}
+            SecurityContextHolder.getContext().getAuthentication().getPrincipal();//automatikusan csinalja
+            System.out.println(authenticate.getAuthorities());
+            System.out.println(authenticate.toString());
+            return ResponseEntity.ok(new FeedbackToFrontend(true));
 
-            return ResponseEntity.ok().body(jObj);
         } catch (BadCredentialsException e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
         }
@@ -79,11 +63,12 @@ public class UserController {
     @PostMapping("/user/new")
     public ResponseEntity<?> addUser(@RequestBody NewUserDTO newUserDTO) {
         try {
-            myUserDetailsService.addUser(newUserDTO);
-            //emailService.successfulRegistration(newUserDTO.getFirstName(), newUserDTO.getUsername());
-            return ResponseEntity.ok(new FeedbackToFrontend(true));
+         // if(myUserDetailsService.loadUserByUsername(newUserDTO.getUsername())==null){
+              myUserDetailsService.addUser(newUserDTO);
+              return ResponseEntity.ok(new FeedbackToFrontend(true));
+       //   }
+          //throw new UserExistException();
         } catch (Exception e) {
-            l.error("kisnyul", e);
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
         }
     }
@@ -99,37 +84,19 @@ public class UserController {
     }
 
     @PostMapping("/user/modify/password")
-    public ResponseEntity<?> changePassword(@RequestBody NewPasswordDTO newPasswordDTO) {
+    public ResponseEntity<?> changePassword(@RequestBody String password, MyUser myUser) {
         try {
-            myUserDetailsService.changePassword(newPasswordDTO);
-            //emailService.newPassword(newPasswordDTO.getPassword(), newPasswordDTO.getUserID());
-            //vvvvvvvvvvvvvvvemilt kikuldeni!!!!!
-
+            myUserDetailsService.changePassword(password, myUser);
             return ResponseEntity.ok(new FeedbackToFrontend(true));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
         }
     }
-
-    @PostMapping("/user/forgetpassword")
-    public ResponseEntity<?> forgetPassword(@RequestBody MyUser myUser) {
-        try {
-            //emailService.forgotPassword(myUser);
-            //vvvvvvvvvvvvvvvemilt kikuldeni!!!!!
-            //forgetpassword
-
-            return ResponseEntity.ok(new FeedbackToFrontend(true));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
-        }
-    }
-
 
     @PostMapping("/user/modify/phonenumber")
-    public ResponseEntity<?> changePhoneNumber(@RequestBody NewPhoneNumberDTO newPhoneNumberDTO) {
+    public ResponseEntity<?> changePhoneNumber(@RequestBody String phoneNumber, MyUser myUser) {
         try {
-
-            myUserDetailsService.changePhonenumber(newPhoneNumberDTO);
+            myUserDetailsService.changePassword(phoneNumber, myUser);
             return ResponseEntity.ok(new FeedbackToFrontend(true));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
@@ -151,6 +118,9 @@ public class UserController {
 
     @GetMapping("/user/list/all")
     public ResponseEntity<?> listAllUsers() {
+
+
+
         List<MyUser> list = myUserDetailsService.listAllUsers();
         if (!(list.isEmpty())) {
             HashMap<String, List<MyUser>> hMap = new HashMap<>();
@@ -158,16 +128,5 @@ public class UserController {
             return ResponseEntity.ok().body(hMap);
         }
         return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
-    }
-
-    @GetMapping("/user/get/{ID}")
-    public ResponseEntity<?> getUserByID(@PathVariable long ID) {
-
-        try {
-            MyUser m = myUserDetailsService.getUserByID(ID);
-            return ResponseEntity.ok().body(m);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
-        }
     }
 }
