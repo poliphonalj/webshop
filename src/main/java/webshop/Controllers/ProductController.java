@@ -8,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import webshop.DTOs.*;
+import webshop.DTOs.EndOfPromotionDTO;
+import webshop.DTOs.NewProductPriceDTO;
+import webshop.DTOs.ProductsForPromotionDTO;
+import webshop.DTOs.PromotedProductDTO;
 import webshop.Exceptions.ProductAddedException;
 import webshop.Model.FeedbackToFrontend;
 import webshop.Model.Product.Product;
@@ -36,25 +39,13 @@ public class ProductController {
         return "majom";
     }
 
-    @PostMapping("/product/newfull")
-    public ResponseEntity<?> newProduct(@RequestBody NewProductDTO newProductDTO) {
-        try {
-                //productService.newProduct(newProductDTO);
-
-
-            return ResponseEntity.ok(new FeedbackToFrontend(true));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
-        }
-    }
-
     //-)
     @PostMapping("/product/new")
     public ResponseEntity<?> addProduct(@RequestBody Product product) throws ProductAddedException {//Spring converts JSON to user object following the fields
         try {
             productService.addProduct(product.getName(), product.getDescription(), product.getPrice(), product.getUnit(),
-                    product.getLocale(), product.isInPromotion(), product.isOutOfStock(),
-                    product.isOutOfSeason(), product.getCategoryID());
+                    product.getLocale(),  product.isInPromotion(), product.isOutOfStock(),
+                    product.isOutOfSeason(),product.getCategory());
             return ResponseEntity.ok(new FeedbackToFrontend(true));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
@@ -77,7 +68,7 @@ public class ProductController {
     //-)
     @GetMapping("/product/promotedList")   //returns all the promoted items in a list
     public ResponseEntity<?> getPromotedList() {
-        List<PromotedProductDTO> list = (productService.getPromotedList());
+        List<PromotedProductDTO> list =(productService.getPromotedList());
         if (!(list.isEmpty())) {
             HashMap<String, List<PromotedProductDTO>> hMap = new HashMap<>();
             hMap.put("list", list);
@@ -175,21 +166,19 @@ public class ProductController {
     @GetMapping("/product/getAllProducts")   //get  a list of all products-only the actives!!!!!!!!
     public ResponseEntity<?> getAllProducts() {
         List<Product> list = productService.getAllProducts();
-        // if (!(list.isEmpty())) {
-        //   HashMap<String, List<Product>> hMap = new HashMap<>();
-        // hMap.put("list", list);
-        //return ResponseEntity.ok().body(hMap);}
-        return standartisedReturn(list);
-        // return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
+       // if (!(list.isEmpty())) {
+         //   HashMap<String, List<Product>> hMap = new HashMap<>();
+           // hMap.put("list", list);
+            //return ResponseEntity.ok().body(hMap);}
+       return standartisedReturn(list);
+       // return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
     }
 
 
-    @PostMapping("/product/modifyProduct/{IDD}")
-    public ResponseEntity<?> modify(@RequestBody Product product,@PathVariable Long IDD) {
+    @PostMapping("/product/modifyProduct")//modifies the price of the LIST of products with a DTO
+    public ResponseEntity<?> setNewPrice(@RequestBody Product product, @PathVariable("ID") long ID) {
         try {
-            System.out.println(IDD);
-            long Id=IDD;
-            productService.modifyProduct(product, Id);
+            productService.modifyProduct(product, ID);
             return ResponseEntity.ok(new FeedbackToFrontend(true));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
@@ -197,8 +186,9 @@ public class ProductController {
     }
 
 
+
     public ResponseEntity<?> standartisedReturn(List<Product> list) {
-        if (!(list.isEmpty())) {
+       if (!(list.isEmpty())) {
             HashMap<String, List<Product>> hMap = new HashMap<>();
             hMap.put("list", list);
             return ResponseEntity.ok().body(hMap);
