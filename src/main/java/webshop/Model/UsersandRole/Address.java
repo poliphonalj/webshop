@@ -1,10 +1,6 @@
 package webshop.Model.UsersandRole;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Columns;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import javax.persistence.*;
 
@@ -18,23 +14,33 @@ public class Address {
 
     private String country;
     private String county;
-    private long postCode;
+    private String postCode;
     private String city;
     private String name;
     private String houseNumber;
     private PlaceType placeType;    //enum
     private String comment;
     private String simpleAddress;    //name+placeTypte+houseNumber
-    private AddressType addressType;//enum
-
+    private AddressType addressType;    //enum
 
     @ManyToOne
     MyUser myUser;
 
     public Address() {
-        postCode = 0;
     }
 
+    public Address(String country, String county, String postCode, String city, String name, String houseNumber, PlaceType placeType, String comment, String simpleAddress, AddressType addressType) {
+        this.country = country;
+        this.county = county;
+        this.postCode = postCode;
+        this.city = city;
+        this.name = name;
+        this.houseNumber = houseNumber;
+        this.placeType = placeType;
+        this.comment = comment;
+        this.simpleAddress = simpleAddress;
+        this.addressType = addressType;
+    }
 
     public String getCountry() {
         return country;
@@ -52,11 +58,11 @@ public class Address {
         this.county = county;
     }
 
-    public long getPostCode() {
+    public String getPostCode() {
         return postCode;
     }
 
-    public void setPostCode(long postCode) {
+    public void setPostCode(String postCode) {
         this.postCode = postCode;
     }
 
@@ -133,22 +139,4 @@ public class Address {
     }
 
 
-    @Override
-    public String toString() {
-        String postFix = null;
-        if (addressType == AddressType.HOME_ADDRESS) {
-            postFix = "_home";
-        } else if (addressType == AddressType.DELIVERY_ADDRESS) {
-            postFix = "_delivery";
-        } else if (addressType == AddressType.BILLING_ADDRESS) {
-            postFix = "_billing";
-        }
-
-        String stringToParse =
-                "," + "\"city" + postFix + "\"" + ":" + "\"" + city + "\"" + "," +
-                        "\"postCode" + postFix + "\"" + ":" + "\"" + postCode + "\"" + "," +
-                        "\"simpleAddress" + postFix + "\"" + ":" + "\"" + simpleAddress + "\"" + "," +
-                        "\"comment" + postFix + "\"" + ":" + "\"" + comment + "\"";
-        return stringToParse;
-    }
 }
