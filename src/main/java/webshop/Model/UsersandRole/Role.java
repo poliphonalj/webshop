@@ -4,13 +4,14 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "roles")
+@Table(name="roles")
 public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long ID;
     private String roleName;
+
 
     @OneToMany(mappedBy = "role")
     private List<MyUser> myUserList;
@@ -31,11 +32,11 @@ public class Role {
         this.roleName = role;
     }
 
-    public List<MyUser>getMyUserList() {
+    public List<MyUser>  getMyUser() {
         return myUserList;
     }
 
-    public void setMyUserList(List<MyUser >myUserList) {
+    public void setMyUser(List<MyUser> myUserList) {
         this.myUserList = myUserList;
     }
 

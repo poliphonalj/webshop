@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import webshop.DTOs.ProductsForPromotionDTO;
 import webshop.Model.FeedbackToFrontend;
+import webshop.Model.Product.Category;
 import webshop.Model.Product.Product;
 import webshop.Model.Slogan;
 import webshop.Services.SloganService;
@@ -52,6 +53,17 @@ public class SloganController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
         }
+    }
+
+    @GetMapping("/slogan/list")//if its empty??
+    public ResponseEntity<?> listSlogan( ) {
+       List<Slogan>list=sloganService.listSlogan();
+        if (!(list.isEmpty())) {
+            HashMap<String, List<Slogan>> hMap = new HashMap<>();
+            hMap.put("list", list);
+            return ResponseEntity.ok().body(hMap);
+        }
+        return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
     }
 
 

@@ -44,8 +44,8 @@ public class ProductController {
     public ResponseEntity<?> addProduct(@RequestBody Product product) throws ProductAddedException {//Spring converts JSON to user object following the fields
         try {
             productService.addProduct(product.getName(), product.getDescription(), product.getPrice(), product.getUnit(),
-                    product.getLocale(), product.getCategoryID(), product.isInPromotion(), product.isOutOfStock(),
-                    product.isOutOfSeason());
+                    product.getLocale(),  product.isInPromotion(), product.isOutOfStock(),
+                    product.isOutOfSeason(),product.getCategory());
             return ResponseEntity.ok(new FeedbackToFrontend(true));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
@@ -175,10 +175,10 @@ public class ProductController {
     }
 
 
-    @PutMapping("/product/modifyProduct/{ID}")//modifies the price of the LIST of products with a DTO
+    @PostMapping("/product/modifyProduct")//modifies the price of the LIST of products with a DTO
     public ResponseEntity<?> setNewPrice(@RequestBody Product product, @PathVariable("ID") long ID) {
         try {
-            productService.modifyProduct(product,ID);
+            productService.modifyProduct(product, ID);
             return ResponseEntity.ok(new FeedbackToFrontend(true));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));

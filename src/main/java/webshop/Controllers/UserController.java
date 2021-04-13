@@ -12,16 +12,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import webshop.DTOs.AuthenticationRequestDTO;
-import webshop.DTOs.AuthenticationResponseDTO;
 import webshop.DTOs.NewUserDTO;
 import webshop.Model.FeedbackToFrontend;
-import webshop.Model.UsersandRole.Address;
 import webshop.Model.UsersandRole.MyUser;
 import webshop.Services.AddressService;
 import webshop.Services.MyUserDetailsService;
 
 import javax.servlet.http.HttpServletResponse;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 
@@ -54,7 +51,8 @@ public class UserController {
             //return ResponseEntity.ok(new FeedbackToFrontend(true));
             //}
             SecurityContextHolder.getContext().getAuthentication().getPrincipal();//automatikusan csinalja
-
+            System.out.println(authenticate.getAuthorities());
+            System.out.println(authenticate.toString());
             return ResponseEntity.ok(new FeedbackToFrontend(true));
 
         } catch (BadCredentialsException e) {
@@ -65,30 +63,11 @@ public class UserController {
     @PostMapping("/user/new")
     public ResponseEntity<?> addUser(@RequestBody NewUserDTO newUserDTO) {
         try {
-            Address address = new Address();
-            MyUser myUser = new MyUser();
-
-            myUser.setFirstName(newUserDTO.getFirstName());
-            myUser.setLastName(newUserDTO.getLastName());
-            myUser.setUsername(newUserDTO.getUsername());
-            myUser.setActive(true);
-            myUser.setPhoneNumber(newUserDTO.getPhoneNumber());
-            myUser.setPassword(newUserDTO.getPassword());
-            myUser.setLocale(newUserDTO.getLocale());
-            myUser.setRole(newUserDTO.getRole());
-
-
-            myUserDetailsService.addUser(myUser);
-
-
-            address.setPostCode(newUserDTO.getPostCode());
-            address.setSimpleAddress(newUserDTO.getSimpleAddress());
-            address.setComment(newUserDTO.getComment());
-            address.setAddressType(newUserDTO.getAddressType());
-            address.setMyUser(myUser);
-            addressService.addAddress(address);
-
-            return ResponseEntity.ok(new FeedbackToFrontend(true));
+         // if(myUserDetailsService.loadUserByUsername(newUserDTO.getUsername())==null){
+              myUserDetailsService.addUser(newUserDTO);
+              return ResponseEntity.ok(new FeedbackToFrontend(true));
+       //   }
+          //throw new UserExistException();
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
         }
@@ -139,6 +118,9 @@ public class UserController {
 
     @GetMapping("/user/list/all")
     public ResponseEntity<?> listAllUsers() {
+
+
+
         List<MyUser> list = myUserDetailsService.listAllUsers();
         if (!(list.isEmpty())) {
             HashMap<String, List<MyUser>> hMap = new HashMap<>();

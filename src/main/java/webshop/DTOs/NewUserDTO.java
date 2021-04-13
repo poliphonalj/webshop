@@ -18,6 +18,7 @@ public class NewUserDTO {
     private boolean isActive;
     private Locale locale;
     private String password;
+    private Role role;
     private List<Address> myAddressList;
 
     private String country;
@@ -31,7 +32,6 @@ public class NewUserDTO {
     private String simpleAddress;    //name+placeTypte+houseNumber
     private AddressType addressType;
     private MyUser myUser;
-    private Role role;
 
     public NewUserDTO() {
     }
@@ -46,7 +46,7 @@ public class NewUserDTO {
         this.isActive = isActive;
         this.locale = locale;
         this.password = password;
-        this.role = role;
+        this.role=role;
 
         this.myAddressList = myAddressList;
         this.country = country;

@@ -14,7 +14,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import webshop.DTOs.NewUserDTO;
+import webshop.Model.UsersandRole.Address;
 import webshop.Model.UsersandRole.MyUser;
+import webshop.Repository.AddressRepo;
+import webshop.Repository.RoleRepo;
 import webshop.Repository.UserRepo;
 
 import javax.persistence.EntityManager;
@@ -28,22 +32,35 @@ public class MyUserDetailsService implements UserDetailsService {
     EntityManager em;
 
     private UserRepo userRepo;
+    private RoleRepo roleRepo;
+    private AddressRepo addressRepo;
 
-    public MyUserDetailsService(UserRepo userRepo) {
+    public MyUserDetailsService(UserRepo userRepo, RoleRepo roleRepo, AddressRepo addressRepo) {
         this.userRepo = userRepo;
+        this.roleRepo=roleRepo;
+        this.addressRepo=addressRepo;
     }
 
-    public void addUser(MyUser myUser) {
+    public void addUser(NewUserDTO newUserDTO) {
         MyUser u = new MyUser();
-        u.setFirstName(myUser.getFirstName());
-        u.setLastName(myUser.getLastName());
-        u.setUsername(myUser.getUsername());
-        u.setPhoneNumber(myUser.getPhoneNumber());
-        u.setPassword(myUser.getPassword());
-        u.setRole(myUser.getRole());
+        u.setFirstName(newUserDTO.getFirstName());
+        u.setLastName(newUserDTO.getLastName());
+        u.setUsername(newUserDTO.getUsername());
+        u.setPhoneNumber(newUserDTO.getPhoneNumber());
+        u.setPassword(newUserDTO.getPassword());
+        u.setRole(roleRepo.findRoleByRoleName("user"));
         u.setActive(true);
 
         userRepo.saveAndFlush(u);
+
+        Address a=new Address();
+        a.setMyUser(userRepo.findUserByID(u.getID()));
+        a.setPostCode(newUserDTO.getPostCode());
+        a.setSimpleAddress(newUserDTO.getSimpleAddress());
+        a.setComment(newUserDTO.getComment());
+
+        addressRepo.saveAndFlush(a);
+
     }
 
     public void removeUser(long ID) {
