@@ -9,11 +9,13 @@ It even connects to the address table with a one to many relation.
 package webshop.Model.UsersandRole;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import webshop.Model.Order.Order;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
@@ -34,8 +36,9 @@ public class MyUser implements UserDetails {
     private Locale locale;
     private String password;
 
-    @OneToMany(mappedBy = "myUser")
-    private List<Role> roleList;
+    @ManyToOne
+    private Role role;
+
 
     @OneToMany(mappedBy = "myUser")
     private List<Address> myAddressList;
@@ -131,7 +134,9 @@ public class MyUser implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
+        return authorities;
     }
 
     @Override
@@ -172,5 +177,11 @@ public class MyUser implements UserDetails {
         this.myAddressList = myAddressList;
     }
 
+    public Role getRole() {
+        return role;
+    }
 
+    public void setRole(Role role) {
+        this.role = role;
+    }
 }

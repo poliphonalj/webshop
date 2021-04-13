@@ -5,6 +5,7 @@ package webshop.Services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import webshop.Model.Product.Image;
 import webshop.Model.Product.Product;
@@ -31,6 +32,7 @@ public class ImageService {
         this.productRepo = productRepo;
     }
 
+    @Transactional
     public void addImage(MultipartFile file, long productID, String description, String tooltip) throws IOException {
         Image i = new Image();
         i.setName(file.getOriginalFilename());
@@ -50,44 +52,52 @@ public class ImageService {
         productRepo.saveAndFlush(p);
     }
 
-    public Image getImage(String imageName) throws IOException, DataFormatException {
+    @Transactional
+    public Image getImageByName(String imageName) throws IOException, DataFormatException {
         Image retrievedImage = imageRepo.findByName(imageName);
         Image img = new Image(retrievedImage.getName(), retrievedImage.getType(),
                 this.decompressBytes(retrievedImage.getByteFlow()), retrievedImage.getDescription(),
                 retrievedImage.getTooltip());
         return img;
-
     }
 
-
-        // compress the image bytes before storing it in the database
-        public  byte[] compressBytes (byte[] data) throws IOException {
-            Deflater deflater = new Deflater();
-            deflater.setInput(data);
-            deflater.finish();
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
-            byte[] buffer = new byte[1024];
-            while (!deflater.finished()) {
-                int count = deflater.deflate(buffer);
-                outputStream.write(buffer, 0, count);
-            }
-            outputStream.close();
-            return outputStream.toByteArray();
-        }
-
-        // uncompress the image bytes before returning it to the angular application
-        public  byte[] decompressBytes ( byte[] data) throws IOException, DataFormatException {
-            Inflater inflater = new Inflater();
-            inflater.setInput(data);
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
-            byte[] buffer = new byte[1024];
-
-            while (!inflater.finished()) {
-                int count = inflater.inflate(buffer);
-                outputStream.write(buffer, 0, count);
-            }
-            outputStream.close();
-            return outputStream.toByteArray();
-        }
+    @Transactional
+    public Image getImageByID(long ID) throws IOException, DataFormatException {
+        Image retrievedImage = imageRepo.findImageByID(ID);
+        Image img = new Image(retrievedImage.getName(), retrievedImage.getType(),
+                this.decompressBytes(retrievedImage.getByteFlow()), retrievedImage.getDescription(),
+                retrievedImage.getTooltip());
+        return img;
     }
+
+    // compress the image bytes before storing it in the database
+    public byte[] compressBytes(byte[] data) throws IOException {
+        Deflater deflater = new Deflater();
+        deflater.setInput(data);
+        deflater.finish();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
+        byte[] buffer = new byte[1024];
+        while (!deflater.finished()) {
+            int count = deflater.deflate(buffer);
+            outputStream.write(buffer, 0, count);
+        }
+        outputStream.close();
+        return outputStream.toByteArray();
+    }
+
+    // uncompress the image bytes before returning it to the angular application
+    public byte[] decompressBytes(byte[] data) throws IOException, DataFormatException {
+        Inflater inflater = new Inflater();
+        inflater.setInput(data);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
+        byte[] buffer = new byte[1024];
+
+        while (!inflater.finished()) {
+            int count = inflater.inflate(buffer);
+            outputStream.write(buffer, 0, count);
+        }
+        outputStream.close();
+        return outputStream.toByteArray();
+    }
+}
 

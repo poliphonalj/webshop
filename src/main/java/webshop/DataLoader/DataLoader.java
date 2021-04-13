@@ -8,12 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 import webshop.Model.Product.Category;
 import webshop.Model.Product.Product;
 import webshop.Model.Product.Unit;
+import webshop.Model.Slogan;
 import webshop.Model.UsersandRole.MyUser;
 import webshop.Model.UsersandRole.Role;
-import webshop.Repository.CategoryRepo;
-import webshop.Repository.ProductRepo;
-import webshop.Repository.RoleRepo;
-import webshop.Repository.UserRepo;
+import webshop.Repository.*;
 
 import java.util.Locale;
 
@@ -24,6 +22,7 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
     private Role adminRole;
 
     private MyUser sanyi;
+    private MyUser sanyi2;
 
     private Product product1;
     private Product product2;
@@ -36,21 +35,39 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
     private UserRepo userRepo;
     private ProductRepo productRepo;
     private CategoryRepo categoryRepo;
+    private SloganRepo sloganRepo;
 
     @Autowired
-    public DataLoader(RoleRepo roleRepo, UserRepo userRepo, ProductRepo productRepo, CategoryRepo categoryRepo) {
+    public DataLoader(RoleRepo roleRepo, UserRepo userRepo, ProductRepo productRepo, CategoryRepo categoryRepo, SloganRepo sloganRepo) {
         this.roleRepo = roleRepo;
         this.userRepo = userRepo;
-        this.productRepo=productRepo;
-        this.categoryRepo=categoryRepo;
+        this.productRepo = productRepo;
+        this.categoryRepo = categoryRepo;
+        this.sloganRepo=sloganRepo;
     }
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        createUser();
         createRoles();
+        createUser();
+        createSlogan();
         createProducts();
         createCategories();
+    }
+
+    @Transactional
+    public void createSlogan(){
+        Slogan s=new Slogan();
+        Slogan s2=new Slogan();
+
+        s.setText("hello szlogen");
+        s.setActive(true);
+
+        s2.setText("hogyvagy szlogen");
+        s2.setActive(true);
+
+        sloganRepo.saveAndFlush(s);
+        sloganRepo.saveAndFlush(s2);
     }
 
     @Transactional
@@ -70,23 +87,38 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
     }
 
 
-
-
     @Transactional
     public void createUser() {
         if (userRepo.count() == 0) {
             sanyi = new MyUser();
             sanyi.setActive(true);
-            sanyi.setUsername("a");
-            sanyi.setLocale(Locale.ENGLISH);
-            sanyi.setFirstName("user");
-            sanyi.setLastName("user");
-            sanyi.setPassword("a");
+            sanyi.setUsername("admin@admin.hu");
+            sanyi.setLocale(Locale.US);
+            sanyi.setFirstName("admin");
+            sanyi.setLastName("admin");
+            sanyi.setPassword("admin");
             sanyi.setPhoneNumber("1233456");
+            sanyi.setRole(adminRole);
+
+            sanyi2 = new MyUser();
+            sanyi2.setActive(true);
+            sanyi2.setUsername("user@user.hu");
+            sanyi2.setLocale(Locale.US);
+            sanyi2.setFirstName("user");
+            sanyi2.setLastName("user");
+            sanyi2.setPassword("user");
+            sanyi2.setPhoneNumber("1233456");
+            sanyi2.setRole(userRole);
+
             sanyi = userRepo.saveAndFlush(sanyi);
+            sanyi2 = userRepo.saveAndFlush(sanyi2);
+
+
         } else {
-           sanyi = userRepo.findUserByFirstName("Sandor");
+            sanyi = userRepo.findUserByFirstName("Sandor");
         }
+
+
     }
 
     @Transactional
@@ -101,8 +133,8 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
             product1.setOutOfStock(false);
             product1.setLocale(Locale.CANADA);
             product1.setUnit(Unit.DARAB);
-            product1.setCategoryID(1);
-            product1= productRepo.saveAndFlush(product1);
+
+            product1 = productRepo.saveAndFlush(product1);
 
             product2 = new Product();
             product2.setName("körte");
@@ -113,7 +145,7 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
             product2.setOutOfStock(false);
             product2.setLocale(Locale.US);
             product2.setUnit(Unit.CSOMAG);
-            product2= productRepo.saveAndFlush(product2);
+            product2 = productRepo.saveAndFlush(product2);
 
             product3 = new Product();
             product3.setName("lócitrom");
@@ -124,8 +156,8 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
             product3.setOutOfStock(false);
             product3.setLocale(Locale.US);
             product3.setUnit(Unit.ADAG);
-            product3.setCategoryID(2);
-            product3= productRepo.saveAndFlush(product3);
+
+            product3 = productRepo.saveAndFlush(product3);
 
         } else {
             product1 = productRepo.findProductByName("alma");
@@ -137,15 +169,15 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
     @Transactional
     public void createCategories() {
         if (categoryRepo.count() == 0) {
-            gyumolcs=new Category();
+            gyumolcs = new Category();
             gyumolcs.setCategoryName("gyumolcs");
             gyumolcs = categoryRepo.saveAndFlush(gyumolcs);
 
-            zoldseg=new Category();
+            zoldseg = new Category();
             zoldseg.setCategoryName("zöldség");
             zoldseg = categoryRepo.saveAndFlush(zoldseg);
         } else {
-            zoldseg = categoryRepo.findCategoryByCategoryName("zoldseg");
+            zoldseg = categoryRepo.findByCategoryName("zoldseg");
         }
     }
 
