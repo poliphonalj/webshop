@@ -1,9 +1,12 @@
 package webshop.Model.UsersandRole;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "addresses")
+@JsonIgnoreProperties({"myUser"})
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -16,6 +16,7 @@ import webshop.DTOs.NewUserDTO;
 import webshop.Model.FeedbackToFrontend;
 import webshop.Model.UsersandRole.MyUser;
 import webshop.Services.AddressService;
+import webshop.Services.EmailService;
 import webshop.Services.MyUserDetailsService;
 
 import javax.servlet.http.HttpServletResponse;
@@ -27,13 +28,15 @@ public class UserController {
     MyUserDetailsService myUserDetailsService;
     AuthenticationManager authenticationManager;
     AddressService addressService;
+    EmailService emailService;
 
     @Autowired
     public UserController(MyUserDetailsService myUserDetailsService, AuthenticationManager authenticationManager,
-                          AddressService addressService) {
+                          AddressService addressService, EmailService emailService) {
         this.myUserDetailsService = myUserDetailsService;
         this.authenticationManager = authenticationManager;
         this.addressService = addressService;
+        this.emailService=emailService;
     }
 
 
@@ -65,6 +68,7 @@ public class UserController {
         try {
          // if(myUserDetailsService.loadUserByUsername(newUserDTO.getUsername())==null){
               myUserDetailsService.addUser(newUserDTO);
+              emailService.successfulRegistration(newUserDTO.getFirstName());
               return ResponseEntity.ok(new FeedbackToFrontend(true));
        //   }
           //throw new UserExistException();
