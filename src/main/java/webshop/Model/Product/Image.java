@@ -1,13 +1,16 @@
 package webshop.Model.Product;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name="images")
-
+@JsonIgnoreProperties({"product"})
 public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private long ID;
     private String name;
     private String type;
