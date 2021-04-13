@@ -13,6 +13,8 @@ import webshop.Model.UsersandRole.MyUser;
 import webshop.Model.UsersandRole.Role;
 import webshop.Repository.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 @Component
@@ -98,7 +100,10 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
             sanyi.setLastName("admin");
             sanyi.setPassword("admin");
             sanyi.setPhoneNumber("1233456");
-            sanyi.setRole(adminRole);
+
+            List<Role> list=new ArrayList<>();
+            list.add(adminRole);
+            sanyi.setRoleList(list);
 
             sanyi2 = new MyUser();
             sanyi2.setActive(true);
@@ -108,7 +113,11 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
             sanyi2.setLastName("user");
             sanyi2.setPassword("user");
             sanyi2.setPhoneNumber("1233456");
-            sanyi2.setRole(userRole);
+
+
+            List<Role> list2=new ArrayList<>();
+            list2.add(adminRole);
+            sanyi2.setRoleList(list2);
 
             sanyi = userRepo.saveAndFlush(sanyi);
             sanyi2 = userRepo.saveAndFlush(sanyi2);
