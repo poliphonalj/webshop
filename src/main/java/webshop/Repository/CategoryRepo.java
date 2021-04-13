@@ -5,7 +5,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import webshop.Model.Product.Category;
 
+import java.util.List;
+
 @Repository
 public interface CategoryRepo extends JpaRepository<Category, Integer> {
-    Category findCategoryByCategoryName(String categoryName);
+    Category findByCategoryName(String categoryName);
+    List<Category> findAll();
 }

@@ -11,6 +11,7 @@ import webshop.DTOs.NewProductPriceDTO;
 import webshop.DTOs.ProductsForPromotionDTO;
 import webshop.DTOs.PromotedProductDTO;
 import webshop.Exceptions.ProductAddedException;
+import webshop.Model.Product.Category;
 import webshop.Model.Product.Product;
 import webshop.Model.Product.Unit;
 import webshop.Repository.CategoryRepo;
@@ -35,8 +36,8 @@ public class ProductService {
 
     @Transactional
     public void addProduct(String productName, String productDescription, long productPrice, Unit productUnit,
-                           Locale productLocale, long productCategoryID, boolean productIsInPromotion,
-                           boolean productIsOutOfStock, boolean productIsOutOfSeason
+                           Locale productLocale, boolean productIsInPromotion,
+                           boolean productIsOutOfStock, boolean productIsOutOfSeason, Category category
     ) throws ProductAddedException {
 
         if (productRepo.findProductByName(productName) != null) {
@@ -49,10 +50,11 @@ public class ProductService {
             p.setPrice(productPrice);
             p.setUnit(productUnit);
             p.setLocale(productLocale);
-            p.setCategoryID(productCategoryID);
+           // p.setCategoryID(productCategoryID);
             p.setInPromotion(productIsInPromotion);
             p.setOutOfStock(productIsOutOfStock);
             p.setOutOfSeason(productIsOutOfSeason);
+            p.setCategory(categoryRepo.findByCategoryName(category.getCategoryName()));
 
             productRepo.saveAndFlush(p);
         }
@@ -70,6 +72,7 @@ public class ProductService {
         }
     }
 
+    @Transactional
     public List<PromotedProductDTO> getPromotedList() {
         List<PromotedProductDTO> listToReturn = new ArrayList<>();
         List<Product> list = productRepo.findByIsInPromotion(true);
@@ -92,21 +95,18 @@ public class ProductService {
     }
 
     @Transactional
-    public void modifyProduct(Product product,long ID) {
-
-        Product p=productRepo.findProductByID(ID);
-        p.setImageList(product.getImageList());
-        p.setPrice(product.getPrice());
-        p.setPromotionDescription(product.getPromotionDescription());
-        p.setLocale(product.getLocale());
-        p.setUnit(product.getUnit());
-        p.setName(product.getName());
-        p.setDescription(product.getDescription());
-        p.setOutOfStock(product.isOutOfStock());
-        p.setOutOfSeason(product.isOutOfSeason());
-        p.setInPromotion(product.isInPromotion());
-        p.setPromotedPrice(product.getPromotedPrice());
-        p.setCategory(product.getCategory());
+    public void modifyProduct(Product product, long ID) {
+       Product p=productRepo.findProductByID(ID);
+       p.setName(product.getName());
+       p.setDescription(product.getDescription());
+       p.setPrice(product.getPrice());
+       p.setInPromotion(product.isInPromotion());
+       p.setPromotedPrice(product.getPromotedPrice());
+       p.setOutOfSeason(product.isOutOfSeason());
+       p.setOutOfStock(product.isOutOfStock());
+       p.setImageList(product.getImageList());
+       p.setUnit(product.getUnit());
+       p.setLocale(product.getLocale());
 
         productRepo.saveAndFlush(p);
     }

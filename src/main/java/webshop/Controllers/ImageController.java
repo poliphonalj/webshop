@@ -30,9 +30,19 @@ public class ImageController {
     }
 
     @PostMapping("/image/get/{imageName}")
-    public ResponseEntity<?> getImage(@RequestParam String imageName) throws IOException {
+    public ResponseEntity<?> getImageByName(@RequestParam String imageName) throws IOException {
         try{
-            imageservice.getImage(imageName);
+            imageservice.getImageByName(imageName);
+            return ResponseEntity.ok(new FeedbackToFrontend(true));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
+        }
+    }
+
+    @PostMapping("/image/get/{ID}")
+    public ResponseEntity<?> getImageByID(@RequestParam long ID) throws IOException {
+        try{
+            imageservice.getImageByID(ID);
             return ResponseEntity.ok(new FeedbackToFrontend(true));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));

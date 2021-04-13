@@ -36,8 +36,9 @@ public class MyUser implements UserDetails {
     private Locale locale;
     private String password;
 
-   @ManyToOne
-   Role role;
+    @ManyToOne
+    private Role role;
+
 
     @OneToMany(mappedBy = "myUser")
     private List<Address> myAddressList;
@@ -48,22 +49,15 @@ public class MyUser implements UserDetails {
 
     public MyUser() {}
 
-    public MyUser(String firstName, String lastName, String username, String phoneNumber,String password, Role role) {
+    public MyUser(String firstName, String lastName, String username, String phoneNumber,String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.phoneNumber = phoneNumber;
         this.password=password;
-        this.role=role;
     }
 
-    public Role getRole() {
-        return role;
-    }
 
-    public void setRole(Role role) {
-        this.role = role;
-    }
 
     public long getID() {
         return ID;
@@ -138,17 +132,12 @@ public class MyUser implements UserDetails {
         this.locale = locale;
     }
 
-
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
         return authorities;
-
     }
-
-
 
     @Override
     public String getPassword() {
@@ -188,5 +177,11 @@ public class MyUser implements UserDetails {
         this.myAddressList = myAddressList;
     }
 
+    public Role getRole() {
+        return role;
+    }
 
+    public void setRole(Role role) {
+        this.role = role;
+    }
 }

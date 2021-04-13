@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import webshop.Model.Slogan;
 import webshop.Repository.SloganRepo;
 
+import java.util.List;
 import java.util.Random;
 
 @Service
@@ -35,6 +36,10 @@ public class SloganService {
         Slogan s = new Slogan();
         s.setActive(false);
         sloganRepo.saveAndFlush(s);
+    }
+
+    public List<Slogan> listSlogan(){
+        return sloganRepo.findAll();
     }
 
 
