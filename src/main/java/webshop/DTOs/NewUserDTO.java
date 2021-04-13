@@ -2,6 +2,7 @@ package webshop.DTOs;
 
 import webshop.Model.UsersandRole.*;
 
+import javax.persistence.OneToMany;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
@@ -22,124 +23,43 @@ public class NewUserDTO {
 
     private String country;
     private String county;
-    private long postCode_home;
-    private long postCode_delivery;
-    private long postCode_billing;
-
-    private String city_home;
-    private String city_delivery;
-    private String city_billing;
-
+    private String postCode;
+    private String city;
     private String name;
     private String houseNumber;
     private PlaceType placeType;    //enum
-    private String comment_home;
-    private String comment_delivery;
-    private String comment_billing;
-    private String simpleAddress_home;//name+placeTypte+houseNumber
-    private String simpleAddress_delivery;
-    private String simpleAddress_billing;
-
+    private String comment;
+    private String simpleAddress;    //name+placeTypte+houseNumber
     private AddressType addressType;
     private MyUser myUser;
 
     public NewUserDTO() {
     }
 
-    public long getPostCode_home() {
-        return postCode_home;
-    }
+    public NewUserDTO(String firstName, String lastName, String username, String phoneNumber, LocalDateTime lastLoggedInAt, LocalDateTime lastPurchasedAt, boolean isActive, Locale locale, String password, Role role, List<Address> myAddressList, String country, String county, String postCode, String city, String name, String houseNumber, PlaceType placeType, String comment, String simpleAddress, AddressType addressType, MyUser myUser) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.phoneNumber = phoneNumber;
+        this.lastLoggedInAt = lastLoggedInAt;
+        this.lastPurchasedAt = lastPurchasedAt;
+        this.isActive = isActive;
+        this.locale = locale;
+        this.password = password;
+        this.role=role;
 
-    public void setPostCode_home(long postCode_home) {
-        this.postCode_home = postCode_home;
-    }
-
-    public long getPostCode_delivery() {
-        return postCode_delivery;
-    }
-
-    public void setPostCode_delivery(long postCode_delivery) {
-        this.postCode_delivery = postCode_delivery;
-    }
-
-    public long getPostCode_billing() {
-        return postCode_billing;
-    }
-
-    public void setPostCode_billing(long postCode_billing) {
-        this.postCode_billing = postCode_billing;
-    }
-
-    public String getCity_home() {
-        return city_home;
-    }
-
-    public void setCity_home(String city_home) {
-        this.city_home = city_home;
-    }
-
-    public String getCity_delivery() {
-        return city_delivery;
-    }
-
-    public void setCity_delivery(String city_delivery) {
-        this.city_delivery = city_delivery;
-    }
-
-    public String getCity_billing() {
-        return city_billing;
-    }
-
-    public void setCity_billing(String city_billing) {
-        this.city_billing = city_billing;
-    }
-
-    public String getComment_home() {
-        return comment_home;
-    }
-
-    public void setComment_home(String comment_home) {
-        this.comment_home = comment_home;
-    }
-
-    public String getComment_delivery() {
-        return comment_delivery;
-    }
-
-    public void setComment_delivery(String comment_delivery) {
-        this.comment_delivery = comment_delivery;
-    }
-
-    public String getComment_billing() {
-        return comment_billing;
-    }
-
-    public void setComment_billing(String comment_billing) {
-        this.comment_billing = comment_billing;
-    }
-
-    public String getSimpleAddress_home() {
-        return simpleAddress_home;
-    }
-
-    public void setSimpleAddress_home(String simpleAddress_home) {
-        this.simpleAddress_home = simpleAddress_home;
-    }
-
-    public String getSimpleAddress_delivery() {
-        return simpleAddress_delivery;
-    }
-
-    public void setSimpleAddress_delivery(String simpleAddress_delivery) {
-        this.simpleAddress_delivery = simpleAddress_delivery;
-    }
-
-    public String getSimpleAddress_billing() {
-        return simpleAddress_billing;
-    }
-
-    public void setSimpleAddress_billing(String simpleAddress_billing) {
-        this.simpleAddress_billing = simpleAddress_billing;
+        this.myAddressList = myAddressList;
+        this.country = country;
+        this.county = county;
+        this.postCode = postCode;
+        this.city = city;
+        this.name = name;
+        this.houseNumber = houseNumber;
+        this.placeType = placeType;
+        this.comment = comment;
+        this.simpleAddress = simpleAddress;
+        this.addressType = addressType;
+        this.myUser = myUser;
     }
 
     public long getID() {
@@ -254,7 +174,21 @@ public class NewUserDTO {
         this.county = county;
     }
 
+    public String getPostCode() {
+        return postCode;
+    }
 
+    public void setPostCode(String postCode) {
+        this.postCode = postCode;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
 
     public String getName() {
         return name;
@@ -280,7 +214,21 @@ public class NewUserDTO {
         this.placeType = placeType;
     }
 
+    public String getComment() {
+        return comment;
+    }
 
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public String getSimpleAddress() {
+        return simpleAddress;
+    }
+
+    public void setSimpleAddress(String simpleAddress) {
+        this.simpleAddress = simpleAddress;
+    }
 
     public AddressType getAddressType() {
         return addressType;

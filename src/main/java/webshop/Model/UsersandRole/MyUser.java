@@ -8,7 +8,6 @@ It even connects to the address table with a one to many relation.
 
 package webshop.Model.UsersandRole;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,7 +25,7 @@ import java.util.Locale;
 public class MyUser implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long userID;
+    private long ID;
     private String firstName;
     private String lastName;
     private String username;
@@ -36,18 +35,9 @@ public class MyUser implements UserDetails {
     private boolean isActive;
     private Locale locale;
     private String password;
-    private long numberOfPurchase;
-    private String resetPasswordToken;
-    private String userRates;
 
-
-
-    @ManyToMany
-    @JoinTable(
-            name = "users_roles",
-            joinColumns = @JoinColumn(name = "users_ID"),
-            inverseJoinColumns = @JoinColumn(name = "roles_ID"))
-    private List<Role> roleList;
+    @ManyToOne
+    private Role role;
 
 
     @OneToMany(mappedBy = "myUser")
@@ -65,19 +55,16 @@ public class MyUser implements UserDetails {
         this.username = username;
         this.phoneNumber = phoneNumber;
         this.password=password;
-        this.numberOfPurchase=0;
-        this.isActive=true;
-
     }
 
 
 
-    public long getUserID() {
-        return userID;
+    public long getID() {
+        return ID;
     }
 
-    public void setUserID(long userID) {
-        this.userID = userID;
+    public void setID(long ID) {
+        this.ID = ID;
     }
 
     public void setPassword(String password) {
@@ -145,28 +132,10 @@ public class MyUser implements UserDetails {
         this.locale = locale;
     }
 
-    public long getNumberOfPurchase() {
-        return numberOfPurchase;
-    }
-
-    public void setNumberOfPurchase(long numberOfPurchase) {
-        this.numberOfPurchase = numberOfPurchase;
-    }
-
-    public String getResetPasswordToken() {
-        return resetPasswordToken;
-    }
-
-    public void setResetPasswordToken(String resetPasswordToken) {
-        this.resetPasswordToken = resetPasswordToken;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        for (Role actualRole : roleList) {
-            authorities.add(new SimpleGrantedAuthority(actualRole.getRoleName()));
-        }
+        authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
         return authorities;
     }
 
@@ -208,19 +177,11 @@ public class MyUser implements UserDetails {
         this.myAddressList = myAddressList;
     }
 
-    public List<Role> getRoleList() {
-        return roleList;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoleList(List<Role> roleList) {
-        this.roleList = roleList;
-    }
-
-    public String getUserRates() {
-        return userRates;
-    }
-
-    public void setUserRates(String userRates) {
-        this.userRates = userRates;
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

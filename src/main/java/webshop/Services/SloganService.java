@@ -1,6 +1,3 @@
-///ready and works fine
-
-
 package webshop.Services;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import webshop.Model.Slogan;
 import webshop.Repository.SloganRepo;
-import java.util.Collections;
-import java.util.List;
 
+import java.util.List;
+import java.util.Random;
 
 @Service
 @Transactional
@@ -23,15 +20,10 @@ public class SloganService {
     }
 
     public Slogan getRandomSlogan() {
-       List<Slogan>list= sloganRepo.findSlogansByActiveIsTrue();
-        if(list.size()!=0){
-       Collections.shuffle(list);
-            return list.get(0);
-        }
-        else {
-            return new Slogan("nincs megjelenitheto szoveg");
-        }
-
+        int amount = sloganRepo.findAll().size();
+        Random r = new Random();
+        int i = r.nextInt(amount);
+        return sloganRepo.findSloganByIDAndIsActiveTrue(i);
     }
 
     public void addSlogan(String slogan) {
@@ -41,19 +33,14 @@ public class SloganService {
     }
 
     public void removeSlogan(long ID) {
-        Slogan s =sloganRepo.findSloganByID(ID);
+        Slogan s = new Slogan();
         s.setActive(false);
         sloganRepo.saveAndFlush(s);
     }
 
-    public List<Slogan> listSlogan() {
+    public List<Slogan> listSlogan(){
         return sloganRepo.findAll();
     }
 
-    public void reactivate(long ID){
-        Slogan s =sloganRepo.findSloganByID(ID);
-        s.setActive(true);
-        sloganRepo.saveAndFlush(s);
-    }
 
 }
