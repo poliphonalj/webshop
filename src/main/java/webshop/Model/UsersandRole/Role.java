@@ -1,7 +1,5 @@
 package webshop.Model.UsersandRole;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -13,8 +11,11 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long ID;
     private String roleName;
-@ManyToMany(mappedBy = "roleList")
-List<MyUser>userList;
+
+
+    @OneToMany(mappedBy = "role")
+    private List<MyUser> myUserList;
+
 
     public Role(String role) {
         this.roleName = role;
@@ -31,7 +32,13 @@ List<MyUser>userList;
         this.roleName = role;
     }
 
+    public List<MyUser>  getMyUser() {
+        return myUserList;
+    }
 
+    public void setMyUser(List<MyUser> myUserList) {
+        this.myUserList = myUserList;
+    }
 
     public long getID() {
         return ID;
