@@ -54,7 +54,7 @@ public class ProductController {
         try {
             productService.addProduct(product.getName(), product.getDescription(), product.getPrice(), product.getUnit(),
                     product.getLocale(), product.isInPromotion(), product.isOutOfStock(),
-                    product.isOutOfSeason(), product.getCategory());
+                    product.isOutOfSeason(), product.getCategoryID());
             return ResponseEntity.ok(new FeedbackToFrontend(true));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
