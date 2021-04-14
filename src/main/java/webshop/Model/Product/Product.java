@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Locale;
 
 @Entity
-@Table(name="products")
+@Table(name = "products")
 public class Product {
 
     @Id
@@ -20,7 +20,8 @@ public class Product {
     private boolean isOutOfStock;
     private boolean isOutOfSeason;
     private Unit unit;
-   // private long categoryID;
+    private boolean isActive;
+    // private long categoryID;
 
     private long promotedPrice;
     private String promotionDescription;
@@ -35,20 +36,21 @@ public class Product {
     Category category;
 
     public Product() {
+        this.isActive = true;
     }
 
-    public Product(String name, String description, long price,Unit unit, Locale locale,
+    public Product(String name, String description, long price, Unit unit, Locale locale,
                    boolean isInPromotion, boolean isOutOfStock, boolean isOutOfSeason) {
         this.name = name;
         this.description = description;
         this.price = price;
-        this.unit=unit;
+        this.unit = unit;
         this.locale = locale;
         //this.categoryID=categoryID;
         this.isInPromotion = isInPromotion;
         this.isOutOfStock = isOutOfStock;
         this.isOutOfSeason = isOutOfSeason;
-
+        this.isActive = true;
 
     }
 
@@ -117,11 +119,11 @@ public class Product {
     }
 
     //public long getCategoryID() {
-      //  return categoryID;
+    //  return categoryID;
     //}
 
     //public void setCategoryID(long categoryID) {
-      //  this.categoryID = categoryID;
+    //  this.categoryID = categoryID;
     //}
 
     public long getID() {
