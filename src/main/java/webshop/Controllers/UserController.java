@@ -3,6 +3,8 @@ package webshop.Controllers;
 //TODO method for return
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,13 +20,16 @@ import webshop.Model.UsersandRole.MyUser;
 import webshop.Services.AddressService;
 import webshop.Services.EmailService;
 import webshop.Services.MyUserDetailsService;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 
 @RestController
 public class UserController {
+
+    static Logger l = LoggerFactory.getLogger(UserController.class);
     MyUserDetailsService myUserDetailsService;
     AuthenticationManager authenticationManager;
     AddressService addressService;
@@ -66,13 +71,10 @@ public class UserController {
     @PostMapping("/user/new")
     public ResponseEntity<?> addUser(@RequestBody NewUserDTO newUserDTO) {
         try {
-         // if(myUserDetailsService.loadUserByUsername(newUserDTO.getUsername())==null){
               myUserDetailsService.addUser(newUserDTO);
-              emailService.successfulRegistration(newUserDTO.getFirstName());
               return ResponseEntity.ok(new FeedbackToFrontend(true));
-       //   }
-          //throw new UserExistException();
         } catch (Exception e) {
+            l.error("kisnyul", e);
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
         }
     }
