@@ -1,7 +1,8 @@
 package webshop.Services;
 
 //TODO
-//tesztek a servicekre
+//tesztek a servicekrem
+//atnezni
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
