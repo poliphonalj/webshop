@@ -50,11 +50,12 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
+        createCategories();
         createRoles();
         createUser();
         createSlogan();
         createProducts();
-        createCategories();
+
     }
 
     @Transactional
@@ -142,6 +143,7 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
             product1.setOutOfStock(false);
             product1.setLocale(Locale.CANADA);
             product1.setUnit(Unit.DARAB);
+            product1.setCategory(categoryRepo.findCategoryByID(1));
 
             product1 = productRepo.saveAndFlush(product1);
 
@@ -154,7 +156,10 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
             product2.setOutOfStock(false);
             product2.setLocale(Locale.US);
             product2.setUnit(Unit.CSOMAG);
+            product2.setCategory(categoryRepo.findCategoryByID(2));
+
             product2 = productRepo.saveAndFlush(product2);
+
 
             product3 = new Product();
             product3.setName("lócitrom");
@@ -165,6 +170,7 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
             product3.setOutOfStock(false);
             product3.setLocale(Locale.US);
             product3.setUnit(Unit.ADAG);
+            product3.setCategory(categoryRepo.findCategoryByID(2));
 
             product3 = productRepo.saveAndFlush(product3);
 
