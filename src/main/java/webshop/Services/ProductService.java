@@ -37,7 +37,8 @@ public class ProductService {
     @Transactional
     public void addProduct(String productName, String productDescription, long productPrice, Unit productUnit,
                            Locale productLocale, boolean productIsInPromotion,
-                           boolean productIsOutOfStock, boolean productIsOutOfSeason, Category category
+                           boolean productIsOutOfStock, boolean productIsOutOfSeason,
+                           long categoryID
     ) throws ProductAddedException {
 
         if (productRepo.findProductByName(productName) != null) {
@@ -54,7 +55,7 @@ public class ProductService {
             p.setInPromotion(productIsInPromotion);
             p.setOutOfStock(productIsOutOfStock);
             p.setOutOfSeason(productIsOutOfSeason);
-            p.setCategory(categoryRepo.findByCategoryName(category.getCategoryName()));
+            p.setCategory(categoryRepo.findCategoryByID(categoryID));
 
             productRepo.saveAndFlush(p);
         }
