@@ -13,6 +13,7 @@ public interface ProductRepo extends JpaRepository<Product, Integer> {
     List<Product>findByIsInPromotion(boolean b);
     List<Product>findProductsByNameIsContaining(String s);
     List<Product>findAllByCategoryID(long ID);
-    List<Product>findAllByCategoryIDAndIsInPromotionFalseAndIsOutOfSeasonFalseAndIsOutOfStockFalse(long ID);
+    //List<Product>findAllByCategoryIDAndIsInPromotionFalseAndIsOutOfSeasonFalseAndIsOutOfStockFalse(long ID);
+    List<Product>findAllByCategoryIDAndIsOutOfSeasonFalseAndIsOutOfStockFalseAndIsActiveTrue(long ID);
     List<Product>findAllByIsInPromotionFalseAndIsOutOfSeasonFalseAndIsOutOfStockFalse();
 }
