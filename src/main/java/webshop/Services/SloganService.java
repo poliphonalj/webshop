@@ -9,10 +9,6 @@ import webshop.Repository.SloganRepo;
 import java.util.List;
 import java.util.Random;
 
-//TODO ID on heroku server generated 5 multipls
-//random slogan choice is taylormade for tgis bug
-
-
 @Service
 @Transactional
 public class SloganService {
@@ -24,16 +20,10 @@ public class SloganService {
     }
 
     public Slogan getRandomSlogan() {
-        int size = sloganRepo.findAll().size();
-        if(size!=0){
-            Random r = new Random();
-            int i = r.nextInt(size)*10+5;
-            return sloganRepo.findSloganByIDAndIsActiveTrue(i);
-        }
-        else{
-            return new Slogan("nincs megjelenitheto szoveg");
-        }
-
+        int amount = sloganRepo.findAll().size();
+        Random r = new Random();
+        int i = r.nextInt(amount);
+        return sloganRepo.findSloganByIDAndIsActiveTrue(1);
     }
 
     public void addSlogan(String slogan) {
