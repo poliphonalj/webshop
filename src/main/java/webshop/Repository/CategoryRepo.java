@@ -8,7 +8,7 @@ import webshop.Model.Product.Category;
 import java.util.List;
 
 @Repository
-public interface CategoryRepo extends JpaRepository<Category, Integer> {
+public interface CategoryRepo extends JpaRepository<Category, Long> {
     Category findByCategoryName(String categoryName);
     Category findCategoryByID(long ID);
     List<Category> findAll();
