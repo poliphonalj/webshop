@@ -21,7 +21,8 @@ public class Product {
     private boolean isOutOfSeason;
     private Unit unit;
     private boolean isActive;
-    // private long categoryID;
+
+    private long categoryID;
 
     private long promotedPrice;
     private String promotionDescription;
@@ -40,13 +41,13 @@ public class Product {
     }
 
     public Product(String name, String description, long price, Unit unit, Locale locale,
-                   boolean isInPromotion, boolean isOutOfStock, boolean isOutOfSeason) {
+                   boolean isInPromotion, boolean isOutOfStock, boolean isOutOfSeason, long categoryID) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.unit = unit;
         this.locale = locale;
-        //this.categoryID=categoryID;
+        this.categoryID=categoryID;
         this.isInPromotion = isInPromotion;
         this.isOutOfStock = isOutOfStock;
         this.isOutOfSeason = isOutOfSeason;
@@ -174,5 +175,11 @@ public class Product {
         this.category = category;
     }
 
+    public long getCategoryID() {
+        return categoryID;
+    }
 
+    public void setCategoryID(long categoryID) {
+        this.categoryID = categoryID;
+    }
 }
