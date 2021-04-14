@@ -117,7 +117,7 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
 
 
             List<Role> list2=new ArrayList<>();
-            list2.add(adminRole);
+            list2.add(userRole);
             sanyi2.setRoleList(list2);
 
             sanyi = userRepo.saveAndFlush(sanyi);
