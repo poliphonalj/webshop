@@ -27,8 +27,7 @@ public class Image {
 
     @ManyToOne
     private Product product;
-
-
+    //todo
     public Image() {
     }
 
