@@ -154,12 +154,14 @@ public class ProductService {
 
     @Transactional
     public List<Product> getProductsByCategoryID(long ID) {
-        return productRepo.findAllByCategoryIDAndIsInPromotionFalseAndIsOutOfSeasonFalseAndIsOutOfStockFalse(ID);///miert csak az almat adja ki
+        return productRepo.findAllByCategoryIDAndIsOutOfSeasonFalseAndIsOutOfStockFalseAndIsActiveTrue(ID);
+       // return productRepo.findAllByCategoryIDAndIsInPromotionAndIsOutOfSeasonFalseAndIsOutOfStockFalse(ID);///miert csak az almat adja ki
+
     }
 
     @Transactional
     public List<Product> getAllProducts() {
-        List<Product> list = productRepo.findAllByIsInPromotionFalseAndIsOutOfSeasonFalseAndIsOutOfStockFalse();
+        List<Product> list = productRepo.findAll();
         return list;
     }
 }
