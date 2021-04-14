@@ -12,6 +12,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import webshop.DTOs.AuthenticationRequestDTO;
 import webshop.DTOs.NewUserDTO;
@@ -22,6 +23,7 @@ import webshop.Services.EmailService;
 import webshop.Services.MyUserDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +43,7 @@ public class UserController {
         this.myUserDetailsService = myUserDetailsService;
         this.authenticationManager = authenticationManager;
         this.addressService = addressService;
-        this.emailService=emailService;
+        this.emailService = emailService;
     }
 
 
@@ -49,19 +51,27 @@ public class UserController {
     public ResponseEntity<?> createAuthenticationToken(HttpServletResponse response,
                                                        @RequestBody AuthenticationRequestDTO authenticationRequestDTO) {
         try {
-            // Authentication authenticate= authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+            // Authenti7cation authenticate= authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
             //        , authenticationRequestDTO.getPassword()));
 
             Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequestDTO.getUsername(),
                     authenticationRequestDTO.getPassword()));
-            //if (authenticate.isAuthenticated()) {
-            //  SecurityContextHolder.getContext().setAuthentication(authenticate);
-            //return ResponseEntity.ok(new FeedbackToFrontend(true));
-            //}
-            SecurityContextHolder.getContext().getAuthentication().getPrincipal();//automatikusan csinalja
+
+            UserDetails userDetails = (UserDetails) authenticate.getPrincipal();
+            String username = userDetails.getUsername();
+            MyUser myUser=myUserDetailsService.loadUserByUsername(username);
+
             System.out.println(authenticate.getAuthorities());
-            System.out.println(authenticate.toString());
-            return ResponseEntity.ok(new FeedbackToFrontend(true));
+            String role=((List)(authenticate.getAuthorities())).get(0).toString();// itt irja ki a rolet
+
+            String firstName=myUser.getFirstName();//itt anevet
+
+            HashMap<String, String> map = new HashMap<>();
+            map.put("successful", "true");
+            map.put("firstName", firstName);
+            map.put("role", role);
+
+            return ResponseEntity.ok().body(map);
 
         } catch (BadCredentialsException e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
@@ -71,8 +81,8 @@ public class UserController {
     @PostMapping("/user/new")
     public ResponseEntity<?> addUser(@RequestBody NewUserDTO newUserDTO) {
         try {
-              myUserDetailsService.addUser(newUserDTO);
-              return ResponseEntity.ok(new FeedbackToFrontend(true));
+            myUserDetailsService.addUser(newUserDTO);
+            return ResponseEntity.ok(new FeedbackToFrontend(true));
         } catch (Exception e) {
             l.error("kisnyul", e);
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
@@ -124,7 +134,6 @@ public class UserController {
 
     @GetMapping("/user/list/all")
     public ResponseEntity<?> listAllUsers() {
-
 
 
         List<MyUser> list = myUserDetailsService.listAllUsers();
