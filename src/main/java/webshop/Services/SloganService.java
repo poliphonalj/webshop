@@ -23,7 +23,7 @@ public class SloganService {
         int amount = sloganRepo.findAll().size();
         Random r = new Random();
         int i = r.nextInt(amount);
-        return sloganRepo.findSloganByIDAndIsActiveTrue(i);
+        return sloganRepo.findSloganByIDAndIsActiveTrue(1);
     }
 
     public void addSlogan(String slogan) {
