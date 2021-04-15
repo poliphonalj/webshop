@@ -45,7 +45,7 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
         this.userRepo = userRepo;
         this.productRepo = productRepo;
         this.categoryRepo = categoryRepo;
-        this.sloganRepo=sloganRepo;
+        this.sloganRepo = sloganRepo;
     }
 
     @Override
@@ -59,9 +59,9 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
     }
 
     @Transactional
-    public void createSlogan(){
-        Slogan s=new Slogan();
-        Slogan s2=new Slogan();
+    public void createSlogan() {
+        Slogan s = new Slogan();
+        Slogan s2 = new Slogan();
 
         s.setText("hello szlogen");
         s.setActive(true);
@@ -102,7 +102,7 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
             sanyi.setPassword("admin");
             sanyi.setPhoneNumber("1233456");
 
-            List<Role> list=new ArrayList<>();
+            List<Role> list = new ArrayList<>();
             list.add(adminRole);
             sanyi.setRoleList(list);
 
@@ -116,7 +116,7 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
             sanyi2.setPhoneNumber("1233456");
 
 
-            List<Role> list2=new ArrayList<>();
+            List<Role> list2 = new ArrayList<>();
             list2.add(userRole);
             sanyi2.setRoleList(list2);
 
@@ -143,7 +143,9 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
             product1.setOutOfStock(false);
             product1.setLocale(Locale.CANADA);
             product1.setUnit(Unit.DARAB);
-            product1.setCategory(categoryRepo.findCategoryByID(1));
+            Category cat = categoryRepo.findCategoryByID(1);
+            product1.setCategory(cat);
+            product1.setCategoryID(cat.getID());
 
             product1 = productRepo.saveAndFlush(product1);
 
@@ -156,7 +158,9 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
             product2.setOutOfStock(false);
             product2.setLocale(Locale.US);
             product2.setUnit(Unit.CSOMAG);
-            product2.setCategory(categoryRepo.findCategoryByID(2));
+            Category cat2 = categoryRepo.findCategoryByID(1);
+            product2.setCategory(cat2);
+            product2.setCategoryID(cat2.getID());
 
             product2 = productRepo.saveAndFlush(product2);
 
@@ -170,7 +174,9 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
             product3.setOutOfStock(false);
             product3.setLocale(Locale.US);
             product3.setUnit(Unit.ADAG);
-            product3.setCategory(categoryRepo.findCategoryByID(2));
+            Category cat3 = categoryRepo.findCategoryByID(2);
+            product3.setCategory(cat3);
+            product3.setCategoryID(cat3.getID());
 
             product3 = productRepo.saveAndFlush(product3);
 
