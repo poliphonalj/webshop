@@ -52,12 +52,13 @@ public class ProductService {
             p.setPrice(productPrice);
             p.setUnit(productUnit);
             p.setLocale(productLocale);
-           // p.setCategoryID(productCategoryID);
+            // p.setCategoryID(productCategoryID);
             p.setInPromotion(productIsInPromotion);
             p.setOutOfStock(productIsOutOfStock);
             p.setOutOfSeason(productIsOutOfSeason);
-            p.setCategory(categoryRepo.findCategoryByID(categoryID));
-
+            Category cat = categoryRepo.findCategoryByID(categoryID);
+            p.setCategory(cat);
+            p.setCategoryID(cat.getID());
             productRepo.saveAndFlush(p);
         }
     }
@@ -98,17 +99,17 @@ public class ProductService {
 
     @Transactional
     public void modifyProduct(Product product, long ID) {
-       Product p=productRepo.findProductByID(ID);
-       p.setName(product.getName());
-       p.setDescription(product.getDescription());
-       p.setPrice(product.getPrice());
-       p.setInPromotion(product.isInPromotion());
-       p.setPromotedPrice(product.getPromotedPrice());
-       p.setOutOfSeason(product.isOutOfSeason());
-       p.setOutOfStock(product.isOutOfStock());
-       p.setImageList(product.getImageList());
-       p.setUnit(product.getUnit());
-       p.setLocale(product.getLocale());
+        Product p = productRepo.findProductByID(ID);
+        p.setName(product.getName());
+        p.setDescription(product.getDescription());
+        p.setPrice(product.getPrice());
+        p.setInPromotion(product.isInPromotion());
+        p.setPromotedPrice(product.getPromotedPrice());
+        p.setOutOfSeason(product.isOutOfSeason());
+        p.setOutOfStock(product.isOutOfStock());
+        p.setImageList(product.getImageList());
+        p.setUnit(product.getUnit());
+        p.setLocale(product.getLocale());
 
         productRepo.saveAndFlush(p);
     }
@@ -155,7 +156,7 @@ public class ProductService {
     @Transactional
     public List<Product> getProductsByCategoryID(long ID) {
         return productRepo.findAllByCategoryIDAndIsOutOfSeasonFalseAndIsOutOfStockFalseAndIsActiveTrue(ID);
-       // return productRepo.findAllByCategoryIDAndIsInPromotionAndIsOutOfSeasonFalseAndIsOutOfStockFalse(ID);///miert csak az almat adja ki
+        // return productRepo.findAllByCategoryIDAndIsInPromotionAndIsOutOfSeasonFalseAndIsOutOfStockFalse(ID);///miert csak az almat adja ki
 
     }
 
