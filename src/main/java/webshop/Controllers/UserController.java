@@ -3,6 +3,7 @@ package webshop.Controllers;
 //TODO method for return
 
 
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import webshop.DTOs.AuthenticationRequestDTO;
@@ -21,12 +21,9 @@ import webshop.Model.UsersandRole.MyUser;
 import webshop.Services.AddressService;
 import webshop.Services.EmailService;
 import webshop.Services.MyUserDetailsService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
+
 
 @RestController
 public class UserController {
@@ -36,6 +33,7 @@ public class UserController {
     AuthenticationManager authenticationManager;
     AddressService addressService;
     EmailService emailService;
+
 
     @Autowired
     public UserController(MyUserDetailsService myUserDetailsService, AuthenticationManager authenticationManager,
@@ -48,31 +46,16 @@ public class UserController {
 
 
     @PostMapping("/authenticate")
-    public ResponseEntity<?> createAuthenticationToken(HttpServletResponse response,
-                                                       @RequestBody AuthenticationRequestDTO authenticationRequestDTO) {
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequestDTO authenticationRequestDTO) {
         try {
-            // Authenti7cation authenticate= authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-            //        , authenticationRequestDTO.getPassword()));
-
             Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequestDTO.getUsername(),
                     authenticationRequestDTO.getPassword()));
-
             UserDetails userDetails = (UserDetails) authenticate.getPrincipal();
             String username = userDetails.getUsername();
-            MyUser myUser=myUserDetailsService.loadUserByUsername(username);
-
-            System.out.println(authenticate.getAuthorities());
-            String role=((List)(authenticate.getAuthorities())).get(0).toString();// itt irja ki a rolet
-
-            String firstName=myUser.getFirstName();//itt anevet
-
-            HashMap<String, String> map = new HashMap<>();
-            map.put("successful", "true");
-            map.put("firstName", firstName);
-            map.put("role", role);
-
-            return ResponseEntity.ok().body(map);
-
+            MyUser myUser = myUserDetailsService.loadUserByUsername(username);
+            JSONObject jObj = myUserDetailsService.returnForSuccedLogin(myUser.getFirstName(),
+                    ((List) (authenticate.getAuthorities())).get(0).toString());
+            return ResponseEntity.ok().body(jObj);
         } catch (BadCredentialsException e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
         }
