@@ -21,7 +21,14 @@ public class CategoryService {
     public void addCategory(Category category) {
         Category c = new Category();
         c.setCategoryName(category.getCategoryName());
-        c.setParentCategory(categoryRepo.findByCategoryName(category.getParentCategory().getCategoryName()));
+       // c.setParentCategory(categoryRepo.findByCategoryName(category.getParentCategory().getCategoryName()));
+       c.setParentCategoryID(category.getParentCategoryID());
+
+
+      //  Category parentCat=categoryRepo.findCategoryByID(category.getParentCategory().getID());
+      // long parentCatID= parentCat.getID();
+       // System.out.println(categoryRepo.findCategoryByID(parentCatID).getCategoryName());
+      //  c.setParentCategory(categoryRepo.findCategoryByID(parentCatID));
         categoryRepo.saveAndFlush(c);
     }
 
