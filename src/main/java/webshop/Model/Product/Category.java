@@ -18,6 +18,7 @@ public class Category {
     private long ID;
 
     private String categoryName;
+    private long parentCategoryID;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Category parentCategory;
@@ -57,5 +58,13 @@ public class Category {
 
     public void setID(long ID) {
         this.ID = ID;
+    }
+
+    public long getParentCategoryID() {
+        return parentCategoryID;
+    }
+
+    public void setParentCategoryID(long parentCategoryID) {
+        this.parentCategoryID = parentCategoryID;
     }
 }
