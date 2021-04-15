@@ -1,10 +1,13 @@
 package webshop.Model.Product;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+@JsonIgnoreProperties({"category"})
 @Entity
 @Table(name = "products")
 public class Product {
