@@ -28,6 +28,7 @@ import webshop.Repository.UserRepo;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,7 +101,11 @@ public class MyUserDetailsService implements UserDetailsService {
         return userRepo.findAll();
     }
 
-    public JSONObject returnForSuccedLogin(String firstName, String role) {
+    public JSONObject returnForSuccedLogin(String firstName, String role, String username) {
+        MyUser u = loadUserByUsername(username);
+        u.setLastLoggedInAt(LocalDateTime.now());
+        userRepo.saveAndFlush(u);
+
         LoggedInUserDTO l = new LoggedInUserDTO();
         l.setFirstName(firstName);
         l.setRole(role);
