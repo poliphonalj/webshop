@@ -1,5 +1,10 @@
 package webshop.Controllers;
 
+
+
+//kepes dto
+//email
+//lastlogged int beallitani
 //TODO method for return
 
 
@@ -44,7 +49,7 @@ public class UserController {
         this.emailService = emailService;
     }
 
-
+//login, return values, set last time login field for the user
     @PostMapping("/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequestDTO authenticationRequestDTO) {
         try {
@@ -54,7 +59,8 @@ public class UserController {
             String username = userDetails.getUsername();
             MyUser myUser = myUserDetailsService.loadUserByUsername(username);
             JSONObject jObj = myUserDetailsService.returnForSuccedLogin(myUser.getFirstName(),
-                    ((List) (authenticate.getAuthorities())).get(0).toString());
+                    ((List) (authenticate.getAuthorities())).get(0).toString(),
+                    username);
             return ResponseEntity.ok().body(jObj);
         } catch (BadCredentialsException e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
