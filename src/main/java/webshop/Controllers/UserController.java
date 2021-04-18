@@ -4,7 +4,7 @@ package webshop.Controllers;
 
 //kepes dto
 //email
-//lastlogged int beallitani
+
 //TODO method for return
 
 
@@ -17,15 +17,21 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 import webshop.DTOs.AuthenticationRequestDTO;
+import webshop.DTOs.NewPasswordDTO;
+import webshop.DTOs.NewPhoneNumberDTO;
 import webshop.DTOs.NewUserDTO;
 import webshop.Model.FeedbackToFrontend;
 import webshop.Model.UsersandRole.MyUser;
 import webshop.Services.AddressService;
 import webshop.Services.EmailService;
 import webshop.Services.MyUserDetailsService;
+
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 
@@ -49,7 +55,10 @@ public class UserController {
         this.emailService = emailService;
     }
 
-//login, return values, set last time login field for the user
+
+    ///This method deals with the user authentication.
+    ///It is also responsible for setting the lastTimeLoggedIn field.
+
     @PostMapping("/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequestDTO authenticationRequestDTO) {
         try {
@@ -61,6 +70,7 @@ public class UserController {
             JSONObject jObj = myUserDetailsService.returnForSuccedLogin(myUser.getFirstName(),
                     ((List) (authenticate.getAuthorities())).get(0).toString(),
                     username);
+
             return ResponseEntity.ok().body(jObj);
         } catch (BadCredentialsException e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
@@ -71,7 +81,7 @@ public class UserController {
     public ResponseEntity<?> addUser(@RequestBody NewUserDTO newUserDTO) {
         try {
             myUserDetailsService.addUser(newUserDTO);
-            emailService.successfulRegistration(newUserDTO.getFirstName());
+            //emailService.successfulRegistration(newUserDTO.getFirstName());
             return ResponseEntity.ok(new FeedbackToFrontend(true));
         } catch (Exception e) {
             l.error("kisnyul", e);
@@ -90,9 +100,12 @@ public class UserController {
     }
 
     @PostMapping("/user/modify/password")
-    public ResponseEntity<?> changePassword(@RequestBody String password, MyUser myUser) {
+    public ResponseEntity<?> changePassword(@RequestBody NewPasswordDTO newPasswordDTO) {
         try {
-            myUserDetailsService.changePassword(password, myUser);
+            myUserDetailsService.changePassword(newPasswordDTO);
+
+            //vvvvvvvvvvvvvvvemilt kikuldeni!!!!!
+
             return ResponseEntity.ok(new FeedbackToFrontend(true));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
@@ -100,9 +113,10 @@ public class UserController {
     }
 
     @PostMapping("/user/modify/phonenumber")
-    public ResponseEntity<?> changePhoneNumber(@RequestBody String phoneNumber, MyUser myUser) {
+    public ResponseEntity<?> changePhoneNumber(@RequestBody NewPhoneNumberDTO newPhoneNumberDTO) {
         try {
-            myUserDetailsService.changePassword(phoneNumber, myUser);
+
+            myUserDetailsService.changePhonenumber(newPhoneNumberDTO);
             return ResponseEntity.ok(new FeedbackToFrontend(true));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));

@@ -24,19 +24,18 @@ public class AddressController {
         this.addressService = addressService;
     }
 
-    //Ok
-    //fekuk ir egy cimet
-    //a request addressType mezojetol fuggoen ami az enumok erteket veszi fel
-    @PostMapping("/address/modify")
+
+    @PostMapping("/address/new")
     public ResponseEntity<?> addAddress(@RequestBody NewAddressDTO newAddressDTO) throws IOException {
         try{
+
             addressService.addAddress(newAddressDTO);
             return ResponseEntity.ok(new FeedbackToFrontend(true));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
         }
     }
-//ok
+
     @GetMapping("/address/types/list")
     public ResponseEntity<?> listActiveUsers() {
        AddressType[] list = addressService.listTheTypes();
@@ -47,18 +46,6 @@ public class AddressController {
         }
         return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
     }
-
-    //ok
-    @GetMapping("/address/getDeliveryAddress/{userID}")
-    public ResponseEntity<?> getDeliveryAddressByUserID(@PathVariable long userID) {
-        try {
-            Address a = addressService.getDeliveryAddressByUserID(userID);
-            return ResponseEntity.ok().body(a);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
-        }
-    }
-
 
 
 }
