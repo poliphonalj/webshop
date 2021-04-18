@@ -1,5 +1,6 @@
 package webshop.Controllers;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,31 +19,62 @@ public class ImageController {
     public ImageController(ImageService imageservice) {
         this.imageservice = imageservice;
     }
-
     @PostMapping("/image/new")
-        public ResponseEntity<?> addImage(@RequestBody MultipartFile file, long productID, String description, String tooltip) throws IOException {
+        public ResponseEntity<?> addImage(@RequestBody MultipartFile file, long productID) throws IOException {
            try{
-            imageservice.addImage(file, productID, description, tooltip);
+            imageservice.addImage(file, productID);
                return ResponseEntity.ok(new FeedbackToFrontend(true));
            } catch (Exception e) {
                return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
            }
     }
 
-    @PostMapping("/image/get/{imageName}")
-    public ResponseEntity<?> getImageByName(@RequestParam String imageName) throws IOException {
+    @GetMapping("/image/get/{imageName}")
+    public ResponseEntity<?> getImageByName(@PathVariable String imageName) throws IOException {
         try{
-            imageservice.getImageByName(imageName);
+            JSONObject jObj=   imageservice.getImageByName(imageName);
+            return ResponseEntity.ok(jObj);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
+        }
+    }
+
+    @GetMapping("/image/get/{imageID}")
+    public ResponseEntity<?> getImageByID(@PathVariable long ID) throws IOException {
+        try{
+            JSONObject jObj= imageservice.getImageByID(ID);
+            return ResponseEntity.ok(jObj);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
+        }
+    }
+
+    //csoportos lekerdezes->tombot ad vissza
+    @GetMapping("/image/getByProductID/{productID}")
+    public ResponseEntity<?> getImageByProductID(@PathVariable long productID) throws IOException {//lehetne requestparam is
+        try{
+            JSONObject jObj=imageservice.getImagesByProductID(productID);
+            return ResponseEntity.ok(jObj);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
+        }
+    }
+
+    @PutMapping("/image/removeByProductID/{productID}")
+    public ResponseEntity<?> removeImageByProductID(@PathVariable long productID) throws IOException {//lehetne requestparam is
+        try{
+           imageservice.removeImagesByProductID(productID);
             return ResponseEntity.ok(new FeedbackToFrontend(true));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
         }
     }
 
-    @PostMapping("/image/get/{ID}")
-    public ResponseEntity<?> getImageByID(@RequestParam long ID) throws IOException {
+
+    @PutMapping("/image/removeByID/{imageID}")
+    public ResponseEntity<?> removeImageByID(@PathVariable long productID) throws IOException {
         try{
-            imageservice.getImageByID(ID);
+            imageservice.removeImagesByProductID(productID);
             return ResponseEntity.ok(new FeedbackToFrontend(true));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
