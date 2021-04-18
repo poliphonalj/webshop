@@ -3,6 +3,7 @@ package webshop.Controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import webshop.DTOs.NewAddressDTO;
 import webshop.Model.FeedbackToFrontend;
 import webshop.Model.UsersandRole.Address;
 import webshop.Model.UsersandRole.AddressType;
@@ -23,17 +24,18 @@ public class AddressController {
         this.addressService = addressService;
     }
 
-    /*
+
     @PostMapping("/address/new")
-    public ResponseEntity<?> addAddresss(@RequestParam long ID, @RequestBody  Address address) throws IOException {
+    public ResponseEntity<?> addAddress(@RequestBody NewAddressDTO newAddressDTO) throws IOException {
         try{
-            addressService.addAddress(address);
+
+            addressService.addAddress(newAddressDTO);
             return ResponseEntity.ok(new FeedbackToFrontend(true));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
         }
     }
-*/
+
     @GetMapping("/address/types/list")
     public ResponseEntity<?> listActiveUsers() {
        AddressType[] list = addressService.listTheTypes();

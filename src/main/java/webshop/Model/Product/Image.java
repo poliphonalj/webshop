@@ -16,7 +16,9 @@ public class Image {
     private String type;
     private String description;
     private String tooltip;
-    private long productID;
+
+    private long productID;//ez csak a repo.fingimagesbyproductIDhoz fog kelleni
+    //az image letrehozasnal megkapja a product id erteket es ezzel lehet keresni majd
 
     //image bytes can have large lengths so we specify a value
     //which is more than the default length for picByte column
