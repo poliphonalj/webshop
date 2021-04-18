@@ -3,6 +3,8 @@ package webshop.Services;
 //TODO
 //remove image
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,7 +35,23 @@ public class ImageService {
     }
 
     @Transactional
-    public void addImage(MultipartFile file, long productID, String description, String tooltip) throws IOException {
+    public void addImage(MultipartFile file, long productID) throws IOException {
+        Image dbImage = new Image();
+        dbImage.setName(file.getName());
+        dbImage.setByteFlow(file.getBytes());
+        dbImage.setProduct(productRepo.findProductByID(productID));
+        dbImage.setProductID(productID);//repo.findimagebyproductid miatt kell
+
+        Product p = productRepo.findProductByID(productID);
+        List<Image> list = p.getImageList();
+        list.add(dbImage);
+        p.setImageList(list);
+
+        imageRepo.saveAndFlush(dbImage);
+        productRepo.saveAndFlush(p);
+
+    }
+   /* public void addImage(MultipartFile file, long productID, String description, String tooltip) throws IOException {
         Image i = new Image();
         i.setName(file.getOriginalFilename());
         i.setType(file.getContentType());
@@ -50,25 +68,57 @@ public class ImageService {
 
         imageRepo.saveAndFlush(i);
         productRepo.saveAndFlush(p);
+    }*/
+
+    @Transactional
+    public JSONObject getImageByName(String imageName) throws IOException, DataFormatException {
+        Image retrievedImage = imageRepo.findByNameAndIsActiveTrue(imageName);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("succesful", "true");
+        jsonObject.put("list", retrievedImage);
+        return jsonObject;
     }
 
     @Transactional
-    public Image getImageByName(String imageName) throws IOException, DataFormatException {
-        Image retrievedImage = imageRepo.findByName(imageName);
-        Image img = new Image(retrievedImage.getName(), retrievedImage.getType(),
-                this.decompressBytes(retrievedImage.getByteFlow()), retrievedImage.getDescription(),
-                retrievedImage.getTooltip());
-        return img;
+    public JSONObject getImageByID(long ID) throws IOException, DataFormatException {
+        Image retrievedImage = imageRepo.findImageByIDAndIsActiveTrue(ID);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("succesful", "true");
+        jsonObject.put("list", retrievedImage);
+        return jsonObject;
     }
 
-    @Transactional
-    public Image getImageByID(long ID) throws IOException, DataFormatException {
-        Image retrievedImage = imageRepo.findImageByID(ID);
-        Image img = new Image(retrievedImage.getName(), retrievedImage.getType(),
-                this.decompressBytes(retrievedImage.getByteFlow()), retrievedImage.getDescription(),
-                retrievedImage.getTooltip());
-        return img;
+    //returns a list of pics in the JSonObject...if there are more pics
+    public JSONObject getImagesByProductID(long productID) {
+        List<Image> imageList = imageRepo.findImagesByProductIDAndIsActiveTrue(productID);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("succesful", "true");
+        JSONArray list = new JSONArray();
+        for (Image actualImage : imageList) {
+            list.add(actualImage);
+        }
+        jsonObject.put("list", list);
+        return jsonObject;
     }
+
+//not a really remove, just changing a flag
+    public JSONObject removeImagesByProductID(long productID) {
+        List<Image> imageList = imageRepo.findImagesByProductIDAndIsActiveTrue(productID);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("succesful", "true");
+
+        for (Image actualImage : imageList) {
+            actualImage.setActive(false);
+            imageRepo.saveAndFlush(actualImage);
+        }
+
+        return jsonObject;
+    }
+
+
+
+
+
 
     // compress the image bytes before storing it in the database
     public byte[] compressBytes(byte[] data) throws IOException {
