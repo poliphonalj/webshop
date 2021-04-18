@@ -18,6 +18,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import webshop.DTOs.LoggedInUserDTO;
+import webshop.DTOs.NewPasswordDTO;
+import webshop.DTOs.NewPhoneNumberDTO;
 import webshop.DTOs.NewUserDTO;
 import webshop.Model.UsersandRole.Address;
 import webshop.Model.UsersandRole.MyUser;
@@ -82,13 +84,15 @@ public class MyUserDetailsService implements UserDetailsService {
         userRepo.saveAndFlush(myUser);
     }
 
-    public void changePassword(String newPassword, MyUser myUser) {
-        myUser.setPassword(newPassword);
+    public void changePassword(NewPasswordDTO newPasswordDTO) {
+        MyUser myUser=userRepo.findUserByID(newPasswordDTO.getUserID());
+        myUser.setPassword(newPasswordDTO.getPassword());
         userRepo.saveAndFlush(myUser);
     }
 
-    public void changePhonenumber(String newPhoneNumber, MyUser myUser) {
-        myUser.setPhoneNumber(newPhoneNumber);
+    public void changePhonenumber(NewPhoneNumberDTO newPhoneNumberDTO) {
+       MyUser myUser=userRepo.findUserByID(newPhoneNumberDTO.getUserID());
+        myUser.setPhoneNumber(newPhoneNumberDTO.getPhoneNumber());
         userRepo.saveAndFlush(myUser);
     }
 
