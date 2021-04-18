@@ -3,6 +3,7 @@ package webshop.Services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import webshop.DTOs.NewAddressDTO;
 import webshop.Model.UsersandRole.Address;
 import webshop.Model.UsersandRole.AddressType;
 import webshop.Model.UsersandRole.MyUser;
@@ -22,13 +23,14 @@ public class AddressService {
         this.userRepo=userRepo;
     }
 
-    public void addAddress( Address address){
+    public void addAddress(NewAddressDTO newAddressDTO){
         Address a=new Address();
-        a.setPostCode(address.getPostCode());
-        a.setSimpleAddress(address.getSimpleAddress());
-        a.setComment(address.getComment());
-        a.setAddressType(address.getAddressType());
-        a.setMyUser(userRepo.findUserByUsername(address.getMyUser().getUsername()));
+
+        a.setPostCode(newAddressDTO.getPostCode());
+        a.setSimpleAddress(newAddressDTO.getSimpleAddress());
+        a.setComment(newAddressDTO.getComment());
+        a.setAddressType(newAddressDTO.getAddressType());
+        a.setMyUser(userRepo.findUserByID(newAddressDTO.getUserID()));
         addressRepo.saveAndFlush(a);
     }
 
