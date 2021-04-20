@@ -16,6 +16,10 @@ public class Slogan {
     public Slogan() {
     }
 
+    public Slogan(String text){
+        this.text=text;
+    }
+
     public long getID() {
         return ID;
     }
