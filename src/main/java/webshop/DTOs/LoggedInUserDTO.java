@@ -8,6 +8,7 @@ import java.util.Map;
 
 public class LoggedInUserDTO {
 
+    private long userID;
     private String firstName;
     private String lastName;
     private String username;
@@ -50,7 +51,13 @@ public class LoggedInUserDTO {
         this.role = role;
     }
 
+    public long getUserID() {
+        return userID;
+    }
 
+    public void setUserID(long userID) {
+        this.userID = userID;
+    }
 }
 
 

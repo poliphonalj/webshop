@@ -85,16 +85,17 @@ public class MyUserDetailsService implements UserDetailsService {
     }
 
     public void changePassword(NewPasswordDTO newPasswordDTO) {
-        MyUser myUser=userRepo.findUserByID(newPasswordDTO.getUserID());
+        MyUser myUser = userRepo.findUserByID(newPasswordDTO.getUserID());
         myUser.setPassword(newPasswordDTO.getPassword());
         userRepo.saveAndFlush(myUser);
     }
 
     public void changePhonenumber(NewPhoneNumberDTO newPhoneNumberDTO) {
-       MyUser myUser=userRepo.findUserByID(newPhoneNumberDTO.getUserID());
+        MyUser myUser = userRepo.findUserByID(newPhoneNumberDTO.getUserID());
         myUser.setPhoneNumber(newPhoneNumberDTO.getPhoneNumber());
         userRepo.saveAndFlush(myUser);
     }
+
 
     public List<MyUser> listActiveUsers() {
         return userRepo.findAllByIsActiveTrue();
@@ -105,7 +106,13 @@ public class MyUserDetailsService implements UserDetailsService {
         return userRepo.findAll();
     }
 
-    public JSONObject returnForSuccedLogin(String firstName, String role, String username) {
+    public MyUser getUserByID(long ID) {
+        MyUser m = userRepo.findUserByID(ID);
+        m.setPassword("aaa");//kamu jelszo
+        return m;
+    }
+
+    public JSONObject returnForSuccedLogin(String firstName, String role, String username, long ID) {
         MyUser u = loadUserByUsername(username);
         u.setLastLoggedInAt(LocalDateTime.now());
         userRepo.saveAndFlush(u);
@@ -113,6 +120,7 @@ public class MyUserDetailsService implements UserDetailsService {
         LoggedInUserDTO l = new LoggedInUserDTO();
         l.setFirstName(firstName);
         l.setRole(role);
+        l.setUserID(ID);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("succesful", "true");
         JSONArray list = new JSONArray();
