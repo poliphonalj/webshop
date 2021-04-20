@@ -9,6 +9,8 @@ import webshop.Model.Product.Category;
 import webshop.Model.Product.Product;
 import webshop.Model.Product.Unit;
 import webshop.Model.Slogan;
+import webshop.Model.UsersandRole.Address;
+import webshop.Model.UsersandRole.AddressType;
 import webshop.Model.UsersandRole.MyUser;
 import webshop.Model.UsersandRole.Role;
 import webshop.Repository.*;
@@ -38,14 +40,16 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
     private ProductRepo productRepo;
     private CategoryRepo categoryRepo;
     private SloganRepo sloganRepo;
+    private AddressRepo addressRepo;
 
     @Autowired
-    public DataLoader(RoleRepo roleRepo, UserRepo userRepo, ProductRepo productRepo, CategoryRepo categoryRepo, SloganRepo sloganRepo) {
+    public DataLoader(RoleRepo roleRepo, UserRepo userRepo, ProductRepo productRepo, CategoryRepo categoryRepo, SloganRepo sloganRepo, AddressRepo addressRepo) {
         this.roleRepo = roleRepo;
         this.userRepo = userRepo;
         this.productRepo = productRepo;
         this.categoryRepo = categoryRepo;
         this.sloganRepo = sloganRepo;
+        this.addressRepo=addressRepo;
     }
 
     @Override
@@ -107,6 +111,9 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
 
     @Transactional
     public void createUser() {
+
+
+
         if (userRepo.count() == 0) {
             sanyi = new MyUser();
             sanyi.setActive(true);
@@ -135,10 +142,34 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
             list2.add(userRole);
             sanyi2.setRoleList(list2);
 
+            Address a1=new Address();
+            a1.setAddressType(AddressType.HOME_ADDRESS);
+            a1.setPostCode("1141");
+            a1.setCity("budapest");
+            a1.setSimpleAddress("siraly utca 21");
+            a1.setMyUser(sanyi);
+
+            Address a2=new Address();
+            a2.setAddressType(AddressType.DELIVERY_ADDRESS);
+            a2.setPostCode("2110");
+            a2.setCity("budapest");
+            a2.setSimpleAddress("sarok ut 2");
+            a2.setMyUser(sanyi);
+
+
+            Address a3=new Address();
+            a3.setAddressType(AddressType.HOME_ADDRESS);
+            a3.setPostCode("1111");
+            a3.setCity("budapest");
+            a3.setSimpleAddress("bolonbika ut 2");
+            a3.setMyUser(sanyi2);
+
             sanyi = userRepo.saveAndFlush(sanyi);
             sanyi2 = userRepo.saveAndFlush(sanyi2);
 
-
+            addressRepo.saveAndFlush(a1);
+            addressRepo.saveAndFlush(a2);
+            addressRepo.saveAndFlush(a3);
         } else {
             sanyi = userRepo.findUserByFirstName("Sandor");
         }
