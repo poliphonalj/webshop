@@ -101,6 +101,11 @@ public class MyUserDetailsService implements UserDetailsService {
         return userRepo.findAllByIsActiveTrue();
     }
 
+    public List<MyUser> listActiveUsersInOrder() {
+        //return userRepo.findAllByIsActiveTrueAndOrderByNumberOfPurchaseDesc();
+    return null;
+    }
+
     public List<MyUser> listAllUsers() {
         List<MyUser> list = userRepo.findAll();
         return userRepo.findAll();

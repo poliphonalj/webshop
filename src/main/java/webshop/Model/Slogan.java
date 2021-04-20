@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Table(name="slogans")
 public class Slogan {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private long ID;
     private String text;
     private boolean active =true;
