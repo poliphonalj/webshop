@@ -5,5 +5,6 @@ import webshop.Model.UsersandRole.Address;
 
 public interface AddressRepo extends JpaRepository<Address, Long> {
     Address findAddressByID(long ID);
+    Address findAddressByMyUserID(long myUserID);
 
 }

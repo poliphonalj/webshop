@@ -17,10 +17,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import webshop.DTOs.LoggedInUserDTO;
-import webshop.DTOs.NewPasswordDTO;
-import webshop.DTOs.NewPhoneNumberDTO;
-import webshop.DTOs.NewUserDTO;
+import webshop.DTOs.*;
 import webshop.Model.UsersandRole.Address;
 import webshop.Model.UsersandRole.MyUser;
 import webshop.Model.UsersandRole.Role;
@@ -111,10 +108,28 @@ public class MyUserDetailsService implements UserDetailsService {
         return userRepo.findAll();
     }
 
-    public MyUser getUserByID(long ID) {
+    public  ReturnUserDTO getUserByID(long ID) {
         MyUser m = userRepo.findUserByID(ID);
-        m.setPassword("aaa");//kamu jelszo
-        return m;
+        Address a=addressRepo.findAddressByMyUserID(ID);
+
+        ReturnUserDTO r=new ReturnUserDTO();
+        r.setActive(m.isActive());
+        r.setID(m.getID());
+        r.setFirstName(m.getFirstName());
+        r.setLastName(m.getLastName());
+        r.setUsername(m.getUsername());
+        r.setRole(m.getRoleList().get(0));
+        r.setLastLoggedInAt(m.getLastLoggedInAt());
+        r.setLastPurchasedAt(m.getLastPurchasedAt());
+        r.setLocale(m.getLocale());
+        r.setPhoneNumber(m.getPhoneNumber());
+
+        r.setPostCode(a.getPostCode());
+        r.setSimpleAddress(a.getSimpleAddress());
+        r.setComment(a.getComment());
+        r.setAddressType(a.getAddressType());
+        //r.setMyAddressList(a.getMyUser().getMyAddressList());
+        return r;
     }
 
     public JSONObject returnForSuccedLogin(String firstName, String role, String username, long ID) {
