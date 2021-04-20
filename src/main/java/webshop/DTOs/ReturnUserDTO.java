@@ -19,18 +19,18 @@ public class ReturnUserDTO {
     private Locale locale;
     private long numberOfPurchase;
     private Role role;
-    private List<Address> myAddressList;
+    //private List<Address> myAddressList;
 
     //private String country;
     //private String county;
-    //private String postCode;
-    //private String city;
+  //  private String postCode;
+   // private String city;
     //private String name;
     //private String houseNumber;
     // private PlaceType placeType;    //enum
    // private String comment;
    // private String simpleAddress;    //name+placeTypte+houseNumber
-    //private AddressType addressType;
+   // private AddressType addressType;
    // private MyUser myUser;
 
     public ReturnUserDTO() {
@@ -124,14 +124,5 @@ public class ReturnUserDTO {
     public void setRole(Role role) {
         this.role = role;
     }
-
-    public List<Address> getMyAddressList() {
-        return myAddressList;
-    }
-
-    public void setMyAddressList(List<Address> myAddressList) {
-        this.myAddressList = myAddressList;
-    }
-
 
 }
