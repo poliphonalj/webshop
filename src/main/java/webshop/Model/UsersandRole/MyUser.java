@@ -66,6 +66,7 @@ public class MyUser implements UserDetails {
         this.password=password;
         this.numberOfPurchase=0;
         this.isActive=true;
+
     }
 
 

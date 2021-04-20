@@ -23,14 +23,14 @@ public class ReturnUserDTO {
 
     //private String country;
     //private String county;
-    private String postCode;
+    //private String postCode;
     //private String city;
     //private String name;
     //private String houseNumber;
     // private PlaceType placeType;    //enum
-    private String comment;
-    private String simpleAddress;    //name+placeTypte+houseNumber
-    private AddressType addressType;
+   // private String comment;
+   // private String simpleAddress;    //name+placeTypte+houseNumber
+    //private AddressType addressType;
    // private MyUser myUser;
 
     public ReturnUserDTO() {
@@ -133,43 +133,5 @@ public class ReturnUserDTO {
         this.myAddressList = myAddressList;
     }
 
-
-    public String getPostCode() {
-        return postCode;
-    }
-
-    public void setPostCode(String postCode) {
-        this.postCode = postCode;
-    }
-
-
-
-
-
-
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-    public String getSimpleAddress() {
-        return simpleAddress;
-    }
-
-    public void setSimpleAddress(String simpleAddress) {
-        this.simpleAddress = simpleAddress;
-    }
-
-    public AddressType getAddressType() {
-        return addressType;
-    }
-
-    public void setAddressType(AddressType addressType) {
-        this.addressType = addressType;
-    }
 
 }
