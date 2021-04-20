@@ -30,18 +30,7 @@ public class Address {
     public Address() {
     }
 
-    public Address(String country, String county, String postCode, String city, String name, String houseNumber, PlaceType placeType, String comment, String simpleAddress, AddressType addressType) {
-        this.country = country;
-        this.county = county;
-        this.postCode = postCode;
-        this.city = city;
-        this.name = name;
-        this.houseNumber = houseNumber;
-        this.placeType = placeType;
-        this.comment = comment;
-        this.simpleAddress = simpleAddress;
-        this.addressType = addressType;
-    }
+
 
     public String getCountry() {
         return country;

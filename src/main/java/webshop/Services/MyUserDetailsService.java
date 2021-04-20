@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import webshop.DTOs.*;
 import webshop.Model.UsersandRole.Address;
+import webshop.Model.UsersandRole.AddressType;
 import webshop.Model.UsersandRole.MyUser;
 import webshop.Model.UsersandRole.Role;
 import webshop.Repository.AddressRepo;
@@ -30,6 +31,7 @@ import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MyUserDetailsService implements UserDetailsService {
@@ -59,7 +61,6 @@ public class MyUserDetailsService implements UserDetailsService {
         List<Role> list = new ArrayList<>();
         list.add(r);
         u.setRoleList(list);
-
         u.setActive(true);
 
 
@@ -67,12 +68,28 @@ public class MyUserDetailsService implements UserDetailsService {
 
         Address a = new Address();
         a.setMyUser(userRepo.findUserByID(u.getID()));
-        a.setPostCode(newUserDTO.getPostCode());
-        a.setSimpleAddress(newUserDTO.getSimpleAddress());
-        a.setComment(newUserDTO.getComment());
+        a.setPostCode(newUserDTO.getPostCode_home());
+        a.setSimpleAddress(newUserDTO.getAddress_home());
+        a.setComment(newUserDTO.getComment_home());
+        a.setAddressType(AddressType.HOME_ADDRESS);
+
+        Address a2 = new Address();
+        a2.setMyUser(userRepo.findUserByID(u.getID()));
+        a2.setPostCode(newUserDTO.getPostCode_delivery());
+        a2.setSimpleAddress(newUserDTO.getAddress_delivery());
+        a2.setComment(newUserDTO.getComment_delivery());
+        a2.setAddressType(AddressType.DELIVERY_ADDRESS);
+
+        Address a3 = new Address();
+        a3.setMyUser(userRepo.findUserByID(u.getID()));
+        a3.setPostCode(newUserDTO.getPostCode_billing());
+        a3.setSimpleAddress(newUserDTO.getAddress_billing());
+        a3.setComment(newUserDTO.getComment_billing());
+        a3.setAddressType(AddressType.BILLING_ADDRESS);
 
         addressRepo.saveAndFlush(a);
-
+        addressRepo.saveAndFlush(a2);
+        addressRepo.saveAndFlush(a3);
     }
 
     public void removeUser(long ID) {
@@ -100,7 +117,7 @@ public class MyUserDetailsService implements UserDetailsService {
 
     public List<MyUser> listActiveUsersInOrder() {
         //return userRepo.findAllByIsActiveTrueAndOrderByNumberOfPurchaseDesc();
-    return null;
+        return null;
     }
 
     public List<MyUser> listAllUsers() {
@@ -108,11 +125,19 @@ public class MyUserDetailsService implements UserDetailsService {
         return userRepo.findAll();
     }
 
-    public  ReturnUserDTO getUserByID(long ID) {
+    public JSONObject getUserByID(long ID) {
+        JSONObject jsonObj = new JSONObject();
         MyUser m = userRepo.findUserByID(ID);
-        Address a=addressRepo.findAddressByMyUserID(ID);
+        List<Address> list = addressRepo.findAddressByMyUserID(ID);
 
-        ReturnUserDTO r=new ReturnUserDTO();
+        Address a1 = list.stream().filter(a -> a.getAddressType() == AddressType.HOME_ADDRESS).collect(Collectors.toList()).get(0);
+        Address a2 = list.stream().filter(b -> b.getAddressType() == AddressType.DELIVERY_ADDRESS).collect(Collectors.toList()).get(0);
+        Address a3 = list.stream().filter(c -> c.getAddressType() == AddressType.BILLING_ADDRESS).collect(Collectors.toList()).get(0);
+
+        //Address a2=addressRepo.findByAddressByTypeAndMyUserID(AddressType.DELIVERY_ADDRESS, ID);
+        // Address a3=addressRepo.findByAddressByTypeAndMyUserID(AddressType.BILLING_ADDRESS, ID);
+
+        ReturnUserDTO r = new ReturnUserDTO();
         r.setActive(m.isActive());
         r.setID(m.getID());
         r.setFirstName(m.getFirstName());
@@ -124,12 +149,13 @@ public class MyUserDetailsService implements UserDetailsService {
         r.setLocale(m.getLocale());
         r.setPhoneNumber(m.getPhoneNumber());
 
-        //r.setPostCode(a.getPostCode());
-        //r.setSimpleAddress(a.getSimpleAddress());
-        //r.setComment(a.getComment());
-        //r.setAddressType(a.getAddressType());
-        r.setMyAddressList(a.getMyUser().getMyAddressList());
-        return r;
+
+        jsonObj.put("billingAddress", a3);    jsonObj.put("user", r); jsonObj.put("homeAddress", a1);
+        jsonObj.put("deliveryAddress", a2);
+
+//jsonObj.
+        //r.setMyAddressList(a.getMyUser().getMyAddressList());
+        return jsonObj;
     }
 
     public JSONObject returnForSuccedLogin(String firstName, String role, String username, long ID) {
