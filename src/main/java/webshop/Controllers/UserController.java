@@ -20,10 +20,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
-import webshop.DTOs.AuthenticationRequestDTO;
-import webshop.DTOs.NewPasswordDTO;
-import webshop.DTOs.NewPhoneNumberDTO;
-import webshop.DTOs.NewUserDTO;
+import webshop.DTOs.*;
 import webshop.Model.FeedbackToFrontend;
 import webshop.Model.UsersandRole.MyUser;
 import webshop.Services.AddressService;
@@ -175,8 +172,8 @@ public class UserController {
     public ResponseEntity<?> getUserByID(@PathVariable long ID) {
 
         try {
-            MyUser m = myUserDetailsService.getUserByID(ID);
-            return ResponseEntity.ok().body(m);
+            ReturnUserDTO r = myUserDetailsService.getUserByID(ID);
+            return ResponseEntity.ok().body(r);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
         }
