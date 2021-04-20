@@ -172,7 +172,7 @@ public class UserController {
     public ResponseEntity<?> getUserByID(@PathVariable long ID) {
 
         try {
-            ReturnUserDTO r = myUserDetailsService.getUserByID(ID);
+            JSONObject r = myUserDetailsService.getUserByID(ID);
             return ResponseEntity.ok().body(r);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
