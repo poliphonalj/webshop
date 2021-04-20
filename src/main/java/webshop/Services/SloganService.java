@@ -25,10 +25,15 @@ public class SloganService {
 
     public Slogan getRandomSlogan() {
         int size = sloganRepo.findAll().size();
+
         if(size!=0){
             Random r = new Random();
-            int i = r.nextInt(size)*10+5;
+            int i = r.nextInt(size);
+            i=i*10+5;
+            System.out.println(i);
+
             return sloganRepo.findSloganByIDAndIsActiveTrue(i);
+
         }
         else{
             return new Slogan("nincs megjelenitheto szoveg");

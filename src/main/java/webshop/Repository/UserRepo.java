@@ -11,6 +11,9 @@ public interface UserRepo extends JpaRepository<MyUser, Integer> {
     MyUser findUserByFirstName(String name);
     MyUser findUserByID(long ID);
     MyUser findUserByUsername(String username);
+   // MyUser findUserByResetPasswordToken(String resetPasswordToken);
     List<MyUser>findAllByIsActiveTrue();
+    //List<MyUser>findAllByIsActiveTrueAndOrderByNumberOfPurchaseDesc();
     List<MyUser>findAll();
+
 }

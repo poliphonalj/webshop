@@ -1,10 +1,10 @@
 package webshop.Controllers;
 
-
+//4.20.1134
 //kepes dto
 //email
 
-//TODO method for return
+//TODO vásárlásnál novelni a number of purchase erteket
 
 
 import org.json.simple.JSONObject;
@@ -140,6 +140,17 @@ public class UserController {
     @GetMapping("/user/list/actives")
     public ResponseEntity<?> listActiveUsers() {
         List<MyUser> list = myUserDetailsService.listActiveUsers();
+        if (!(list.isEmpty())) {
+            HashMap<String, List<MyUser>> hMap = new HashMap<>();
+            hMap.put("list", list);
+            return ResponseEntity.ok().body(hMap);
+        }
+        return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
+    }
+
+    @GetMapping("/user/list/actives/orderedByPurchase")
+    public ResponseEntity<?> listActiveUsersInOrder() {
+        List<MyUser> list = myUserDetailsService.listActiveUsersInOrder();
         if (!(list.isEmpty())) {
             HashMap<String, List<MyUser>> hMap = new HashMap<>();
             hMap.put("list", list);
