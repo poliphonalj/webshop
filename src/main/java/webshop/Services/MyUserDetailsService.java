@@ -124,11 +124,11 @@ public class MyUserDetailsService implements UserDetailsService {
         r.setLocale(m.getLocale());
         r.setPhoneNumber(m.getPhoneNumber());
 
-        r.setPostCode(a.getPostCode());
-        r.setSimpleAddress(a.getSimpleAddress());
-        r.setComment(a.getComment());
-        r.setAddressType(a.getAddressType());
-        //r.setMyAddressList(a.getMyUser().getMyAddressList());
+        //r.setPostCode(a.getPostCode());
+        //r.setSimpleAddress(a.getSimpleAddress());
+        //r.setComment(a.getComment());
+        //r.setAddressType(a.getAddressType());
+        r.setMyAddressList(a.getMyUser().getMyAddressList());
         return r;
     }
 
