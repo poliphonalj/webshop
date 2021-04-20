@@ -1,6 +1,7 @@
 package webshop.Model.UsersandRole;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.Columns;
 
 import javax.persistence.*;
 
