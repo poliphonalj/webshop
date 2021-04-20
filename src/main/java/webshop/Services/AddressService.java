@@ -23,6 +23,9 @@ public class AddressService {
         this.userRepo=userRepo;
     }
 
+    public AddressService() {
+    }
+
     public void addAddress(NewAddressDTO newAddressDTO){
         Address a=new Address();
 
