@@ -62,6 +62,9 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
     public void createSlogan() {
         Slogan s = new Slogan();
         Slogan s2 = new Slogan();
+        Slogan s3 = new Slogan();
+        Slogan s4 = new Slogan();
+        Slogan s5 = new Slogan();
 
         s.setText("hello szlogen");
         s.setActive(true);
@@ -69,8 +72,20 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
         s2.setText("hogyvagy szlogen");
         s2.setActive(true);
 
+        s3.setText("répa retek mogyoró");
+        s3.setActive(true);
+
+        s4.setText("Az vagy, amit megeszel... Légy ma egy ALMA!");
+        s4.setActive(true);
+
+        s5.setText("A vidék íze a tányérodban...");
+        s5.setActive(true);
+
         sloganRepo.saveAndFlush(s);
         sloganRepo.saveAndFlush(s2);
+        sloganRepo.saveAndFlush(s3);
+        sloganRepo.saveAndFlush(s4);
+        sloganRepo.saveAndFlush(s5);
     }
 
     @Transactional
