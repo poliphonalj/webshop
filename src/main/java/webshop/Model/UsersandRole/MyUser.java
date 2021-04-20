@@ -36,6 +36,8 @@ public class MyUser implements UserDetails {
     private boolean isActive;
     private Locale locale;
     private String password;
+    private long numberOfPurchase;
+    private String resetPasswordToken;
 
 
 
@@ -62,6 +64,8 @@ public class MyUser implements UserDetails {
         this.username = username;
         this.phoneNumber = phoneNumber;
         this.password=password;
+        this.numberOfPurchase=0;
+        this.isActive=true;
     }
 
 
@@ -137,6 +141,22 @@ public class MyUser implements UserDetails {
 
     public void setLocale(Locale locale) {
         this.locale = locale;
+    }
+
+    public long getNumberOfPurchase() {
+        return numberOfPurchase;
+    }
+
+    public void setNumberOfPurchase(long numberOfPurchase) {
+        this.numberOfPurchase = numberOfPurchase;
+    }
+
+    public String getResetPasswordToken() {
+        return resetPasswordToken;
+    }
+
+    public void setResetPasswordToken(String resetPasswordToken) {
+        this.resetPasswordToken = resetPasswordToken;
     }
 
     @Override
