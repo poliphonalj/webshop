@@ -28,11 +28,11 @@ public class SloganService {
 
         if (size != 0) {
             Random r = new Random();
-            long i = (long) r.nextInt(size);
-            i = i+3;
-           Slogan s = sloganRepo.findSloganByID(i);
+            long i = r.nextInt(size);
+            i=i*10+5;
+           //Slogan s = sloganRepo.findSloganByID(4);
             System.out.println(i);
-            return s;
+            return sloganRepo.findSloganByID(i);
         } else {
             return new Slogan("nincs megjelenitheto szoveg");
         }
