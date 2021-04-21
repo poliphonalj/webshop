@@ -28,11 +28,11 @@ public class SloganController {
     public ResponseEntity<?> getRandom(){
         Slogan s=sloganService.getRandomSlogan();
         if (s!=null) {
-            HashMap<String, Long> hMap = new HashMap<>();
-            hMap.put("list", s.getID());
+            HashMap<String, Slogan> hMap = new HashMap<>();
+            hMap.put("list", s);
             return ResponseEntity.ok().body(hMap);
         }
-        return ResponseEntity.badRequest().body(s.getID());
+        return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
     }
 
     @PostMapping("/slogan/add") //adding a slogan to thee db
