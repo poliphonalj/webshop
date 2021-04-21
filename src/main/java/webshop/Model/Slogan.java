@@ -11,7 +11,7 @@ public class Slogan {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long ID;
     private String text;
-    private boolean isActive=true;
+    private boolean active =true;
 
     public Slogan() {
     }
@@ -37,10 +37,10 @@ public class Slogan {
     }
 
     public boolean isActive() {
-        return isActive;
+        return active;
     }
 
     public void setActive(boolean active) {
-        isActive = active;
+        this.active = active;
     }
 }

@@ -52,6 +52,8 @@ public class MyUserDetailsService implements UserDetailsService {
         this.addressRepo = addressRepo;
     }
 
+
+    //alapbol minden cim ugyanaz
     public void addUser(NewUserDTO newUserDTO) throws UserExistException {
         MyUser u = new MyUser();
 
@@ -74,6 +76,7 @@ public class MyUserDetailsService implements UserDetailsService {
 
             Address a = new Address();
             a.setMyUser(userRepo.findUserByID(u.getID()));
+            a.setCity(newUserDTO.getCity_home());
             a.setPostCode(newUserDTO.getPostCode_home());
             a.setSimpleAddress(newUserDTO.getAddress_home());
             a.setComment(newUserDTO.getComment_home());
@@ -81,6 +84,7 @@ public class MyUserDetailsService implements UserDetailsService {
 
             Address a2 = new Address();
             a2.setMyUser(userRepo.findUserByID(u.getID()));
+            a2.setCity(newUserDTO.getCity_delivery());
             a2.setPostCode(newUserDTO.getPostCode_delivery());
             a2.setSimpleAddress(newUserDTO.getAddress_delivery());
             a2.setComment(newUserDTO.getComment_delivery());
@@ -88,17 +92,32 @@ public class MyUserDetailsService implements UserDetailsService {
 
             Address a3 = new Address();
             a3.setMyUser(userRepo.findUserByID(u.getID()));
+            a3.setCity(newUserDTO.getCity_billing());
             a3.setPostCode(newUserDTO.getPostCode_billing());
             a3.setSimpleAddress(newUserDTO.getAddress_billing());
             a3.setComment(newUserDTO.getComment_billing());
             a3.setAddressType(AddressType.BILLING_ADDRESS);
 
+            if (a2.getPostCode() == null && a2.getSimpleAddress() == null && a2.getComment() == null && a2.getCity() == null) {
+                a2.setPostCode(a.getPostCode());
+                a2.setSimpleAddress(a.getSimpleAddress());
+                a2.setComment(a.getComment());
+                a2.setCity(a.getCity());
+            }
+
+            if (a3.getPostCode() == null && a3.getSimpleAddress() == null && a3.getComment() == null && a3.getCity() == null) {
+                a3.setPostCode(a.getPostCode());
+                a3.setSimpleAddress(a.getSimpleAddress());
+                a3.setComment(a.getComment());
+                a3.setCity(a.getCity());
+            }
+
+
             addressRepo.saveAndFlush(a);
             addressRepo.saveAndFlush(a2);
             addressRepo.saveAndFlush(a3);
 
-        }
-        else {
+        } else {
             System.out.println("mar van ilyen user");
             throw new UserExistException();
         }
@@ -118,8 +137,10 @@ public class MyUserDetailsService implements UserDetailsService {
 
     public void changePhonenumber(NewPhoneNumberDTO newPhoneNumberDTO) {
         MyUser myUser = userRepo.findUserByID(newPhoneNumberDTO.getUserID());
-        myUser.setPhoneNumber(newPhoneNumberDTO.getPhoneNumber());
-        userRepo.saveAndFlush(myUser);
+        if (myUser.isActive()) {
+            myUser.setPhoneNumber(newPhoneNumberDTO.getPhoneNumber());
+            userRepo.saveAndFlush(myUser);
+        }
     }
 
 
@@ -142,9 +163,11 @@ public class MyUserDetailsService implements UserDetailsService {
         MyUser m = userRepo.findUserByID(ID);
         List<Address> list = addressRepo.findAddressByMyUserID(ID);
 
-        Address a1 = list.stream().filter(a -> a.getAddressType() == AddressType.HOME_ADDRESS).collect(Collectors.toList()).get(0);
-        Address a2 = list.stream().filter(b -> b.getAddressType() == AddressType.DELIVERY_ADDRESS).collect(Collectors.toList()).get(0);
-        Address a3 = list.stream().filter(c -> c.getAddressType() == AddressType.BILLING_ADDRESS).collect(Collectors.toList()).get(0);
+
+
+       // Address a1 = list.stream().filter(a -> a.getAddressType() == AddressType.HOME_ADDRESS).collect(Collectors.toList()).get(0);
+        //Address a2 = list.stream().filter(a -> a.getAddressType() == AddressType.DELIVERY_ADDRESS).collect(Collectors.toList()).get(0);
+        //Address a3 = list.stream().filter(a -> a.getAddressType() == AddressType.BILLING_ADDRESS).collect(Collectors.toList()).get(0);
 
         //Address a2=addressRepo.findByAddressByTypeAndMyUserID(AddressType.DELIVERY_ADDRESS, ID);
         // Address a3=addressRepo.findByAddressByTypeAndMyUserID(AddressType.BILLING_ADDRESS, ID);
@@ -163,12 +186,9 @@ public class MyUserDetailsService implements UserDetailsService {
 
 
         jsonObj.put("user", r);
-        jsonObj.put("homeAddress", a1);
-        jsonObj.put("deliveryAddress", a2);
-        jsonObj.put("billingAddress", a3);
-
-//jsonObj.
-        //r.setMyAddressList(a.getMyUser().getMyAddressList());
+        jsonObj.put("homeAddress", list.get(0));
+        jsonObj.put("deliveryAddress", list.get(1));
+        jsonObj.put("billingAddress", list.get(2));
         return jsonObj;
     }
 
@@ -182,7 +202,6 @@ public class MyUserDetailsService implements UserDetailsService {
         MyUser myUser = userRepo.findUserByID(userID);
         return myUser.getUserRates();
     }
-
 
 
     public void updateResetPasswordToken(String token, long userID) throws Exception {
@@ -202,23 +221,17 @@ public class MyUserDetailsService implements UserDetailsService {
 
     public void updatePassword(MyUser myUser, String newPassword) {
         //BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-       // String encodedPassword = passwordEncoder.encode(newPassword);
+        // String encodedPassword = passwordEncoder.encode(newPassword);
         myUser.setPassword(newPassword);
 
         myUser.setResetPasswordToken(null);
         userRepo.save(myUser);
     }
 
-
-
-
-
-
-
-
-
-
-
+    public boolean isStillActive(String username) {
+        MyUser myUser = userRepo.findUserByUsername(username);
+        return myUser.isActive();
+    }
 
 
     public JSONObject returnForSuccedLogin(String firstName, String role, String username, long ID) {
