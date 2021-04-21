@@ -1,3 +1,6 @@
+///ready and works fine
+
+
 package webshop.Services;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -5,12 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import webshop.Model.Slogan;
 import webshop.Repository.SloganRepo;
-
+import java.util.Collections;
 import java.util.List;
-import java.util.Random;
-
-//TODO ID on heroku server generated 5 multipls
-//random slogan choice is taylormade for tgis bug
 
 
 @Service
@@ -24,16 +23,12 @@ public class SloganService {
     }
 
     public Slogan getRandomSlogan() {
-        int size = sloganRepo.findAll().size();
-
-        if (size != 0) {
-            Random r = new Random();
-            long i = r.nextInt(size);
-            i=i*10+5;
-           //Slogan s = sloganRepo.findSloganByID(4);
-            System.out.println(i);
-            return sloganRepo.findSloganByID(i);
-        } else {
+       List<Slogan>list= sloganRepo.findSlogansByActiveIsTrue();
+        if(list.size()!=0){
+       Collections.shuffle(list);
+            return list.get(0);
+        }
+        else {
             return new Slogan("nincs megjelenitheto szoveg");
         }
 
@@ -46,7 +41,7 @@ public class SloganService {
     }
 
     public void removeSlogan(long ID) {
-        Slogan s = new Slogan();
+        Slogan s =sloganRepo.findSloganByID(ID);
         s.setActive(false);
         sloganRepo.saveAndFlush(s);
     }
