@@ -38,6 +38,7 @@ public class MyUser implements UserDetails {
     private String password;
     private long numberOfPurchase;
     private String resetPasswordToken;
+    private String userRates;
 
 
 
@@ -213,5 +214,13 @@ public class MyUser implements UserDetails {
 
     public void setRoleList(List<Role> roleList) {
         this.roleList = roleList;
+    }
+
+    public String getUserRates() {
+        return userRates;
+    }
+
+    public void setUserRates(String userRates) {
+        this.userRates = userRates;
     }
 }

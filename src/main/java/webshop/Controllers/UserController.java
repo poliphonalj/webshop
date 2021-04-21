@@ -7,6 +7,7 @@ package webshop.Controllers;
 //TODO vásárlásnál novelni a number of purchase erteket
 
 
+import net.bytebuddy.utility.RandomString;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,7 @@ import webshop.Services.AddressService;
 import webshop.Services.EmailService;
 import webshop.Services.MyUserDetailsService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
@@ -108,6 +110,63 @@ public class UserController {
         }
     }
 
+
+
+
+//1 kap egy emilt a token vegu linkkel-ok
+    //2.rabok eljut egy token vegu cimre
+    //itt a tokent at kell adni a  znek
+    //igy o geberál egy jelszo modosito oldalt
+    //ezen kitoltes utan visszajn a reste pw re egy request, benne a token es a pass es en azonositas utan atirom a jelszot ok
+
+
+
+    @PostMapping("/user/forgot_password")
+    public ResponseEntity<?> processForgotPassword(@RequestBody JSONObject jObj) {///userID van a reqben csak
+
+
+        long userID=Long.parseLong(jObj.get("userID").toString());
+        String token = RandomString.make(30);
+        System.out.println(token);
+        try {
+            myUserDetailsService.updateResetPasswordToken(token, userID);
+
+            String resetPasswordLink = "http://localhost:8080/user/reset_password?token=" + token;
+           emailService.forgotPassword(resetPasswordLink,userID);
+            return ResponseEntity.ok(new FeedbackToFrontend(true));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
+        }
+    }
+
+
+    @PostMapping("/user/reset_password")
+    public void processResetPassword(@RequestBody JSONObject jObj) {
+
+
+        String token = jObj.get("token").toString();
+        String password = jObj.get("password").toString();
+        MyUser myUser = myUserDetailsService.getByResetPasswordToken(token);
+
+        if (myUser == null) {
+            System.out.println("invalid token");
+
+        } else {
+            myUserDetailsService.updatePassword(myUser, password);
+            System.out.println("You have successfully changed your password.");
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
     @PostMapping("/user/forgetpassword")
     public ResponseEntity<?> forgetPassword(@RequestBody MyUser myUser) {
         try {
@@ -170,10 +229,29 @@ public class UserController {
 
     @GetMapping("/user/get/{ID}")
     public ResponseEntity<?> getUserByID(@PathVariable long ID) {
-
         try {
             JSONObject r = myUserDetailsService.getUserByID(ID);
             return ResponseEntity.ok().body(r);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
+        }
+    }
+
+    @PostMapping("/user/rate")
+    public ResponseEntity<?> rateTheUser(@RequestBody UserRatingDTO userRatingDTO) {
+        try {
+            myUserDetailsService.rateTheUser(userRatingDTO);
+            return ResponseEntity.ok().body(new FeedbackToFrontend(true));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
+        }
+    }
+
+    @GetMapping("/user/getRate/{userID}")
+    public ResponseEntity<?> getRateOfUser(@PathVariable long userID) {
+        try {
+             String rate=myUserDetailsService.getRateOfUser(userID);
+            return ResponseEntity.ok().body(rate);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
         }
