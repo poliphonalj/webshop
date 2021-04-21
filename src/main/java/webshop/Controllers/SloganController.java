@@ -2,10 +2,7 @@ package webshop.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import webshop.DTOs.ProductsForPromotionDTO;
 import webshop.Model.FeedbackToFrontend;
 import webshop.Model.Product.Category;
@@ -46,7 +43,7 @@ public class SloganController {
     }
 
     @PostMapping("/slogan/remove/{ID}") //remove a slogan from thee db
-    public ResponseEntity<?> removeSlogan(@RequestBody long ID ) {
+    public ResponseEntity<?> removeSlogan(@PathVariable long ID ) {
         try {
             sloganService.removeSlogan(ID);
             return ResponseEntity.ok(new FeedbackToFrontend(true));
