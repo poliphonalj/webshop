@@ -1,9 +1,5 @@
 package webshop.Controllers;
 
-//4.20.1134
-//kepes dto
-//email
-
 //TODO vásárlásnál novelni a number of purchase erteket
 
 
@@ -17,9 +13,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 import webshop.DTOs.*;
 import webshop.Model.FeedbackToFrontend;
@@ -28,8 +22,6 @@ import webshop.Services.AddressService;
 import webshop.Services.EmailService;
 import webshop.Services.MyUserDetailsService;
 
-import javax.servlet.http.HttpServletRequest;
-import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 
@@ -42,7 +34,6 @@ public class UserController {
     AuthenticationManager authenticationManager;
     AddressService addressService;
     EmailService emailService;
-
 
     @Autowired
     public UserController(MyUserDetailsService myUserDetailsService, AuthenticationManager authenticationManager,
@@ -57,24 +48,34 @@ public class UserController {
     ///This method deals with the user authentication.
     ///It is also responsible for setting the lastTimeLoggedIn field.
 
+    //ok-csak az aktivak lephetnek be
     @PostMapping("/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequestDTO authenticationRequestDTO) {
         try {
-            Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequestDTO.getUsername(),
-                    authenticationRequestDTO.getPassword()));
-            UserDetails userDetails = (UserDetails) authenticate.getPrincipal();
-            String username = userDetails.getUsername();
-            MyUser myUser = myUserDetailsService.loadUserByUsername(username);
-            JSONObject jObj = myUserDetailsService.returnForSuccedLogin(myUser.getFirstName(),
-                    ((List) (authenticate.getAuthorities())).get(0).toString(),
-                    username, myUser.getID());
+            String u = authenticationRequestDTO.getUsername();
+            if (myUserDetailsService.isStillActive(u)) {
+                Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequestDTO.getUsername(),
+                        authenticationRequestDTO.getPassword()));
 
-            return ResponseEntity.ok().body(jObj);
+                UserDetails userDetails = (UserDetails) authenticate.getPrincipal();
+                String username = userDetails.getUsername();
+                MyUser myUser = myUserDetailsService.loadUserByUsername(username);
+                JSONObject jObj = myUserDetailsService.returnForSuccedLogin(myUser.getFirstName(),
+                        ((List) (authenticate.getAuthorities())).get(0).toString(),
+                        username, myUser.getID());
+
+                return ResponseEntity.ok().body(jObj);
+            } else {
+                return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
+            }
         } catch (BadCredentialsException e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
         }
     }
 
+    //ok-nezi hogy van e mar letezo user ilyen usernevevn
+    //ha nincs kitoltve a delivery vagy billing addressnel egy sor
+    //azaz a field erteke null, akkor automatikusan a home address erteket adja nekik
     @PostMapping("/user/new")
     public ResponseEntity<?> addUser(@RequestBody NewUserDTO newUserDTO) {
         try {
@@ -87,8 +88,10 @@ public class UserController {
         }
     }
 
+
+    //ok
     @PostMapping("/user/remove/{ID}")
-    public ResponseEntity<?> removeUser(@RequestBody long ID) {
+    public ResponseEntity<?> removeUser(@PathVariable long ID) {
         try {
             myUserDetailsService.removeUser(ID);
             return ResponseEntity.ok(new FeedbackToFrontend(true));
@@ -97,6 +100,8 @@ public class UserController {
         }
     }
 
+
+    //ok
     @PostMapping("/user/modify/password")
     public ResponseEntity<?> changePassword(@RequestBody NewPasswordDTO newPasswordDTO) {
         try {
@@ -111,8 +116,6 @@ public class UserController {
     }
 
 
-
-
 //1 kap egy emilt a token vegu linkkel-ok
     //2.rabok eljut egy token vegu cimre
     //itt a tokent at kell adni a  znek
@@ -120,19 +123,18 @@ public class UserController {
     //ezen kitoltes utan visszajn a reste pw re egy request, benne a token es a pass es en azonositas utan atirom a jelszot ok
 
 
-
     @PostMapping("/user/forgot_password")
     public ResponseEntity<?> processForgotPassword(@RequestBody JSONObject jObj) {///userID van a reqben csak
 
 
-        long userID=Long.parseLong(jObj.get("userID").toString());
+        long userID = Long.parseLong(jObj.get("userID").toString());
         String token = RandomString.make(30);
         System.out.println(token);
         try {
             myUserDetailsService.updateResetPasswordToken(token, userID);
 
             String resetPasswordLink = "http://localhost:8080/user/reset_password?token=" + token;
-           emailService.forgotPassword(resetPasswordLink,userID);
+            emailService.forgotPassword(resetPasswordLink, userID);
             return ResponseEntity.ok(new FeedbackToFrontend(true));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
@@ -158,15 +160,6 @@ public class UserController {
     }
 
 
-
-
-
-
-
-
-
-
-
     @PostMapping("/user/forgetpassword")
     public ResponseEntity<?> forgetPassword(@RequestBody MyUser myUser) {
         try {
@@ -180,11 +173,10 @@ public class UserController {
         }
     }
 
-
+    //ok
     @PostMapping("/user/modify/phonenumber")
     public ResponseEntity<?> changePhoneNumber(@RequestBody NewPhoneNumberDTO newPhoneNumberDTO) {
         try {
-
             myUserDetailsService.changePhonenumber(newPhoneNumberDTO);
             return ResponseEntity.ok(new FeedbackToFrontend(true));
         } catch (Exception e) {
@@ -193,6 +185,7 @@ public class UserController {
     }
 
 
+    //ok
     @GetMapping("/user/list/actives")
     public ResponseEntity<?> listActiveUsers() {
         List<MyUser> list = myUserDetailsService.listActiveUsers();
@@ -204,6 +197,7 @@ public class UserController {
         return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
     }
 
+    //????
     @GetMapping("/user/list/actives/orderedByPurchase")
     public ResponseEntity<?> listActiveUsersInOrder() {
         List<MyUser> list = myUserDetailsService.listActiveUsersInOrder();
@@ -215,7 +209,7 @@ public class UserController {
         return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
     }
 
-
+    //ok
     @GetMapping("/user/list/all")
     public ResponseEntity<?> listAllUsers() {
         List<MyUser> list = myUserDetailsService.listAllUsers();
@@ -227,6 +221,7 @@ public class UserController {
         return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
     }
 
+    //ok
     @GetMapping("/user/get/{ID}")
     public ResponseEntity<?> getUserByID(@PathVariable long ID) {
         try {
@@ -236,7 +231,7 @@ public class UserController {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
         }
     }
-
+//ok
     @PostMapping("/user/rate")
     public ResponseEntity<?> rateTheUser(@RequestBody UserRatingDTO userRatingDTO) {
         try {
@@ -246,11 +241,11 @@ public class UserController {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
         }
     }
-
+//ok
     @GetMapping("/user/getRate/{userID}")
     public ResponseEntity<?> getRateOfUser(@PathVariable long userID) {
         try {
-             String rate=myUserDetailsService.getRateOfUser(userID);
+            String rate = myUserDetailsService.getRateOfUser(userID);
             return ResponseEntity.ok().body(rate);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
