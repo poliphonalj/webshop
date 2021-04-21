@@ -26,16 +26,13 @@ public class SloganService {
     public Slogan getRandomSlogan() {
         int size = sloganRepo.findAll().size();
 
-        if(size!=0){
+        if (size != 0) {
             Random r = new Random();
-            int i = r.nextInt(size);
-            i=i*10+5;
-            System.out.println(i);
-
-            return sloganRepo.findSloganByIDAndIsActiveTrue(i);
-
-        }
-        else{
+            long i = (long) r.nextInt(size);
+            i = i * 10 + 5;
+            Slogan s = sloganRepo.findSloganByID(i);
+            return s;
+        } else {
             return new Slogan("nincs megjelenitheto szoveg");
         }
 
@@ -53,7 +50,7 @@ public class SloganService {
         sloganRepo.saveAndFlush(s);
     }
 
-    public List<Slogan> listSlogan(){
+    public List<Slogan> listSlogan() {
         return sloganRepo.findAll();
     }
 
