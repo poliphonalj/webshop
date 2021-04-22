@@ -183,6 +183,7 @@ public class ProductController {
         // return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
     }
 
+//:)de ide kell meg teszt
 
     @PostMapping("/product/modifyProduct/{IDD}")
     public ResponseEntity<?> modify(@RequestBody Product product,@PathVariable Long IDD) {
