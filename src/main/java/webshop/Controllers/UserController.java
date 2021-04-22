@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import webshop.DTOs.*;
 import webshop.Model.FeedbackToFrontend;
+import webshop.Model.Product.Product;
 import webshop.Model.UsersandRole.MyUser;
 import webshop.Services.AddressService;
 import webshop.Services.EmailService;
@@ -251,4 +252,26 @@ public class UserController {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
         }
     }
+
+
+    @PostMapping("/user/modifyUser/{IDD}")
+    public ResponseEntity<?> modify(@RequestBody NewUserDTO myUser, @PathVariable Long IDD) {
+        try {
+            long Id=IDD;
+            myUserDetailsService.modifyUser(myUser, Id);
+            return ResponseEntity.ok(new FeedbackToFrontend(true));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
+        }
+    }
+
+
+
+
+
+
+
+
+
+
 }
