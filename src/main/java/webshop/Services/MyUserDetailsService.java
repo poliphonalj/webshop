@@ -29,10 +29,8 @@ import webshop.Repository.UserRepo;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -78,7 +76,7 @@ public class MyUserDetailsService implements UserDetailsService {
             a.setMyUser(userRepo.findUserByID(u.getID()));
             a.setCity(newUserDTO.getCity_home());
             a.setPostCode(newUserDTO.getPostCode_home());
-            a.setSimpleAddress(newUserDTO.getAddress_home());
+            a.setSimpleAddress(newUserDTO.getSimpleAddress_home());
             a.setComment(newUserDTO.getComment_home());
             a.setAddressType(AddressType.HOME_ADDRESS);
 
@@ -86,7 +84,7 @@ public class MyUserDetailsService implements UserDetailsService {
             a2.setMyUser(userRepo.findUserByID(u.getID()));
             a2.setCity(newUserDTO.getCity_delivery());
             a2.setPostCode(newUserDTO.getPostCode_delivery());
-            a2.setSimpleAddress(newUserDTO.getAddress_delivery());
+            a2.setSimpleAddress(newUserDTO.getSimpleAddress_delivery());
             a2.setComment(newUserDTO.getComment_delivery());
             a2.setAddressType(AddressType.DELIVERY_ADDRESS);
 
@@ -94,7 +92,7 @@ public class MyUserDetailsService implements UserDetailsService {
             a3.setMyUser(userRepo.findUserByID(u.getID()));
             a3.setCity(newUserDTO.getCity_billing());
             a3.setPostCode(newUserDTO.getPostCode_billing());
-            a3.setSimpleAddress(newUserDTO.getAddress_billing());
+            a3.setSimpleAddress(newUserDTO.getSimpleAddress_billing());
             a3.setComment(newUserDTO.getComment_billing());
             a3.setAddressType(AddressType.BILLING_ADDRESS);
 
@@ -164,8 +162,7 @@ public class MyUserDetailsService implements UserDetailsService {
         List<Address> list = addressRepo.findAddressByMyUserID(ID);
 
 
-
-       // Address a1 = list.stream().filter(a -> a.getAddressType() == AddressType.HOME_ADDRESS).collect(Collectors.toList()).get(0);
+        // Address a1 = list.stream().filter(a -> a.getAddressType() == AddressType.HOME_ADDRESS).collect(Collectors.toList()).get(0);
         //Address a2 = list.stream().filter(a -> a.getAddressType() == AddressType.DELIVERY_ADDRESS).collect(Collectors.toList()).get(0);
         //Address a3 = list.stream().filter(a -> a.getAddressType() == AddressType.BILLING_ADDRESS).collect(Collectors.toList()).get(0);
 
@@ -227,6 +224,51 @@ public class MyUserDetailsService implements UserDetailsService {
         myUser.setResetPasswordToken(null);
         userRepo.save(myUser);
     }
+
+    @Transactional
+    public void modifyUser(NewUserDTO myUser, long ID) {
+        MyUser m = userRepo.findUserByID(ID);
+        m.setFirstName(myUser.getFirstName());
+        m.setLastName(myUser.getLastName());
+        m.setPhoneNumber(myUser.getPhoneNumber());
+
+        userRepo.saveAndFlush(m);
+
+        List<Address> addressList= addressRepo.findAddressByMyUserID(ID);
+
+        Address a = addressList.stream().filter(address -> address.getAddressType()==AddressType.HOME_ADDRESS).collect(Collectors.toList()).get(0);
+        System.out.println(a.getPostCode()+"ddddd");
+        a.setMyUser(userRepo.findUserByID(m.getID()));
+        a.setCity(myUser.getCity_home());
+        a.setPostCode(myUser.getPostCode_home());
+        a.setSimpleAddress(myUser.getSimpleAddress_home());
+        a.setComment(myUser.getComment_home());
+        a.setAddressType(AddressType.HOME_ADDRESS);
+
+        //Address a2=addressRepo.findBydMyUserIDAndAddressType(ID, AddressType.DELIVERY_ADDRESS);
+        Address a2 = addressList.stream().filter(address -> address.getAddressType()==AddressType.DELIVERY_ADDRESS).collect(Collectors.toList()).get(0);
+        a2.setMyUser(userRepo.findUserByID(m.getID()));
+        a2.setCity(myUser.getCity_delivery());
+        a2.setPostCode(myUser.getPostCode_delivery());
+        a2.setSimpleAddress(myUser.getSimpleAddress_delivery());
+        a2.setComment(myUser.getComment_delivery());
+        a2.setAddressType(AddressType.DELIVERY_ADDRESS);
+
+       // Address a3=addressRepo.findBydMyUserIDAndAddressType(ID, AddressType.BILLING_ADDRESS);
+        Address a3 = addressList.stream().filter(address -> address.getAddressType()==AddressType.BILLING_ADDRESS).collect(Collectors.toList()).get(0);
+        a3.setMyUser(userRepo.findUserByID(m.getID()));
+        a3.setCity(myUser.getCity_billing());
+        a3.setPostCode(myUser.getPostCode_billing());
+        a3.setSimpleAddress(myUser.getSimpleAddress_billing());
+        a3.setComment(myUser.getComment_billing());
+        a3.setAddressType(AddressType.BILLING_ADDRESS);
+
+        addressRepo.saveAndFlush(a);
+        addressRepo.saveAndFlush(a2);
+        addressRepo.saveAndFlush(a3);
+
+    }
+
 
     public boolean isStillActive(String username) {
         MyUser myUser = userRepo.findUserByUsername(username);

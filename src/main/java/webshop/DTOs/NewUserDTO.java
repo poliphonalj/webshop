@@ -36,9 +36,9 @@ public class NewUserDTO {
     private String comment_home;
     private String comment_delivery;
     private String comment_billing;
-    private String address_home;//name+placeTypte+houseNumber
-    private String address_delivery;
-    private String address_billing;
+    private String simpleAddress_home;//name+placeTypte+houseNumber
+    private String simpleAddress_delivery;
+    private String simpleAddress_billing;
 
     private AddressType addressType;
     private MyUser myUser;
@@ -118,28 +118,28 @@ public class NewUserDTO {
         this.comment_billing = comment_billing;
     }
 
-    public String getAddress_home() {
-        return address_home;
+    public String getSimpleAddress_home() {
+        return simpleAddress_home;
     }
 
-    public void setAddress_home(String address_home) {
-        this.address_home = address_home;
+    public void setSimpleAddress_home(String simpleAddress_home) {
+        this.simpleAddress_home = simpleAddress_home;
     }
 
-    public String getAddress_delivery() {
-        return address_delivery;
+    public String getSimpleAddress_delivery() {
+        return simpleAddress_delivery;
     }
 
-    public void setAddress_delivery(String address_delivery) {
-        this.address_delivery = address_delivery;
+    public void setSimpleAddress_delivery(String simpleAddress_delivery) {
+        this.simpleAddress_delivery = simpleAddress_delivery;
     }
 
-    public String getAddress_billing() {
-        return address_billing;
+    public String getSimpleAddress_billing() {
+        return simpleAddress_billing;
     }
 
-    public void setAddress_billing(String address_billing) {
-        this.address_billing = address_billing;
+    public void setSimpleAddress_billing(String simpleAddress_billing) {
+        this.simpleAddress_billing = simpleAddress_billing;
     }
 
     public long getID() {
