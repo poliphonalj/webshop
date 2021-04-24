@@ -50,5 +50,6 @@ public class SloganService {
         return sloganRepo.findAll();
     }
 
+    //slogan visszaallitas
 
 }
