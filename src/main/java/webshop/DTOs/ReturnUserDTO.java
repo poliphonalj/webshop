@@ -125,4 +125,21 @@ public class ReturnUserDTO {
         this.role = role;
     }
 
+    @Override
+    public String toString() {
+        return
+                "\"ID\""+":" +"\""+ ID +"\""+","+
+                        "\"firstName\""+":" +"\""+ firstName +"\""+","+
+                        "\"lastName\""+":" +"\""+ lastName +"\""+","+
+                        "\"username\""+":" +"\""+ username +"\""+","+
+                        "\"phoneNumber\""+":" +"\""+ phoneNumber +"\""+","+
+                        "\"lastLoggedInAt\""+":" +"\""+ lastLoggedInAt +"\""+","+
+                        "\"lastPurchasedAt\""+":" +"\""+ lastPurchasedAt +"\""+","+
+                        "\"isActive\""+":" +"\""+ isActive +"\""+","+
+                        "\"locale\""+":" +"\""+ locale +"\""+","+
+                        "\"numberOfPurchase\""+":" +"\""+ numberOfPurchase +"\""+","+
+                        "\"role\""+":" +"\""+ role.getRoleName() +"\"";
+
+
+    }
 }
