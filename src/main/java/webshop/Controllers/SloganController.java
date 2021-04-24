@@ -63,5 +63,15 @@ public class SloganController {
         return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
     }
 
+    @PostMapping("/slogan/reactivate/{sloganID}")
+    public ResponseEntity<?> listSlogan(@PathVariable long sloganID ) {
+       // sloganService.reactivate(sloganID);
 
-}
+            return ResponseEntity.ok().body(new FeedbackToFrontend(true));
+        }
+       // return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
+    }
+    //slogan/reactivate/ID
+
+
+
