@@ -37,7 +37,7 @@ public class ProductController {
         return "majom";
     }
 
-    @PostMapping("/product/newfull")
+   // @PostMapping("/product/newfull")
     public ResponseEntity<?> newProduct(@RequestBody NewProductDTO newProductDTO) {
         try {
                 //productService.newProduct(newProductDTO);
