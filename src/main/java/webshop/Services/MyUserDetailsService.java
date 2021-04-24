@@ -185,7 +185,7 @@ public class MyUserDetailsService implements UserDetailsService {
         r.setPhoneNumber(m.getPhoneNumber());
 
 
-       String sum="{ list: [{"+
+       String sum="{ \"list\": [{"+
                r.toString()+list.get(0).toString()+list.get(1).toString()+list.get(2).toString()+
                "}]}";
         return sum;
