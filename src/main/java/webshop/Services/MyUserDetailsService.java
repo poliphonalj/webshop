@@ -100,17 +100,17 @@ public class MyUserDetailsService implements UserDetailsService {
             a3.setAddressType(AddressType.BILLING_ADDRESS);
 
             if (a2.getPostCode() == null && a2.getSimpleAddress() == null && a2.getComment() == null && a2.getCity() == null) {
-                a2.setPostCode(a.getPostCode());
-                a2.setSimpleAddress(a.getSimpleAddress());
-                a2.setComment(a.getComment());
-                a2.setCity(a.getCity());
+                a2.setPostCode(newUserDTO.getPostCode_home());
+                a2.setSimpleAddress(newUserDTO.getSimpleAddress_home());
+                a2.setComment(newUserDTO.getComment_home());
+                a2.setCity(newUserDTO.getCity_home());
             }
 
             if (a3.getPostCode() == null && a3.getSimpleAddress() == null && a3.getComment() == null && a3.getCity() == null) {
-                a3.setPostCode(a.getPostCode());
-                a3.setSimpleAddress(a.getSimpleAddress());
-                a3.setComment(a.getComment());
-                a3.setCity(a.getCity());
+                a3.setPostCode(newUserDTO.getPostCode_home());
+                a3.setSimpleAddress(newUserDTO.getSimpleAddress_home());
+                a3.setComment(newUserDTO.getComment_home());
+                a3.setCity(newUserDTO.getCity_home());
             }
 
 
