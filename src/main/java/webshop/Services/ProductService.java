@@ -36,7 +36,7 @@ public class ProductService {
 
 
     @Transactional
-    public void addProduct(String productName, String productDescription, long productPrice, Unit productUnit,
+    public long addProduct(String productName, String productDescription, long productPrice, Unit productUnit,
                            Locale productLocale, boolean productIsInPromotion,
                            boolean productIsOutOfStock, boolean productIsOutOfSeason,
                            long categoryID
@@ -60,6 +60,8 @@ public class ProductService {
             p.setCategory(cat);
             p.setCategoryID(cat.getID());
             productRepo.saveAndFlush(p);
+
+            return p.getID();
         }
     }
 

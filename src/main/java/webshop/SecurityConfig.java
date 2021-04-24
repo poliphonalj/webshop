@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import webshop.Services.MyUserDetailsService;
 
 import java.util.Arrays;
@@ -32,6 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(myUserDetailsService);
@@ -46,7 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors()         //kell az angularral valo osszekapcsolodashoz
                 .and().csrf().disable().
-                authorizeRequests().antMatchers("/**","/time","/authenticate", "/v2/api-docs/**",
+                authorizeRequests().antMatchers("/**","/time","/authenticate","image/new", "/v2/api-docs/**",
                 "/swagger-resources/**",
                 "/swagger-ui.html",
                 "/v3/api-docs/**",
@@ -71,7 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
         configuration.setAllowCredentials(true);
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200", "https://farmfalatb.herokuapp.com"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:8080","http://localhost:63342", "https://farmfalatb.herokuapp.com"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST","DELETE","PUT","PATCH","HEAD","OPTIONS"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
