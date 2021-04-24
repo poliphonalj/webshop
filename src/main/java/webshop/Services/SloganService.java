@@ -50,6 +50,10 @@ public class SloganService {
         return sloganRepo.findAll();
     }
 
-    //slogan visszaallitas
+    public void reactivate(long ID){
+        Slogan s =sloganRepo.findSloganByID(ID);
+        s.setActive(true);
+        sloganRepo.saveAndFlush(s);
+    }
 
 }
