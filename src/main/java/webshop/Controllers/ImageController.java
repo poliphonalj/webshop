@@ -5,10 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import webshop.DTOs.ImageDTO;
 import webshop.Model.FeedbackToFrontend;
 import webshop.Model.Product.Image;
 import webshop.Services.ImageService;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @RestController
@@ -19,7 +21,19 @@ public class ImageController {
     public ImageController(ImageService imageservice) {
         this.imageservice = imageservice;
     }
-    @PostMapping("/image/new")
+
+
+
+
+
+    @CrossOrigin
+   @PostMapping("/image/new")
+    public @ResponseBody String newImage(@RequestParam MultipartFile file) throws IOException {
+        imageservice.addImage(file,1);
+        return "HELLO TEST : "+file.getSize();
+    }
+
+        /* ez a jo
         public ResponseEntity<?> addImage(@RequestBody MultipartFile file, long productID) throws IOException {
            try{
             imageservice.addImage(file, productID);
@@ -27,8 +41,10 @@ public class ImageController {
            } catch (Exception e) {
                return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
            }
-    }
 
+
+    }
+*/
     @GetMapping("/image/get/{imageName}")
     public ResponseEntity<?> getImageByName(@PathVariable String imageName) throws IOException {
         try{
