@@ -13,6 +13,8 @@ package webshop.Services;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -31,6 +33,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -156,8 +159,8 @@ public class MyUserDetailsService implements UserDetailsService {
         return userRepo.findAll();
     }
 
-    public JSONObject getUserByID(long ID) {
-        JSONObject jsonObj = new JSONObject();
+    public String getUserByID(long ID) {
+
         MyUser m = userRepo.findUserByID(ID);
         List<Address> list = addressRepo.findAddressByMyUserID(ID);
 
@@ -182,11 +185,10 @@ public class MyUserDetailsService implements UserDetailsService {
         r.setPhoneNumber(m.getPhoneNumber());
 
 
-        jsonObj.put("user", r);
-        jsonObj.put("homeAddress", list.get(0));
-        jsonObj.put("deliveryAddress", list.get(1));
-        jsonObj.put("billingAddress", list.get(2));
-        return jsonObj;
+       String sum="{ list: [{"+
+               r.toString()+list.get(0).toString()+list.get(1).toString()+list.get(2).toString()+
+               "}]}";
+        return sum;
     }
 
     public void rateTheUser(UserRatingDTO u) {

@@ -4,6 +4,7 @@
 
 package webshop.Controllers;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,10 +53,17 @@ public class ProductController {
     @PostMapping("/product/new")
     public ResponseEntity<?> addProduct(@RequestBody Product product) throws ProductAddedException {//Spring converts JSON to user object following the fields
         try {
-            productService.addProduct(product.getName(), product.getDescription(), product.getPrice(), product.getUnit(),
+            long ID=productService.addProduct(product.getName(), product.getDescription(), product.getPrice(), product.getUnit(),
                     product.getLocale(), product.isInPromotion(), product.isOutOfStock(),
                     product.isOutOfSeason(), product.getCategoryID());
-            return ResponseEntity.ok(new FeedbackToFrontend(true));
+            HashMap<String, Long> hMap = new HashMap<>();
+            JSONObject j=new JSONObject();
+            j.put("successful",true);
+            j.put("id",ID);
+
+
+
+            return ResponseEntity.ok(j);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
         }

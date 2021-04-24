@@ -8,6 +8,7 @@ import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -223,10 +224,11 @@ public class UserController {
     }
 
     //ok
-    @GetMapping("/user/get/{ID}")
+    //egy stringet adok vissza, abbol epitem fel a jsond direktben
+    @GetMapping(value="/user/get/{ID}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getUserByID(@PathVariable long ID) {
         try {
-            JSONObject r = myUserDetailsService.getUserByID(ID);
+            String r = myUserDetailsService.getUserByID(ID);
             return ResponseEntity.ok().body(r);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
