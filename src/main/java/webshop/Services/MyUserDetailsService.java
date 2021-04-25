@@ -99,14 +99,14 @@ public class MyUserDetailsService implements UserDetailsService {
             a3.setComment(newUserDTO.getComment_billing());
             a3.setAddressType(AddressType.BILLING_ADDRESS);
 
-            if (a2.getPostCode() == null && a2.getSimpleAddress() == null && a2.getComment() == null && a2.getCity() == null) {
+            if (a2.getPostCode().equals("0") && a2.getSimpleAddress().equals("") && a2.getComment().equals("") && a2.getCity().equals("")) {
                 a2.setPostCode(newUserDTO.getPostCode_home());
                 a2.setSimpleAddress(newUserDTO.getSimpleAddress_home());
                 a2.setComment(newUserDTO.getComment_home());
                 a2.setCity(newUserDTO.getCity_home());
             }
 
-            if (a3.getPostCode() == null && a3.getSimpleAddress() == null && a3.getComment() == null && a3.getCity() == null) {
+            if (a3.getPostCode().equals("0") && a3.getSimpleAddress().equals("") && a3.getComment().equals("") && a3.getCity().equals("")) {
                 a3.setPostCode(newUserDTO.getPostCode_home());
                 a3.setSimpleAddress(newUserDTO.getSimpleAddress_home());
                 a3.setComment(newUserDTO.getComment_home());
@@ -231,7 +231,7 @@ public class MyUserDetailsService implements UserDetailsService {
     public void modifyUser(NewUserDTO myUser, long ID) {
         MyUser m = userRepo.findUserByID(ID);
         m.setFirstName(myUser.getFirstName());
-        m.setLastName(myUser.getLastName());
+         m.setLastName(myUser.getLastName());
         m.setPhoneNumber(myUser.getPhoneNumber());
 
         userRepo.saveAndFlush(m);
@@ -249,7 +249,7 @@ public class MyUserDetailsService implements UserDetailsService {
 
         //Address a2=addressRepo.findBydMyUserIDAndAddressType(ID, AddressType.DELIVERY_ADDRESS);
         Address a2 = addressList.stream().filter(address -> address.getAddressType() == AddressType.DELIVERY_ADDRESS).collect(Collectors.toList()).get(0);
-        if (a2.getPostCode() == null && a2.getCity() == null && a2.getComment() == null && a2.getSimpleAddress() == null) {
+        if (a2.getPostCode().equals("0") && a2.getCity().equals("") && a2.getComment().equals("") && a2.getSimpleAddress().equals("")) {
             a2.setCity(myUser.getCity_home());
             a2.setPostCode(myUser.getPostCode_home());
             a2.setSimpleAddress(myUser.getSimpleAddress_home());
@@ -266,7 +266,7 @@ public class MyUserDetailsService implements UserDetailsService {
         addressRepo.saveAndFlush(a2);
 
         Address a3 = addressList.stream().filter(address -> address.getAddressType() == AddressType.BILLING_ADDRESS).collect(Collectors.toList()).get(0);
-        if (a3.getPostCode() == null && a3.getCity() == null && a3.getComment() == null && a3.getSimpleAddress() == null) {
+        if (a3.getPostCode().equals("0") && a3.getCity().equals("") && a3.getComment().equals("") && a3.getSimpleAddress().equals("")) {
             a3.setCity(myUser.getCity_home());
             a3.setPostCode(myUser.getPostCode_home());
             a3.setSimpleAddress(myUser.getSimpleAddress_home());
