@@ -128,7 +128,7 @@ public class ReturnUserDTO {
     @Override
     public String toString() {
         return
-                "\"ID\""+":" +"\""+ ID +"\""+","+
+                "\"userID\""+":" +"\""+ ID +"\""+","+
                         "\"firstName\""+":" +"\""+ firstName +"\""+","+
                         "\"lastName\""+":" +"\""+ lastName +"\""+","+
                         "\"username\""+":" +"\""+ username +"\""+","+
