@@ -31,7 +31,7 @@ public class AddressService {
     //fekuk ir egy cimet
     //a request addressType mezojetol fuggoen ami az enumok erteket veszi fel
     public void addAddress(NewAddressDTO newAddressDTO) {
-        List<Address> addressList = addressRepo.findAddressByMyUserID(newAddressDTO.getUserID());
+        List<Address> addressList = addressRepo.findAddressByMyUserUserID(newAddressDTO.getUserID());
         Address a=null;
         if (newAddressDTO.getAddressType() == AddressType.HOME_ADDRESS) {
             a = addressList.stream().
@@ -54,7 +54,7 @@ public class AddressService {
         a.setSimpleAddress(newAddressDTO.getSimpleAddress());
         a.setComment(newAddressDTO.getComment());
         a.setAddressType(newAddressDTO.getAddressType());
-        a.setMyUser(userRepo.findUserByID(newAddressDTO.getUserID()));
+        a.setMyUser(userRepo.findUserByUserID(newAddressDTO.getUserID()));
         addressRepo.saveAndFlush(a);
     }
 
@@ -63,7 +63,7 @@ public class AddressService {
     }
 
     public Address getDeliveryAddressByUserID(long userID) {
-        List<Address> addressList = addressRepo.findAddressByMyUserID(userID);
+        List<Address> addressList = addressRepo.findAddressByMyUserUserID(userID);
         Address a = addressList.stream().
                 filter(address -> address.getAddressType() == AddressType.DELIVERY_ADDRESS).
                 collect(Collectors.toList()).

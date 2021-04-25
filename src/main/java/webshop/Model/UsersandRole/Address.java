@@ -18,7 +18,7 @@ public class Address {
 
     private String country;
     private String county;
-    private String postCode;
+    private long postCode;
     private String city;
     private String name;
     private String houseNumber;
@@ -32,7 +32,7 @@ public class Address {
     MyUser myUser;
 
     public Address() {
-
+        postCode = 0;
     }
 
 
@@ -52,11 +52,11 @@ public class Address {
         this.county = county;
     }
 
-    public String getPostCode() {
+    public long getPostCode() {
         return postCode;
     }
 
-    public void setPostCode(String postCode) {
+    public void setPostCode(long postCode) {
         this.postCode = postCode;
     }
 
@@ -133,7 +133,6 @@ public class Address {
     }
 
 
-
     @Override
     public String toString() {
         String postFix = null;
@@ -146,10 +145,10 @@ public class Address {
         }
 
         String stringToParse =
-               ","+ "\"city" + postFix + "\"" + ":" + "\"" + city + "\"" + "," +
-                "\"postCode" + postFix + "\"" + ":" + "\"" + postCode + "\"" + "," +
-                "\"simpleAddress" + postFix + "\"" + ":" + "\"" + simpleAddress + "\"" + "," +
-                "\"comment" + postFix + "\"" + ":" + "\"" + comment + "\"";
+                "," + "\"city" + postFix + "\"" + ":" + "\"" + city + "\"" + "," +
+                        "\"postCode" + postFix + "\"" + ":" + "\"" + postCode + "\"" + "," +
+                        "\"simpleAddress" + postFix + "\"" + ":" + "\"" + simpleAddress + "\"" + "," +
+                        "\"comment" + postFix + "\"" + ":" + "\"" + comment + "\"";
         return stringToParse;
     }
 }

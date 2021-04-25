@@ -4,13 +4,13 @@ import webshop.Model.UsersandRole.AddressType;
 
 public class NewAddressDTO {
     private long userID;
-    private String postCode;
+    private long postCode=0;
     private String simpleAddress;
     private String comment;
     private String city;
     private AddressType addressType;
 
-    public NewAddressDTO(long userID, String postCode, String simpleAddress, String comment, AddressType addressType, String city) {
+    public NewAddressDTO(long userID, long postCode, String simpleAddress, String comment, AddressType addressType, String city) {
         this.userID = userID;
         this.postCode = postCode;
         this.simpleAddress = simpleAddress;
@@ -30,11 +30,11 @@ public class NewAddressDTO {
         this.userID = userID;
     }
 
-    public String getPostCode() {
+    public long getPostCode() {
         return postCode;
     }
 
-    public void setPostCode(String postCode) {
+    public void setPostCode(long postCode) {
         this.postCode = postCode;
     }
 
