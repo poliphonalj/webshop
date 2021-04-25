@@ -22,9 +22,9 @@ public class NewUserDTO {
 
     private String country;
     private String county;
-    private String postCode_home;
-    private String postCode_delivery;
-    private String postCode_billing;
+    private long postCode_home;
+    private long postCode_delivery;
+    private long postCode_billing;
 
     private String city_home;
     private String city_delivery;
@@ -46,27 +46,27 @@ public class NewUserDTO {
     public NewUserDTO() {
     }
 
-    public String getPostCode_home() {
+    public long getPostCode_home() {
         return postCode_home;
     }
 
-    public void setPostCode_home(String postCode_home) {
+    public void setPostCode_home(long postCode_home) {
         this.postCode_home = postCode_home;
     }
 
-    public String getPostCode_delivery() {
+    public long getPostCode_delivery() {
         return postCode_delivery;
     }
 
-    public void setPostCode_delivery(String postCode_delivery) {
+    public void setPostCode_delivery(long postCode_delivery) {
         this.postCode_delivery = postCode_delivery;
     }
 
-    public String getPostCode_billing() {
+    public long getPostCode_billing() {
         return postCode_billing;
     }
 
-    public void setPostCode_billing(String postCode_billing) {
+    public void setPostCode_billing(long postCode_billing) {
         this.postCode_billing = postCode_billing;
     }
 
