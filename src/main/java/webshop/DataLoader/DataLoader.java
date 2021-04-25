@@ -144,14 +144,14 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
 
             Address a1=new Address();
             a1.setAddressType(AddressType.HOME_ADDRESS);
-            a1.setPostCode("1141");
+            a1.setPostCode(1141);
             a1.setCity("budapest");
             a1.setSimpleAddress("siraly utca 21");
             a1.setMyUser(sanyi);
 
             Address a2=new Address();
             a2.setAddressType(AddressType.DELIVERY_ADDRESS);
-            a2.setPostCode("2110");
+            a2.setPostCode(2110);
             a2.setCity("budapest");
             a2.setSimpleAddress("sarok ut 2");
             a2.setMyUser(sanyi);
@@ -159,21 +159,21 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
 
             Address a3=new Address();
             a3.setAddressType(AddressType.BILLING_ADDRESS);
-            a3.setPostCode("1111");
+            a3.setPostCode(1111);
             a3.setCity("budapest");
             a3.setSimpleAddress("bolonbika ut 2");
             a3.setMyUser(sanyi);
 
             Address a4=new Address();
             a4.setAddressType(AddressType.HOME_ADDRESS);
-            a4.setPostCode("1141");
+            a4.setPostCode(1141);
             a4.setCity("budapest");
             a4.setSimpleAddress("home utca 21");
             a4.setMyUser(sanyi2);
 
             Address a5=new Address();
             a5.setAddressType(AddressType.DELIVERY_ADDRESS);
-            a5.setPostCode("2110");
+            a5.setPostCode(2110);
             a5.setCity("budapest");
             a5.setSimpleAddress("deliveery ut 2");
             a5.setMyUser(sanyi2);
@@ -181,7 +181,7 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
 
             Address a6=new Address();
             a6.setAddressType(AddressType.BILLING_ADDRESS);
-            a6.setPostCode("1111");
+            a6.setPostCode(1111);
             a6.setCity("billingbudapest");
             a6.setSimpleAddress("billing ut 2");
             a6.setMyUser(sanyi2);
