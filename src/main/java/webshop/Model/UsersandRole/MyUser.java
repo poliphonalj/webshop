@@ -26,7 +26,7 @@ import java.util.Locale;
 public class MyUser implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long ID;
+    private long userID;
     private String firstName;
     private String lastName;
     private String username;
@@ -72,12 +72,12 @@ public class MyUser implements UserDetails {
 
 
 
-    public long getID() {
-        return ID;
+    public long getUserID() {
+        return userID;
     }
 
-    public void setID(long ID) {
-        this.ID = ID;
+    public void setUserID(long userID) {
+        this.userID = userID;
     }
 
     public void setPassword(String password) {

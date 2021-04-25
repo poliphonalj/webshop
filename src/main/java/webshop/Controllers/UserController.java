@@ -64,7 +64,7 @@ public class UserController {
                 MyUser myUser = myUserDetailsService.loadUserByUsername(username);
                 JSONObject jObj = myUserDetailsService.returnForSuccedLogin(myUser.getFirstName(),
                         ((List) (authenticate.getAuthorities())).get(0).toString(),
-                        username, myUser.getID());
+                        username, myUser.getUserID());
 
                 return ResponseEntity.ok().body(jObj);
             } else {

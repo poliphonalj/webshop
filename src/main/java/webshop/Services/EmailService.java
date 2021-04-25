@@ -35,7 +35,7 @@ public class EmailService {
     }
 
     public void newPassword(String password, long userID) throws MessagingException {
-        MyUser myUser=userRepo.findUserByID(userID);
+        MyUser myUser=userRepo.findUserByUserID(userID);
         String username=myUser.getUsername();
         String firstName=myUser.getFirstName();
 
@@ -53,7 +53,7 @@ public class EmailService {
 
     public void forgotPassword(String link, long userID) throws MessagingException {
         System.out.println(userID);
-        MyUser m=userRepo.findUserByID(userID);
+        MyUser m=userRepo.findUserByUserID(userID);
         String firstName=m.getFirstName();
         String username=m.getUsername();
         System.out.println("visszatert");
