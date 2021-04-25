@@ -124,18 +124,16 @@ public class UserController {
     //igy o geberál egy jelszo modosito oldalt
     //ezen kitoltes utan visszajn a reste pw re egy request, benne a token es a pass es en azonositas utan atirom a jelszot ok
 
-
+    //generates a token and send it in an email as a link
     @PostMapping("/user/forgot_password")
     public ResponseEntity<?> processForgotPassword(@RequestBody JSONObject jObj) {///userID van a reqben csak
-
-
         long userID = Long.parseLong(jObj.get("userID").toString());
         String token = RandomString.make(30);
         System.out.println(token);
         try {
-            myUserDetailsService.updateResetPasswordToken(token, userID);
+            myUserDetailsService.updateResetPasswordToken(token, userID);//saves the token into the db
 
-            String resetPasswordLink = "http://localhost:8080/user/reset_password?token=" + token;
+            String resetPasswordLink = "http://localhost:8080/user/reset_password?token=" + token;//generates a link and send it in email
             emailService.forgotPassword(resetPasswordLink, userID);
             return ResponseEntity.ok(new FeedbackToFrontend(true));
         } catch (Exception e) {
@@ -143,10 +141,9 @@ public class UserController {
         }
     }
 
-
+    //get the password and checks it and saves it to the db
     @PostMapping("/user/reset_password")
     public void processResetPassword(@RequestBody JSONObject jObj) {
-
 
         String token = jObj.get("token").toString();
         String password = jObj.get("password").toString();
@@ -161,19 +158,6 @@ public class UserController {
         }
     }
 
-
-    @PostMapping("/user/forgetpassword")
-    public ResponseEntity<?> forgetPassword(@RequestBody MyUser myUser) {
-        try {
-            //emailService.forgotPassword(myUser);
-            //vvvvvvvvvvvvvvvemilt kikuldeni!!!!!
-            //forgetpassword
-
-            return ResponseEntity.ok(new FeedbackToFrontend(true));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
-        }
-    }
 
     //ok
     @PostMapping("/user/modify/phonenumber")
@@ -225,7 +209,7 @@ public class UserController {
 
     //ok
     //egy stringet adok vissza, abbol epitem fel a jsond direktben
-    @GetMapping(value="/user/get/{ID}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/user/get/{ID}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getUserByID(@PathVariable long ID) {
         try {
             String r = myUserDetailsService.getUserByID(ID);
@@ -234,7 +218,8 @@ public class UserController {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
         }
     }
-//ok
+
+    //ok
     @PostMapping("/user/rate")
     public ResponseEntity<?> rateTheUser(@RequestBody UserRatingDTO userRatingDTO) {
         try {
@@ -244,7 +229,8 @@ public class UserController {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
         }
     }
-//ok
+
+    //ok
     @GetMapping("/user/getRate/{userID}")
     public ResponseEntity<?> getRateOfUser(@PathVariable long userID) {
         try {
@@ -255,25 +241,17 @@ public class UserController {
         }
     }
 
-//itt ha kitroli a szallitasi cimet akkor megkapja automatikusan a home ot mint a regisztracional?igennnn
+    //itt ha kitroli a szallitasi cimet akkor megkapja automatikusan a home ot mint a regisztracional?igennnn
     @PostMapping("/user/modifyUser/{IDD}")
     public ResponseEntity<?> modify(@RequestBody NewUserDTO myUser, @PathVariable Long IDD) {
         try {
-            long Id=IDD;
+            long Id = IDD;
             myUserDetailsService.modifyUser(myUser, Id);
             return ResponseEntity.ok(new FeedbackToFrontend(true));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
         }
     }
-
-
-
-
-
-
-
-
 
 
 }
