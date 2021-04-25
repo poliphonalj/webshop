@@ -5,7 +5,7 @@ import java.util.Locale;
 
 @Entity
 @Table(name = "order_items")
-public class Order_Item {
+public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long ID;
@@ -19,10 +19,10 @@ public class Order_Item {
     @ManyToOne
     private Order order;
 
-    public Order_Item() {
+    public OrderItem() {
     }
 
-    public Order_Item(String name, String description, long price, int quantity, Locale locale, boolean isInPromotion) {
+    public OrderItem(String name, String description, long price, int quantity, Locale locale, boolean isInPromotion) {
         this.name = name;
         this.description = description;
         this.price = price;
