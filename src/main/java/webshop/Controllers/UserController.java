@@ -255,7 +255,7 @@ public class UserController {
         }
     }
 
-
+//itt ha kitroli a szallitasi cimet akkor megkapja automatikusan a home ot mint a regisztracional?igennnn
     @PostMapping("/user/modifyUser/{IDD}")
     public ResponseEntity<?> modify(@RequestBody NewUserDTO myUser, @PathVariable Long IDD) {
         try {
