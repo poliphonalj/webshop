@@ -3,6 +3,12 @@ package webshop.Model.Order;
 import webshop.Model.UsersandRole.MyUser;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -19,16 +25,27 @@ public class Order {
     private long deliveryFee;
     private long productID;
     private String productName;
+    
+    @NotEmpty
+    //@Pattern(regexp = "kun.*")
     private String userFirstName;
+    @NotEmpty
     private String userLastName;
+    
+    @Email
+    @NotNull
     private String userEmail;
+    
     private String userPhone;
+    
+    @NotNull
     private String userAddress;
 
     @ManyToOne
     MyUser myUser;
 
     @OneToMany(mappedBy = "order")
+    @NotEmpty
     private List<OrderItem> ordersItemList;
 
     public LocalDateTime getOrderTime() {
