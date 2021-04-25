@@ -25,12 +25,14 @@ public class Address {
     private PlaceType placeType;    //enum
     private String comment;
     private String simpleAddress;    //name+placeTypte+houseNumber
-    private AddressType addressType;    //enum
+    private AddressType addressType;//enum
+
 
     @ManyToOne
     MyUser myUser;
 
     public Address() {
+
     }
 
 
@@ -129,6 +131,8 @@ public class Address {
     public void setMyUser(MyUser myUser) {
         this.myUser = myUser;
     }
+
+
 
     @Override
     public String toString() {
