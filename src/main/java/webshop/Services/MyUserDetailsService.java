@@ -151,8 +151,10 @@ public class MyUserDetailsService implements UserDetailsService {
         List<MyUser> list = userRepo.findAll();
         return userRepo.findAll();
     }
+//itt irok uj vegpontot
 
-    public String getUserByID(long ID) {
+
+    public String getUserByID(long ID) {//itt az aktiv es nem aktiv kodot is visszaadni
 
         MyUser m = userRepo.findUserByUserID(ID);
         List<Address> list = addressRepo.findAddressByMyUserUserID(ID);
@@ -242,7 +244,7 @@ public class MyUserDetailsService implements UserDetailsService {
 
         //Address a2=addressRepo.findBydMyUserIDAndAddressType(ID, AddressType.DELIVERY_ADDRESS);
         Address a2 = addressList.stream().filter(address -> address.getAddressType() == AddressType.DELIVERY_ADDRESS).collect(Collectors.toList()).get(0);
-        if ( a2.getPostCode()==0&& a2.getCity()==null && a2.getComment()==null && a2.getSimpleAddress()==null) {
+        if ( a2.getPostCode()==0 && a2.getCity()==null && a2.getComment()==null && a2.getSimpleAddress()==null) {
             a2.setCity(myUser.getCity_home());
             a2.setPostCode(myUser.getPostCode_home());
             a2.setSimpleAddress(myUser.getSimpleAddress_home());
@@ -250,10 +252,10 @@ public class MyUserDetailsService implements UserDetailsService {
         }
         else {
             a2.setMyUser(userRepo.findUserByUserID(m.getUserID()));
-            a2.setCity(myUser.getCity_delivery());
-            a2.setPostCode(myUser.getPostCode_delivery());
-            a2.setSimpleAddress(myUser.getSimpleAddress_delivery());
-            a2.setComment(myUser.getComment_delivery());
+            a2.setCity(a.getCity());
+            a2.setPostCode(a.getPostCode());
+            a2.setSimpleAddress(a.getSimpleAddress());
+            a2.setComment(a.getComment());
             a2.setAddressType(AddressType.DELIVERY_ADDRESS);
         }
         addressRepo.saveAndFlush(a2);
@@ -267,10 +269,10 @@ public class MyUserDetailsService implements UserDetailsService {
         }
         else {
             a3.setMyUser(userRepo.findUserByUserID(m.getUserID()));
-            a3.setCity(myUser.getCity_billing());
-            a3.setPostCode(myUser.getPostCode_billing());
-            a3.setSimpleAddress(myUser.getSimpleAddress_billing());
-            a3.setComment(myUser.getComment_billing());
+            a3.setCity(a.getCity());
+            a3.setPostCode(a.getPostCode());
+            a3.setSimpleAddress(a.getSimpleAddress());
+            a3.setComment(a.getComment());
             a3.setAddressType(AddressType.BILLING_ADDRESS);
         }
         addressRepo.saveAndFlush(a3);

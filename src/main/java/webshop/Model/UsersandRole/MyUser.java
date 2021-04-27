@@ -9,6 +9,8 @@ It even connects to the address table with a one to many relation.
 package webshop.Model.UsersandRole;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
+
 
 @Entity
 @Table(name="users")
@@ -35,6 +38,7 @@ public class MyUser implements UserDetails {
     private LocalDateTime lastPurchasedAt;
     private boolean isActive;
     private Locale locale;
+    @JsonIgnore
     private String password;
     private long numberOfPurchase;
     private String resetPasswordToken;

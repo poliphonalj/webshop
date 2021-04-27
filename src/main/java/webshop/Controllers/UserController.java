@@ -3,6 +3,7 @@ package webshop.Controllers;
 //TODO vásárlásnál novelni a number of purchase erteket
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import net.bytebuddy.utility.RandomString;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -197,6 +198,7 @@ public class UserController {
 
     //ok
     @GetMapping("/user/list/all")
+
     public ResponseEntity<?> listAllUsers() {
         List<MyUser> list = myUserDetailsService.listAllUsers();
         if (!(list.isEmpty())) {
@@ -206,6 +208,11 @@ public class UserController {
         }
         return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
     }
+
+
+   // user/getfull/id  full usert visszaad kiv a jelszot listaban kivenni a jelszot
+
+
 
     //ok
     //egy stringet adok vissza, abbol epitem fel a jsond direktben

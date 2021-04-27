@@ -1,5 +1,6 @@
 package webshop.DTOs;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import webshop.Model.UsersandRole.*;
 
 import java.time.LocalDateTime;
