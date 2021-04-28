@@ -25,8 +25,8 @@ public class DeliveryService {
 
         //hetfon 10 utan leadott rendeles kiszallitasa csut v szombat
         else if (l.getDayOfWeek() == DayOfWeek.MONDAY && l.getHour() > 9) {
-            localDateTimeList.add(l.plusDays(2));
-            localDateTimeList.add(l.plusDays(4));
+            localDateTimeList.add(l.plusDays(3));
+            localDateTimeList.add(l.plusDays(5));
          return   convertLocalDatetimeToDeliveryDate(localDateTimeList);
         }
 
@@ -45,10 +45,10 @@ public class DeliveryService {
          return   convertLocalDatetimeToDeliveryDate(localDateTimeList);
         }
 
-        //szerdan 10 utan leadott rendeles kiszallitasa csut v szombat
+        //szerdan 10 utan leadott rendeles kiszallitasa szombat  v kedd
         else if (l.getDayOfWeek() == DayOfWeek.WEDNESDAY && l.getHour() > 9) {
-            localDateTimeList.add(l.plusDays(2));
-            localDateTimeList.add(l.plusDays(4));
+            localDateTimeList.add(l.plusDays(3));
+            localDateTimeList.add(l.plusDays(6));
          return   convertLocalDatetimeToDeliveryDate(localDateTimeList);
         }
 
@@ -67,14 +67,18 @@ public class DeliveryService {
         }
 
         //pentek10 utan leadott rendeles kiszallitasa kedd v csut
-        else if (l.getDayOfWeek() == DayOfWeek.WEDNESDAY && l.getHour() > 9) {
+        else if (l.getDayOfWeek() == DayOfWeek.FRIDAY && l.getHour() > 9) {
             localDateTimeList.add(l.plusDays(4));
             localDateTimeList.add(l.plusDays(6));
         return     convertLocalDatetimeToDeliveryDate(localDateTimeList);
+
+        //szombaton leadott rendeles kedd v csut
         } else if (l.getDayOfWeek() == DayOfWeek.SATURDAY) {
             localDateTimeList.add(l.plusDays(3));
             localDateTimeList.add(l.plusDays(5));
          return    convertLocalDatetimeToDeliveryDate(localDateTimeList);
+
+         //vasarnap leadott rendeles kedd v csut
         } else if (l.getDayOfWeek() == DayOfWeek.SUNDAY) {
             localDateTimeList.add(l.plusDays(2));
             localDateTimeList.add(l.plusDays(4));
@@ -89,6 +93,7 @@ public class DeliveryService {
             int year = actualLocalDateTime.getYear();
             int month = actualLocalDateTime.getMonthValue();
             int dayOfTheWeek = actualLocalDateTime.getDayOfWeek().getValue();
+            int dayOftheMonth= actualLocalDateTime.getDayOfMonth();
             String day=null;
             String honap=null;
 
@@ -154,7 +159,7 @@ public class DeliveryService {
                     honap = "december";
                     break;
             }
-         DeliveryDate d=new DeliveryDate(year,honap,dayOfTheWeek,day)   ;
+         DeliveryDate d=new DeliveryDate(year,honap,dayOftheMonth,day)   ;
            returnList.add(d);
         }
     return returnList;
