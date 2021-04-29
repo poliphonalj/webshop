@@ -23,12 +23,23 @@ public class DeliveryController {
         this.deliveryService = deliveryService;
     }
 
+//egyzer az elejen
+    @GetMapping("/delivery/start")
+    public ResponseEntity<?> start() {
+        try {
+            deliveryService.setUp();///ezt az idozito csinalja igazibol
+            return ResponseEntity.ok(new FeedbackToFrontend(true));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
+        }
+    }
 
-    //eloszor ezt kell futtatni
+
+    //majd ezt kell futtatni
     @GetMapping("/delivery/GetNextPossibles")
     public ResponseEntity<?> getNext2DaysAndPossibleGaps() {
         try {
-            deliveryService.setUp();///ezt az idozito csinalja igazibol
+            //deliveryService.setUp();///ezt az idozito csinalja igazibol
             return ResponseEntity.ok(deliveryService.getAvailableDeliveries());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));

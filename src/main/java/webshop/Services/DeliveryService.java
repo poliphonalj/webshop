@@ -224,7 +224,7 @@ public class DeliveryService {
                     break;
             }
             DeliveryDay d = new DeliveryDay(year, honap, dayOftheMonth, day);
-            deliveryDayRepo.saveAndFlush(d);
+
 
             DeliveryGaps gap1 = new DeliveryGaps(8);
             gap1.setDeliveryDay(d);
@@ -247,6 +247,21 @@ public class DeliveryService {
             DeliveryGaps gap7 = new DeliveryGaps(20);
             gap7.setDeliveryDay(d);
 
+
+            List<DeliveryGaps>gapList=new ArrayList<>();
+            gapList.add(gap1);
+            gapList.add(gap2);
+            gapList.add(gap3);
+            gapList.add(gap4);
+            gapList.add(gap5);
+            gapList.add(gap6);
+            gapList.add(gap7);
+
+
+
+           d.setListOfGaps(gapList);
+
+            deliveryDayRepo.saveAndFlush(d);
             deliveryGapsRepo.saveAndFlush(gap1);
             deliveryGapsRepo.saveAndFlush(gap2);
             deliveryGapsRepo.saveAndFlush(gap3);
