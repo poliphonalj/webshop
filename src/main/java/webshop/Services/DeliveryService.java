@@ -50,7 +50,7 @@ public class DeliveryService {
 
     //returns the available days and gaps
     public List<DeliveryDay> getAvailableDeliveries() {
-        //csak az akivakat kene
+        //mutatja az aktivat es apasszivat is
         List<DeliveryDay> list = deliveryDayRepo.findAll();
         return list;
     }
@@ -58,8 +58,13 @@ public class DeliveryService {
     //books a day and gap and updates the gaps counter
     @Transactional
     public void book(long deliveryDayID, long deliveryGapsID, long orderID) {
-        //orderidba betenni
+        //orderidba betenne
+
+        //a 8as gaptol mar a 2 napra kell betenni
+
+
         DeliveryGaps dGaps = deliveryGapsRepo.findDeliveryGapsByDeliveryGapsIDAndDeliveryDayDeliveryDayID(deliveryGapsID, deliveryDayID);
+
         long counter = dGaps.getCounter();
         counter++;
 
