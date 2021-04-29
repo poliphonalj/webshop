@@ -1,6 +1,7 @@
 //az entitasokbol letrejott db bol le lehet kerdezni ok
 //de beirashoz mar kell a db datasource url
 
+//TODO tremek torles
 
 package webshop.Controllers;
 

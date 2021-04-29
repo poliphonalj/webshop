@@ -2,17 +2,13 @@ package webshop.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-import webshop.Model.DeliveryDate;
+import org.springframework.web.bind.annotation.*;
+import webshop.Model.DeliveryDay;
+import webshop.Model.DeliveryGaps;
 import webshop.Model.FeedbackToFrontend;
 import webshop.Services.DeliveryService;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -21,29 +17,33 @@ import java.util.List;
 @RestController
 public class DeliveryController {
     DeliveryService deliveryService;
+
     @Autowired
     public DeliveryController(DeliveryService deliveryService) {
         this.deliveryService = deliveryService;
     }
 
-    @GetMapping("/delivery/nextTwo")
-    public ResponseEntity<?> next2Days( ) {
+
+    //eloszor ezt kell futtatni
+    @GetMapping("/delivery/GetNextPossibles")
+    public ResponseEntity<?> getNext2DaysAndPossibleGaps() {
         try {
-           List<DeliveryDate> l= deliveryService.nextTwoDeliveryDays();
-
-           HashMap<String, List<DeliveryDate>>hmap=new HashMap<>();
-            hmap.put("list",l);
-
-           return ResponseEntity.ok(hmap);
+            deliveryService.setUp();///ezt az idozito csinalja igazibol
+            return ResponseEntity.ok(deliveryService.getAvailableDeliveries());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
         }
     }
 
-
-    @PostMapping("/delivery/setTime")
-    public ResponseEntity<?> saveDeliveryTime(@RequestBody LocalDateTime l, long orderID) {
+//majd ezt
+    @PostMapping("/delivery/BookADelivery")
+    public ResponseEntity<?> saveDeliveryTime(@RequestParam long deliveryDayID, long deliveryGapsID, long orderID) {
         try {
+//long deliveryDayID=deliveryDay.getDeliveryDayID();
+//long deliveryGapsID=deliveryGaps.getDeliveryGapsID();
+
+deliveryService.book(deliveryDayID, deliveryGapsID, orderID);
+
             //vajon az ordernek van delivery time ja? e akkor mi az az orddertime
             // ezt megkersdezni a lazstol holnap
             //amugy meg egy szervizol kikerni az ordert es beltolteni a delivery timot
