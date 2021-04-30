@@ -1,4 +1,4 @@
-package webshop.Services;
+/*package webshop.Services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -285,3 +285,4 @@ public class DeliveryService {
 
 }
 
+*/

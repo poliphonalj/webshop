@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface DeliveryGapsRepo extends JpaRepository<DeliveryGaps, Long> {
     //DeliveryGaps findDeliveryGapsByDeliveryDayDeliveryDayID(long deliveryDayID);
-DeliveryGaps findDeliveryGapsByDeliveryGapsIDAndDeliveryDayDeliveryDayID(long deliveryGapsID, long deliveryDayID);
+//DeliveryGaps findDeliveryGapsByDeliveryGapsIDAndDeliveryDayDeliveryDayID(long deliveryGapsID, long deliveryDayID);
    // List<DeliveryGaps> findAllByDeliveryDayDeliveryDayIDAndIsAvailableTrue(long deliveryDayID);
 }
