@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import webshop.Model.DeliveryDay;
 import webshop.Model.DeliveryGaps;
 import webshop.Model.FeedbackToFrontend;
-//import webshop.Services.DeliveryService;
+import webshop.Services.DeliveryService;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -16,18 +16,18 @@ import java.util.List;
 
 @RestController
 public class DeliveryController {
-   // DeliveryService deliveryService;
+    DeliveryService deliveryService;
 
     @Autowired
-   // public DeliveryController(DeliveryService deliveryService) {
-      //  this.deliveryService = deliveryService;
-  //  }
+    public DeliveryController(DeliveryService deliveryService) {
+        this.deliveryService = deliveryService;
+    }
 
 //egyzer az elejen
     @GetMapping("/delivery/start")
     public ResponseEntity<?> start() {
         try {
-           // deliveryService.setUp();///ezt az idozito csinalja igazibol
+            deliveryService.setUp();///ezt az idozito csinalja igazibol
             return ResponseEntity.ok(new FeedbackToFrontend(true));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
@@ -40,8 +40,7 @@ public class DeliveryController {
     public ResponseEntity<?> getNext2DaysAndPossibleGaps() {
         try {
             //deliveryService.setUp();///ezt az idozito csinalja igazibol
-           // return ResponseEntity.ok(deliveryService.getAvailableDeliveries());
-            return null;
+            return ResponseEntity.ok(deliveryService.getAvailableDeliveries());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
         }
@@ -54,7 +53,7 @@ public class DeliveryController {
 //long deliveryDayID=deliveryDay.getDeliveryDayID();
 //long deliveryGapsID=deliveryGaps.getDeliveryGapsID();
 
-//deliveryService.book(deliveryDayID, deliveryGapsID, orderID);
+deliveryService.book(deliveryDayID, deliveryGapsID, orderID);
 
             //vajon az ordernek van delivery time ja? e akkor mi az az orddertime
             // ezt megkersdezni a lazstol holnap
