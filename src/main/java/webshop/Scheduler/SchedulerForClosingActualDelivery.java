@@ -17,7 +17,7 @@ public class SchedulerForClosingActualDelivery {
     }
 
     @Scheduled(cron = "0 31 16 * * ?")//every day at 10
-        public void run() {
+        public void runOnceByDay() {
         System.out.println("its 16:00");
             //log.info("The time is now {}", dateFormat.format(new Date()));
         deliveryService.setUp();
