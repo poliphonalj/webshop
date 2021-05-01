@@ -13,6 +13,7 @@ public class DeliveryGaps {
     private long deliveryGapsID;
     private long gapStartsAt;//itt megtudom szamolni hogy hanyan kezdodnek mondjuk 8 kor
     private boolean isAvailable;
+    private String deliveryGapString;
     private long counter=0;
     @ManyToOne
     @JsonIgnore
@@ -25,6 +26,7 @@ public class DeliveryGaps {
     public DeliveryGaps(long gapStartsAt) {
         this.gapStartsAt = gapStartsAt;
         isAvailable = true;
+        deliveryGapString=gapStartsAt+" és "+(gapStartsAt+2)+" között";
     }
 
 
@@ -68,5 +70,11 @@ public class DeliveryGaps {
         this.counter = counter;
     }
 
-   
+    public String getDeliveryGapString() {
+        return deliveryGapString;
+    }
+
+    public void setDeliveryGapString(String deliveryGapString) {
+        this.deliveryGapString = deliveryGapString;
+    }
 }

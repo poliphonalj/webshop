@@ -33,6 +33,7 @@ public class OrderDTO {
     private long totalPrice;
     private long deliveryDayID;
     private long deliveryGapsID;
+    private String deliveryGapString;
 
     List<OrderItem>itemList;
 
@@ -195,5 +196,13 @@ public class OrderDTO {
 
     public void setDeliveryGapsID(long deliveryGapsID) {
         this.deliveryGapsID = deliveryGapsID;
+    }
+
+    public String getDeliveryGapString() {
+        return deliveryGapString;
+    }
+
+    public void setDeliveryGapString(String deliveryGapString) {
+        this.deliveryGapString = deliveryGapString;
     }
 }
