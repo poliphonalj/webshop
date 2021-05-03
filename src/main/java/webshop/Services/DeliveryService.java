@@ -45,7 +45,7 @@ public class DeliveryService {
     public void setUp() throws IOException {
 
         //adatok kimentese
-saveLastDeliveries();
+//saveLastDeliveries();
 //ben rudja torolni
        // deliveryDayRepo.deleteAll();//adatok torlese
         //deliveryGapsRepo.deleteAll();
