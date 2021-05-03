@@ -78,4 +78,17 @@ public class DeliveryDay {
     public void setListOfGaps(List<DeliveryGaps> listOfGaps) {
         this.listOfGaps = listOfGaps;
     }
+
+    @Override
+    public String toString() {
+        return "DeliveryDay{" +
+                "deliveryDayID=" + deliveryDayID +
+                ", year=" + year +
+                ", month='" + month + '\'' +
+                ", dayOfTheMonth=" + dayOfTheMonth +
+                ", dayOfWeek='" + dayOfWeek + '\'' +
+                ", listOfGaps=" + listOfGaps +
+                '}';
+    }
 }
+

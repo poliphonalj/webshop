@@ -11,7 +11,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -38,10 +42,11 @@ public class DeliveryService {
 //es az egeszet menti a db be
 
     //mindennap 10 kor meghivodik
-    public void setUp() {
+    public void setUp() throws IOException {
 
         //adatok kimentese
-
+saveLastDeliveries();
+//ben rudja torolni
         deliveryDayRepo.deleteAll();//adatok torlese
         deliveryGapsRepo.deleteAll();
         setUpDeliveryDaysAndGapsForTheNextTwoTimes();//mar beteszi a db be a leheteges npokat es hozzajuk koti az idopontokat de meg nem vizsgalja hogy szabadok e
@@ -283,5 +288,19 @@ public class DeliveryService {
     }
 //minden rendeles lezarasnal a szerver lefuttatja a nextdelivery days metodust ami ujrairja a dbt es beleteszi a ket kov szallitasi napot
 
+
+
+    public void saveLastDeliveries()
+            throws IOException {
+        List<DeliveryDay>deliveryList=deliveryDayRepo.findAll();
+//itt szurni kell  hogy azokat a deliverynapokat adja vissza ahol a gap counter nem 0
+        String fileName="sima";
+        BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
+
+
+            writer.write(deliveryList.toString());
+
+        writer.close();
+    }
 }
 

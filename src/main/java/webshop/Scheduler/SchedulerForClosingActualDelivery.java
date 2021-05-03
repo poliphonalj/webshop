@@ -6,6 +6,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import webshop.Services.DeliveryService;
 
+import java.io.IOException;
+
 @Component
 public class SchedulerForClosingActualDelivery {
         //private static final Logger log = LoggerFactory.getLogger(ScheduledTasks.class);
@@ -17,7 +19,7 @@ public class SchedulerForClosingActualDelivery {
     }
 
     @Scheduled(cron = "0 31 16 * * ?")//every day at 10
-        public void runOnceByDay() {
+        public void runOnceByDay() throws IOException {
         System.out.println("its 16:00");
             //log.info("The time is now {}", dateFormat.format(new Date()));
         deliveryService.setUp();

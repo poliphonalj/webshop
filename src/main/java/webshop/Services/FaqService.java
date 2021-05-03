@@ -57,7 +57,7 @@ public class FaqService {
                 "    rendelést dsz le, akkor Budapest területén ingyen házhoz visszük a termékeeidet.");
 
 
-        f9 = new Faq("Kaphatok -e számlát?XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX", "Igen, minden esetben kaphatsz ÁFÁs számlát, ha szükséged van rá??????????????????????");
+        f9 = new Faq("Kaphatok -e számlát?XX", "Igen, minden esetben kaphatsz ÁFÁs számlát, ha szükséged van rá??????????????????????");
 
 
         f10 = new Faq("Van minimálisan rendelendő mennyiség?", "Nálunk nincs, akár egy darab almát is elviszünk Neked. De a kiszállítás árában sajnos ezt kompenzálnink kell.");

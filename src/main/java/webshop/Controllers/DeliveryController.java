@@ -28,6 +28,8 @@ public class DeliveryController {
     public ResponseEntity<?> start() {
         try {
             deliveryService.setUp();///ezt az idozito csinalja igazibol
+            //kitorli az elozo delivery db ket es ujjat hoz letre tiszta lappal kezd
+            //persze elotte  kmenti egy fajlba az adatokat!!!!
             return ResponseEntity.ok(new FeedbackToFrontend(true));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
