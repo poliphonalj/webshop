@@ -91,7 +91,7 @@ public class DeliveryService {
         //hetfon 10 ig leaddott rendelesre meg keddi kiszallitas lehet
         if (l.getDayOfWeek() == DayOfWeek.MONDAY && l.getHour() < 9) {
             localDateTimeList.add(l.plusDays(1));
-            localDateTimeList.add(l.plusDays(3));
+            localDateTimeList.add(l.plusDays(3));System.out.println("HELLLOHéEETFŐŐŐŐŐŐOOOO");
             convertLocalDatetimeToDeliveryDateAndSaveToDB(localDateTimeList);
         }
 
@@ -99,7 +99,7 @@ public class DeliveryService {
         else if (l.getDayOfWeek() == DayOfWeek.MONDAY && l.getHour() > 9) {
             localDateTimeList.add(l.plusDays(3));
             localDateTimeList.add(l.plusDays(5));
-            System.out.println("HELLLOHEEETFOOOO");
+
             convertLocalDatetimeToDeliveryDateAndSaveToDB(localDateTimeList);
         }
 
