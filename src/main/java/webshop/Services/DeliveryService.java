@@ -47,8 +47,8 @@ public class DeliveryService {
         //adatok kimentese
 saveLastDeliveries();
 //ben rudja torolni
-        deliveryDayRepo.deleteAll();//adatok torlese
-        deliveryGapsRepo.deleteAll();
+       // deliveryDayRepo.deleteAll();//adatok torlese
+        //deliveryGapsRepo.deleteAll();
         setUpDeliveryDaysAndGapsForTheNextTwoTimes();//mar beteszi a db be a leheteges npokat es hozzajuk koti az idopontokat de meg nem vizsgalja hogy szabadok e
     }
 
