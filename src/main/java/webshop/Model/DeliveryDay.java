@@ -1,12 +1,16 @@
 package webshop.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.jetbrains.annotations.NotNull;
+
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.List;
 
 //kiszállitás napja
 
 @Entity
-public class DeliveryDay {
+public class DeliveryDay implements Comparable<DeliveryDay>{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long deliveryDayID;
@@ -17,10 +21,12 @@ public class DeliveryDay {
     @OneToMany(mappedBy = "deliveryDay")
     private List<DeliveryGaps>listOfGaps;
 
-
+    private boolean isActive;
+private int dayOfTheYear= LocalDate.now().getDayOfYear();
 
 
     public DeliveryDay() {
+        isActive=true;
     }
 
     public DeliveryDay(int year, String month, int dayOfTheMonth, String dayOfWeek) {
@@ -28,6 +34,7 @@ public class DeliveryDay {
         this.month = month;
         this.dayOfTheMonth = dayOfTheMonth;
         this.dayOfWeek = dayOfWeek;
+        isActive=true;
     }
 
     public int getYear() {
@@ -79,6 +86,23 @@ public class DeliveryDay {
         this.listOfGaps = listOfGaps;
     }
 
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    public int getDayOfTheYear() {
+        return dayOfTheYear;
+    }
+
+    public void setDayOfTheYear(int dayOfTheYear) {
+        this.dayOfTheYear = dayOfTheYear;
+    }
+
     @Override
     public String toString() {
         return "DeliveryDay{" +
@@ -89,6 +113,14 @@ public class DeliveryDay {
                 ", dayOfWeek='" + dayOfWeek + '\'' +
                 ", listOfGaps=" + listOfGaps +
                 '}';
+    }
+
+    @Override
+    public int compareTo(DeliveryDay deliveryDay) {
+        if(dayOfTheYear>=deliveryDay.dayOfTheYear)
+            return 1;
+        else
+            return -1;
     }
 }
 

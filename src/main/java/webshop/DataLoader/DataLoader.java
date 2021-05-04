@@ -5,6 +5,8 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import webshop.Model.DeliveryDay;
+import webshop.Model.DeliveryGaps;
 import webshop.Model.Product.Category;
 import webshop.Model.Product.Product;
 import webshop.Model.Product.Unit;
@@ -41,15 +43,19 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
     private CategoryRepo categoryRepo;
     private SloganRepo sloganRepo;
     private AddressRepo addressRepo;
+    private DeliveryGapsRepo deliveryGapsRepo;
+    private DeliveryDayRepo deliveryDayRepo;
 
     @Autowired
-    public DataLoader(RoleRepo roleRepo, UserRepo userRepo, ProductRepo productRepo, CategoryRepo categoryRepo, SloganRepo sloganRepo, AddressRepo addressRepo) {
+    public DataLoader(RoleRepo roleRepo, UserRepo userRepo, ProductRepo productRepo, CategoryRepo categoryRepo, SloganRepo sloganRepo, AddressRepo addressRepo, DeliveryGapsRepo deliveryGapsRepo, DeliveryDayRepo deliveryDayRepo) {
         this.roleRepo = roleRepo;
         this.userRepo = userRepo;
         this.productRepo = productRepo;
         this.categoryRepo = categoryRepo;
         this.sloganRepo = sloganRepo;
-        this.addressRepo=addressRepo;
+        this.addressRepo = addressRepo;
+        this.deliveryGapsRepo = deliveryGapsRepo;
+        this.deliveryDayRepo = deliveryDayRepo;
     }
 
     @Override
@@ -59,7 +65,7 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
         createUser();
         createSlogan();
         createProducts();
-
+        createDeliveryDate();
     }
 
     @Transactional
@@ -113,7 +119,6 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
     public void createUser() {
 
 
-
         if (userRepo.count() == 0) {
             sanyi = new MyUser();
             sanyi.setActive(true);
@@ -142,14 +147,14 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
             list2.add(userRole);
             sanyi2.setRoleList(list2);
 
-            Address a1=new Address();
+            Address a1 = new Address();
             a1.setAddressType(AddressType.HOME_ADDRESS);
             a1.setPostCode(1141);
             a1.setCity("budapest");
             a1.setSimpleAddress("siraly utca 21");
             a1.setMyUser(sanyi);
 
-            Address a2=new Address();
+            Address a2 = new Address();
             a2.setAddressType(AddressType.DELIVERY_ADDRESS);
             a2.setPostCode(2110);
             a2.setCity("budapest");
@@ -157,21 +162,21 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
             a2.setMyUser(sanyi);
 
 
-            Address a3=new Address();
+            Address a3 = new Address();
             a3.setAddressType(AddressType.BILLING_ADDRESS);
             a3.setPostCode(1111);
             a3.setCity("budapest");
             a3.setSimpleAddress("bolonbika ut 2");
             a3.setMyUser(sanyi);
 
-            Address a4=new Address();
+            Address a4 = new Address();
             a4.setAddressType(AddressType.HOME_ADDRESS);
             a4.setPostCode(1141);
             a4.setCity("budapest");
             a4.setSimpleAddress("home utca 21");
             a4.setMyUser(sanyi2);
 
-            Address a5=new Address();
+            Address a5 = new Address();
             a5.setAddressType(AddressType.DELIVERY_ADDRESS);
             a5.setPostCode(2110);
             a5.setCity("budapest");
@@ -179,14 +184,12 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
             a5.setMyUser(sanyi2);
 
 
-            Address a6=new Address();
+            Address a6 = new Address();
             a6.setAddressType(AddressType.BILLING_ADDRESS);
             a6.setPostCode(1111);
             a6.setCity("billingbudapest");
             a6.setSimpleAddress("billing ut 2");
             a6.setMyUser(sanyi2);
-
-
 
 
             sanyi = userRepo.saveAndFlush(sanyi);
@@ -199,7 +202,6 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
             addressRepo.saveAndFlush(a4);
             addressRepo.saveAndFlush(a5);
             addressRepo.saveAndFlush(a6);
-
 
 
         } else {
@@ -278,6 +280,100 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
         } else {
             zoldseg = categoryRepo.findByCategoryName("zoldseg");
         }
+    }
+
+    @Transactional
+    public void createDeliveryDate() {
+        DeliveryDay d = new DeliveryDay(2021, "május", 6, "csütörtök");
+        d.setDayOfTheYear(126);
+        DeliveryDay d2 = new DeliveryDay(2021, "május", 8, "szombat");
+        d2.setDayOfTheYear(128);
+
+        DeliveryGaps gap1 = new DeliveryGaps(8);
+        gap1.setDeliveryDay(d);
+
+        DeliveryGaps gap2 = new DeliveryGaps(10);
+        gap2.setDeliveryDay(d);
+
+        DeliveryGaps gap3 = new DeliveryGaps(12);
+        gap3.setDeliveryDay(d);
+
+        DeliveryGaps gap4 = new DeliveryGaps(14);
+        gap4.setDeliveryDay(d);
+
+        DeliveryGaps gap5 = new DeliveryGaps(16);
+        gap5.setDeliveryDay(d);
+
+        DeliveryGaps gap6 = new DeliveryGaps(18);
+        gap6.setDeliveryDay(d);
+
+        DeliveryGaps gap7 = new DeliveryGaps(20);
+        gap7.setDeliveryDay(d);
+
+
+        DeliveryGaps gap8 = new DeliveryGaps(8);
+        gap8.setDeliveryDay(d2);
+
+        DeliveryGaps gap9 = new DeliveryGaps(10);
+        gap9.setDeliveryDay(d2);
+
+        DeliveryGaps gap10 = new DeliveryGaps(12);
+        gap10.setDeliveryDay(d2);
+
+        DeliveryGaps gap11 = new DeliveryGaps(14);
+        gap11.setDeliveryDay(d2);
+
+        DeliveryGaps gap12 = new DeliveryGaps(16);
+        gap12.setDeliveryDay(d2);
+
+        DeliveryGaps gap13 = new DeliveryGaps(18);
+        gap13.setDeliveryDay(d2);
+
+        DeliveryGaps gap14 = new DeliveryGaps(20);
+        gap14.setDeliveryDay(d2);
+
+
+        List<DeliveryGaps> gapList = new ArrayList<>();
+        List<DeliveryGaps> gapList2 = new ArrayList<>();
+        gapList.add(gap1);
+        gapList.add(gap2);
+        gapList.add(gap3);
+        gapList.add(gap4);
+        gapList.add(gap5);
+        gapList.add(gap6);
+        gapList.add(gap7);
+
+        gapList2.add(gap8);
+        gapList2.add(gap9);
+        gapList2.add(gap10);
+        gapList2.add(gap11);
+        gapList2.add(gap12);
+        gapList2.add(gap13);
+        gapList2.add(gap14);
+
+        d.setListOfGaps(gapList);
+        d2.setListOfGaps(gapList2);
+
+        deliveryDayRepo.saveAndFlush(d);
+        deliveryDayRepo.saveAndFlush(d2);
+
+
+        deliveryGapsRepo.saveAndFlush(gap1);
+        deliveryGapsRepo.saveAndFlush(gap2);
+        deliveryGapsRepo.saveAndFlush(gap3);
+        deliveryGapsRepo.saveAndFlush(gap4);
+        deliveryGapsRepo.saveAndFlush(gap5);
+        deliveryGapsRepo.saveAndFlush(gap6);
+        deliveryGapsRepo.saveAndFlush(gap7);
+
+        deliveryGapsRepo.saveAndFlush(gap8);
+        deliveryGapsRepo.saveAndFlush(gap9);
+        deliveryGapsRepo.saveAndFlush(gap10);
+        deliveryGapsRepo.saveAndFlush(gap11);
+        deliveryGapsRepo.saveAndFlush(gap12);
+        deliveryGapsRepo.saveAndFlush(gap13);
+        deliveryGapsRepo.saveAndFlush(gap14);
+
     }
 
 

@@ -10,5 +10,6 @@ import java.util.List;
 public interface DeliveryGapsRepo extends JpaRepository<DeliveryGaps, Long> {
     //DeliveryGaps findDeliveryGapsByDeliveryDayDeliveryDayID(long deliveryDayID);
 DeliveryGaps findDeliveryGapsByDeliveryGapsIDAndDeliveryDayDeliveryDayID(long deliveryGapsID, long deliveryDayID);
-   // List<DeliveryGaps> findAllByDeliveryDayDeliveryDayIDAndIsAvailableTrue(long deliveryDayID);
+   // List<DeliveryGaps> deleteDeliveryGapsByDeliveryDayDeliveryDayID(long deliveryDayID);
+    List<DeliveryGaps>deleteDeliveryGapsByDeliveryDayDeliveryDayIDAndDeliveryDayIsActiveFalse(long DeliveryDayID);
 }

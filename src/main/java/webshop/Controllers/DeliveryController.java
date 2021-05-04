@@ -23,7 +23,7 @@ public class DeliveryController {
         this.deliveryService = deliveryService;
     }
 
-//egyzer az elejen
+    //egyzer az elejen
     @GetMapping("/delivery/start")
     public ResponseEntity<?> start() {
         try {
@@ -32,6 +32,7 @@ public class DeliveryController {
             //persze elotte  kmenti egy fajlba az adatokat!!!!
             return ResponseEntity.ok(new FeedbackToFrontend(true));
         } catch (Exception e) {
+            System.out.println(e.getMessage() + e.getCause() + e.fillInStackTrace());
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
         }
     }
@@ -41,21 +42,23 @@ public class DeliveryController {
     @GetMapping("/delivery/GetNextPossibles")
     public ResponseEntity<?> getNext2DaysAndPossibleGaps() {
         try {
-            //deliveryService.setUp();///ezt az idozito csinalja igazibol
-            return ResponseEntity.ok(deliveryService.getAvailableDeliveries());
+           List<DeliveryDay>list=deliveryService.getAvailableDeliveries();
+           HashMap<String,List<DeliveryDay>>hMap=new HashMap<>();
+           hMap.put("list",list);
+            return ResponseEntity.ok(hMap);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
         }
     }
 
-//majd ezt
+    //majd ezt
     @PostMapping("/delivery/BookADelivery")
     public ResponseEntity<?> saveDeliveryTime(@RequestParam long deliveryDayID, long deliveryGapsID, long orderID) {
         try {
 //long deliveryDayID=deliveryDay.getDeliveryDayID();
 //long deliveryGapsID=deliveryGaps.getDeliveryGapsID();
 
-deliveryService.book(deliveryDayID, deliveryGapsID, orderID);
+            deliveryService.book(deliveryDayID, deliveryGapsID, orderID);
 
             //vajon az ordernek van delivery time ja? e akkor mi az az orddertime
             // ezt megkersdezni a lazstol holnap

@@ -9,13 +9,11 @@ import webshop.Repository.DeliveryGapsRepo;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -42,14 +40,20 @@ public class DeliveryService {
 //es az egeszet menti a db be
 
     //mindennap 10 kor meghivodik
+    @Transactional
     public void setUp() throws IOException {
 
         //adatok kimentese
 //saveLastDeliveries();
+
+
 //ben rudja torolni
-       // deliveryDayRepo.deleteAll();//adatok torlese
-        //deliveryGapsRepo.deleteAll();
-        setUpDeliveryDaysAndGapsForTheNextTwoTimes();//mar beteszi a db be a leheteges npokat es hozzajuk koti az idopontokat de meg nem vizsgalja hogy szabadok e
+
+       setUpDeliveryDaysAndGapsForTheNextFirstTime();
+
+
+//setUpDeliveryDaysAndGapsForTheNextSeconTime();
+
     }
 
 
@@ -82,22 +86,20 @@ public class DeliveryService {
     }
 
 
-
     //creates the next 2 delivery empty day with full amount of available gaps
-    public void setUpDeliveryDaysAndGapsForTheNextTwoTimes() {
+    public void setUpDeliveryDaysAndGapsForTheNextFirstTime() {
         List<LocalDateTime> localDateTimeList = new ArrayList<>();
         LocalDateTime l = LocalDateTime.now();
-        System.out.println(l+"gggggggggggggggggggggggggggggggggggggggggggggggggggg");
+
         //hetfon 10 ig leaddott rendelesre meg keddi kiszallitas lehet
         if (l.getDayOfWeek() == DayOfWeek.MONDAY && l.getHour() <= 9) {
-            localDateTimeList.add(l.plusDays(1));
-            localDateTimeList.add(l.plusDays(3));System.out.println("HELLLOHéEETFŐŐŐŐŐŐOOOO");
-            convertLocalDatetimeToDeliveryDateAndSaveToDB(localDateTimeList);
+
         }
 
         //hetfon 10 utan leadott rendeles kiszallitasa csut v szombat
         else if (l.getDayOfWeek() == DayOfWeek.MONDAY && l.getHour() > 9) {
-            localDateTimeList.add(l.plusDays(3));
+            deleteTheFirstDelivery();
+            //localDateTimeList.add(l.plusDays(3));
             localDateTimeList.add(l.plusDays(5));
 
             convertLocalDatetimeToDeliveryDateAndSaveToDB(localDateTimeList);
@@ -106,64 +108,70 @@ public class DeliveryService {
         //kedd
         // kov kiszallitas csut v szompat
         else if (l.getDayOfWeek() == DayOfWeek.TUESDAY) {
-            localDateTimeList.add(l.plusDays(2));
-            localDateTimeList.add(l.plusDays(4));
-            convertLocalDatetimeToDeliveryDateAndSaveToDB(localDateTimeList);
+           // localDateTimeList.add(l.plusDays(2));
+            //localDateTimeList.add(l.plusDays(4));
+           // convertLocalDatetimeToDeliveryDateAndSaveToDB(localDateTimeList);
         }
 
         //szerdan 10 ig leaddott rendelesre meg csut kiszallitas lehet
         else if (l.getDayOfWeek() == DayOfWeek.WEDNESDAY && l.getHour() < 9) {
-            localDateTimeList.add(l.plusDays(1));
-            localDateTimeList.add(l.plusDays(3));
-            convertLocalDatetimeToDeliveryDateAndSaveToDB(localDateTimeList);
+           // localDateTimeList.add(l.plusDays(1));
+            //localDateTimeList.add(l.plusDays(3));
+            //convertLocalDatetimeToDeliveryDateAndSaveToDB(localDateTimeList);
         }
 
         //szerdan 10 utan leadott rendeles kiszallitasa szombat  v kedd
         else if (l.getDayOfWeek() == DayOfWeek.WEDNESDAY && l.getHour() > 9) {
-            localDateTimeList.add(l.plusDays(3));
+            deleteTheFirstDelivery();
+            localDateTimeList.clear();
+           // localDateTimeList.add(l.plusDays(3));
             localDateTimeList.add(l.plusDays(6));
             convertLocalDatetimeToDeliveryDateAndSaveToDB(localDateTimeList);
         }
 
         //csutortok
         else if (l.getDayOfWeek() == DayOfWeek.THURSDAY) {
-            localDateTimeList.add(l.plusDays(2));
-            localDateTimeList.add(l.plusDays(5));
-            convertLocalDatetimeToDeliveryDateAndSaveToDB(localDateTimeList);
+           // localDateTimeList.add(l.plusDays(2));
+            //localDateTimeList.add(l.plusDays(5));
+            //convertLocalDatetimeToDeliveryDateAndSaveToDB(localDateTimeList);
         }
 
 //pentek 10 ig
         else if (l.getDayOfWeek() == DayOfWeek.FRIDAY && l.getHour() < 9) {
-            localDateTimeList.add(l.plusDays(1));
-            localDateTimeList.add(l.plusDays(4));
-            convertLocalDatetimeToDeliveryDateAndSaveToDB(localDateTimeList);
+           // localDateTimeList.add(l.plusDays(1));
+            //localDateTimeList.add(l.plusDays(4));
+            //convertLocalDatetimeToDeliveryDateAndSaveToDB(localDateTimeList);
         }
 
         //pentek10 utan leadott rendeles kiszallitasa kedd v csut
         else if (l.getDayOfWeek() == DayOfWeek.FRIDAY && l.getHour() > 9) {
-            localDateTimeList.add(l.plusDays(4));
+            deleteTheFirstDelivery();
+           // localDateTimeList.add(l.plusDays(4));
             localDateTimeList.add(l.plusDays(6));
             convertLocalDatetimeToDeliveryDateAndSaveToDB(localDateTimeList);
 
             //szombaton leadott rendeles kedd v csut
         } else if (l.getDayOfWeek() == DayOfWeek.SATURDAY) {
-            localDateTimeList.add(l.plusDays(3));
-            localDateTimeList.add(l.plusDays(5));
+           // localDateTimeList.add(l.plusDays(3));
+            //localDateTimeList.add(l.plusDays(5));
             convertLocalDatetimeToDeliveryDateAndSaveToDB(localDateTimeList);
 
             //vasarnap leadott rendeles kedd v csut
         } else if (l.getDayOfWeek() == DayOfWeek.SUNDAY) {
-            localDateTimeList.add(l.plusDays(2));
-            localDateTimeList.add(l.plusDays(4));
+           // localDateTimeList.add(l.plusDays(2));
+            //localDateTimeList.add(l.plusDays(4));
             convertLocalDatetimeToDeliveryDateAndSaveToDB(localDateTimeList);
         }
 
     }
 
+
+
+
+
     //2db deliverydate t tartalmazo listat ad vissza
     public void convertLocalDatetimeToDeliveryDateAndSaveToDB(List<LocalDateTime> list) {
-        List<DeliveryDay> returnList = new ArrayList<>();
-        System.out.println(list.size());
+
         for (LocalDateTime actualLocalDateTime : list) {
             int year = actualLocalDateTime.getYear();
             int month = actualLocalDateTime.getMonthValue();
@@ -235,7 +243,7 @@ public class DeliveryService {
                     break;
             }
             DeliveryDay d = new DeliveryDay(year, honap, dayOftheMonth, day);
-
+            d.setDayOfTheYear(actualLocalDateTime.getDayOfYear());
 
             DeliveryGaps gap1 = new DeliveryGaps(8);
             gap1.setDeliveryDay(d);
@@ -259,7 +267,7 @@ public class DeliveryService {
             gap7.setDeliveryDay(d);
 
 
-            List<DeliveryGaps>gapList=new ArrayList<>();
+            List<DeliveryGaps> gapList = new ArrayList<>();
             gapList.add(gap1);
             gapList.add(gap2);
             gapList.add(gap3);
@@ -269,8 +277,7 @@ public class DeliveryService {
             gapList.add(gap7);
 
 
-
-           d.setListOfGaps(gapList);
+            d.setListOfGaps(gapList);
 
             deliveryDayRepo.saveAndFlush(d);
             deliveryGapsRepo.saveAndFlush(gap1);
@@ -281,7 +288,7 @@ public class DeliveryService {
             deliveryGapsRepo.saveAndFlush(gap6);
             deliveryGapsRepo.saveAndFlush(gap7);
 
-            returnList.add(d);
+           // returnList.add(d);
         }
         //ezt minden rendeleslezaraskor torolni kell!!!!!!!
 
@@ -290,18 +297,29 @@ public class DeliveryService {
 //minden rendeles lezarasnal a szerver lefuttatja a nextdelivery days metodust ami ujrairja a dbt es beleteszi a ket kov szallitasi napot
 
 
-
     public void saveLastDeliveries()
             throws IOException {
-        List<DeliveryDay>deliveryList=deliveryDayRepo.findAll();
+        List<DeliveryDay> deliveryList = deliveryDayRepo.findAll();
 //itt szurni kell  hogy azokat a deliverynapokat adja vissza ahol a gap counter nem 0
-        String fileName="sima";
+        String fileName = "sima";
         BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
-
-
-            writer.write(deliveryList.toString());
-
+        writer.write(deliveryList.toString());
         writer.close();
+    }
+
+    @Transactional
+    public void deleteTheFirstDelivery() {
+        List<DeliveryDay> list = deliveryDayRepo.findAllByIsActiveTrue();
+        Collections.sort(list);
+
+        DeliveryDay ddy = list.get(0);
+        ddy.setActive(false);//litorli
+        //miert csak az elsot torli ki??????????????????????????????????????????????????????????????????????????????????????
+//mert a napot nem torlom ki
+
+        deliveryGapsRepo.deleteDeliveryGapsByDeliveryDayDeliveryDayIDAndDeliveryDayIsActiveFalse(ddy.getDeliveryDayID());
+        //deliveryDayRepo.saveAndFlush(ddy);
+        //setUpDeliveryDaysAndGapsForTheNextSeconTime();
     }
 }
 
