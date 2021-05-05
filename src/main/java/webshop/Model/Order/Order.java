@@ -44,7 +44,7 @@ public class Order {
     @ManyToOne
     MyUser myUser;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade =CascadeType.ALL)
     @NotEmpty
     private List<OrderItem> ordersItemList;
 

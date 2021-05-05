@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import webshop.Model.Order.Order;
+import webshop.Model.Order.OrderItem;
 import webshop.Services.OrderService;
 import webshop.exception.WebshopException;
 
@@ -41,6 +42,8 @@ public class OrderController {
 			throw new WebshopException(errorMessages);
 		}
 		order = this.service.save(order);
+
+
 		return order;
 	}
 	
