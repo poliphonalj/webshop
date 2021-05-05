@@ -16,7 +16,9 @@ import webshop.Model.UsersandRole.AddressType;
 import webshop.Model.UsersandRole.MyUser;
 import webshop.Model.UsersandRole.Role;
 import webshop.Repository.*;
+import webshop.Services.DeliveryService;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -45,6 +47,7 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
     private AddressRepo addressRepo;
     private DeliveryGapsRepo deliveryGapsRepo;
     private DeliveryDayRepo deliveryDayRepo;
+    private DeliveryService deliveryService;
 
     @Autowired
     public DataLoader(RoleRepo roleRepo, UserRepo userRepo, ProductRepo productRepo, CategoryRepo categoryRepo, SloganRepo sloganRepo, AddressRepo addressRepo, DeliveryGapsRepo deliveryGapsRepo, DeliveryDayRepo deliveryDayRepo) {
@@ -282,12 +285,14 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
         }
     }
 
+
+
     @Transactional
     public void createDeliveryDate() {
-        DeliveryDay d = new DeliveryDay(2021, "május", 6, "csütörtök");
-        d.setDayOfTheYear(126);
-        DeliveryDay d2 = new DeliveryDay(2021, "május", 8, "szombat");
-        d2.setDayOfTheYear(128);
+        DeliveryDay d = new DeliveryDay(2021, "május", 8, "szombat");
+        d.setDayOfTheYear(128);
+        DeliveryDay d2 = new DeliveryDay(2021, "május", 11, "kedd");
+        d2.setDayOfTheYear(131);
 
         DeliveryGaps gap1 = new DeliveryGaps(8);
         gap1.setDeliveryDay(d);

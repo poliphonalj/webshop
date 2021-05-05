@@ -66,7 +66,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
-    //cross.fdsfdfaf
     @Bean
     @Qualifier("cors")
     CorsConfigurationSource corsConfigurationSource() {
