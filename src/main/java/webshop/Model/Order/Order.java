@@ -1,13 +1,12 @@
 package webshop.Model.Order;
 
+import org.hibernate.annotations.Cascade;
 import webshop.Model.UsersandRole.MyUser;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,6 +17,7 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+
     private Long id;
     private LocalDateTime orderTime;
     private PaymentType paymentType;
@@ -28,23 +28,30 @@ public class Order {
     
     @NotEmpty
     //@Pattern(regexp = "kun.*")
-    private String userFirstName;
+    private String firstName;
     @NotEmpty
-    private String userLastName;
+    private String lastName;
     
     @Email
     @NotNull
-    private String userEmail;
+    private String username;//email
     
-    private String userPhone;
+    private String phoneNumber;
     
     @NotNull
-    private String userAddress;
+    private String simpleAddress_delivery;
+
+    private long postCode;
+
+    private String city;
+
+    private String comment;
 
     @ManyToOne
     MyUser myUser;
 
-    @OneToMany(mappedBy = "order", cascade =CascadeType.ALL)
+    @OneToMany(mappedBy = "order", cascade=CascadeType.ALL)
+
     @NotEmpty
     private List<OrderItem> ordersItemList;
 
@@ -96,44 +103,44 @@ public class Order {
         this.productName = productName;
     }
 
-    public String getUserFirstName() {
-        return userFirstName;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setUserFirstName(String userFirstName) {
-        this.userFirstName = userFirstName;
+    public void setFirstName(String userFirstName) {
+        this.firstName = userFirstName;
     }
 
-    public String getUserLastName() {
-        return userLastName;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setUserLastName(String userLastName) {
-        this.userLastName = userLastName;
+    public void setLastName(String userLastName) {
+        this.lastName = userLastName;
     }
 
-    public String getUserEmail() {
-        return userEmail;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
+    public void setUsername(String userEmail) {
+        this.username = userEmail;
     }
 
-    public String getUserPhone() {
-        return userPhone;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setUserPhone(String userPhone) {
-        this.userPhone = userPhone;
+    public void setPhoneNumber(String userPhone) {
+        this.phoneNumber = userPhone;
     }
 
-    public String getUserAddress() {
-        return userAddress;
+    public String getSimpleAddress_delivery() {
+        return simpleAddress_delivery;
     }
 
-    public void setUserAddress(String userAddress) {
-        this.userAddress = userAddress;
+    public void setSimpleAddress_delivery(String userAddress) {
+        this.simpleAddress_delivery = userAddress;
     }
 
 	public Long getId() {
@@ -144,7 +151,31 @@ public class Order {
 		this.id = id;
 	}
 
-	public MyUser getMyUser() {
+    public long getPostCode() {
+        return postCode;
+    }
+
+    public void setPostCode(long postCode) {
+        this.postCode = postCode;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public MyUser getMyUser() {
 		return myUser;
 	}
 

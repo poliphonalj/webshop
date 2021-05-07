@@ -8,7 +8,7 @@ import java.util.Locale;
 public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long ID;
+    private long id;
     private String name;
     private String description;
     private long price;
@@ -29,6 +29,23 @@ public class OrderItem {
         this.quantity = quantity;
         this.locale = locale;
         this.isInPromotion = isInPromotion;
+
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     public String getName() {
