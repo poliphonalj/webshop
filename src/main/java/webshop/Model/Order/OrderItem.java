@@ -1,10 +1,14 @@
 package webshop.Model.Order;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import webshop.Model.Product.Unit;
+
 import javax.persistence.*;
 import java.util.Locale;
 
 @Entity
 @Table(name = "order_items")
+@JsonIgnoreProperties({"order","locale","description","inPromotion","id"})
 public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,9 +16,12 @@ public class OrderItem {
     private String name;
     private String description;
     private long price;
-    private int quantity;
+    private long quantity;
     private Locale locale;
     private boolean isInPromotion;
+    private Unit unit;
+    private long productID;
+
 
     @ManyToOne
     private Order order;
@@ -22,7 +29,7 @@ public class OrderItem {
     public OrderItem() {
     }
 
-    public OrderItem(String name, String description, long price, int quantity, Locale locale, boolean isInPromotion) {
+    public OrderItem(String name, String description, long price, int quantity, Locale locale, boolean isInPromotion, Unit unit, long productID) {
         this.name = name;
         this.description = description;
         this.price = price;
@@ -30,6 +37,8 @@ public class OrderItem {
         this.locale = locale;
         this.isInPromotion = isInPromotion;
 
+        this.unit = unit;
+        this.productID = productID;
     }
 
     public long getId() {
@@ -72,11 +81,11 @@ public class OrderItem {
         this.price = price;
     }
 
-    public int getQuantity() {
+    public long getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(long quantity) {
         this.quantity = quantity;
     }
 
@@ -94,6 +103,22 @@ public class OrderItem {
 
     public void setInPromotion(boolean inPromotion) {
         isInPromotion = inPromotion;
+    }
+
+    public Unit getUnit() {
+        return unit;
+    }
+
+    public void setUnit(Unit unit) {
+        this.unit = unit;
+    }
+
+    public long getProductID() {
+        return productID;
+    }
+
+    public void setProductID(long productID) {
+        this.productID = productID;
     }
 }
 

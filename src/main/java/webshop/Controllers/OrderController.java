@@ -1,11 +1,13 @@
 package webshop.Controllers;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,8 +17,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import webshop.DTOs.OrderDTO;
+import webshop.Model.FeedbackToFrontend;
 import webshop.Model.Order.Order;
 import webshop.Model.Order.OrderItem;
+import webshop.Model.Product.Product;
+import webshop.Model.Slogan;
 import webshop.Services.OrderService;
 import webshop.exception.WebshopException;
 
@@ -26,9 +32,68 @@ public class OrderController {
 	@Autowired
 	OrderService service;
 
-	@GetMapping("/all")
-	public List<Order> getAll() {
-		return this.service.getAll();
+
+
+	@GetMapping("/get/undelivered")
+	public ResponseEntity<?> getUnderlivered() {
+		List<OrderDTO>list=this.service.getAllUndelivered();
+		if (list != null) {
+			HashMap<String, List<OrderDTO>> hMap = new HashMap<>();
+			hMap.put("list", list);
+			return ResponseEntity.ok().body(hMap);
+		}
+		return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
+	}
+
+	//ezt akar automatikusan is lehet hivni es emailben is megkerni az eredmenyt
+	@GetMapping("/getOrdersPerDeliveryDay/{deliveryDayID}")
+	public ResponseEntity<?> getPerDeliveryDay(@PathVariable Long deliveryDayID) {
+
+		List<OrderDTO>list=service.getOrdersPerDeliveryDay(deliveryDayID);
+		if (list != null) {
+			HashMap<String, List<OrderDTO>> hMap = new HashMap<>();
+			hMap.put("list", list);
+			return ResponseEntity.ok().body(hMap);
+		}
+		return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
+	}
+
+	@GetMapping("/getSumPerDelivery/{deliveryDayID}")
+	public ResponseEntity<?> getSumOfItemsPerDeliveryDay(@PathVariable Long deliveryDayID) {
+
+		HashMap<String,Long>hmap=service. getSumOfItemsForADeliveryDay(deliveryDayID);
+		if (hmap != null) {
+			HashMap<String, HashMap<String,Long>> map = new HashMap<>();
+			map.put("list", hmap);
+			return ResponseEntity.ok().body(map);
+		}
+		return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
+	}
+
+
+
+
+	@PostMapping("/setStatusTrue/{ID}")
+	public ResponseEntity<?> setStatusFree(@PathVariable Long ID) {
+		try {
+			service.setOrderStatusTrue(ID);
+			return ResponseEntity.ok(new FeedbackToFrontend(true));
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
+		}
+	}
+
+	@GetMapping("/get/all")
+	public ResponseEntity<?> getAll() {
+		List<OrderDTO>list=this.service.getAll();
+		if (list != null) {
+			HashMap<String, List<OrderDTO>> hMap = new HashMap<>();
+			hMap.put("list", list);
+			return ResponseEntity.ok().body(hMap);
+		}
+		return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
+
+
 	}
 
 	@PostMapping("/save")
