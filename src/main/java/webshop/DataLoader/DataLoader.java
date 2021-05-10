@@ -302,7 +302,7 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
 
         //hetfon 10 utan leadott rendeles kiszallitasa csut v szombat
         else if (l.getDayOfWeek() == DayOfWeek.MONDAY && l.getHour() > 9) {
-            deliveryService.convertLocalDatetimeToDeliveryDateAndSaveToDB(l.plusDays(2));
+            deliveryService.convertLocalDatetimeToDeliveryDateAndSaveToDB(l.plusDays(3));
             deliveryService.convertLocalDatetimeToDeliveryDateAndSaveToDB(l.plusDays(5));
         }
 

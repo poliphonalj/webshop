@@ -119,8 +119,10 @@ HashMap<String,Long>hmap=new HashMap<>();
             actualOrderItem.setOrder(order);
             actualOrderItem.setProductID(actualOrderItem.getProductID());
         }
-       // order.setFirstName(user.getFirstName());
-        order.setMyUser(user);
+        order.setFirstName(user.getFirstName());
+        order.setLastName(user.getLastName());
+        order.setUsername(user.getUsername());
+        order.setSimpleAddress_delivery(user.getMyAddressList().get(1).getSimpleAddress());
         return orderRepo.save(order);
     }
 
