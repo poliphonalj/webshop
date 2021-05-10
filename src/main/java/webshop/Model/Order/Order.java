@@ -33,19 +33,19 @@ public class Order {
 
     private String productName;
     
-    @NotEmpty
+    //@NotEmpty
     //@Pattern(regexp = "kun.*")
     private String firstName;
-    @NotEmpty
+    //@NotEmpty
     private String lastName;
     
-    @Email
-    @NotNull
+    //@Email
+    //@NotNull
     private String username;//email
     
     private String phoneNumber;
     
-    @NotNull
+    //@NotNull
     private String simpleAddress_delivery;
 
     private long postCode;
@@ -66,7 +66,7 @@ public class Order {
     public Order() {
     }
 
-    public Order(long id, long deliveryDayID, long deliveryGapsID, LocalDateTime orderTime, PaymentType paymentType, boolean status, long deliveryFee, String productName, @NotEmpty String firstName, @NotEmpty String lastName, @Email @NotNull String username, String phoneNumber, @NotNull String simpleAddress_delivery, long postCode, String city, String comment, MyUser myUser, @NotEmpty List<OrderItem> ordersItemList) {
+    public Order(long id, long deliveryDayID, long deliveryGapsID, LocalDateTime orderTime, PaymentType paymentType, boolean status, long deliveryFee, String productName, String firstName,  String lastName,  String username, String phoneNumber,  String simpleAddress_delivery, long postCode, String city, String comment, MyUser myUser, @NotEmpty List<OrderItem> ordersItemList) {
         this.id = id;
         this.deliveryDayID = deliveryDayID;
         this.deliveryGapsID = deliveryGapsID;
