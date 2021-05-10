@@ -26,9 +26,9 @@ public class OrderDTO {
     private String phoneNumber;
     @NotNull
     private String simpleAddress_delivery;
-    private long postCode;
-    private String city;
-    private String comment;
+    private long postCode_delivery;
+    private String city_delivery;
+    private String comment_delivery;
     private long totalProductPrice;
     private long totalPrice;
     private long deliveryDayID;
@@ -39,7 +39,7 @@ public class OrderDTO {
 
     private String sumProductPrice;
 
-    public OrderDTO(LocalDateTime orderTime, PaymentType paymentType, boolean status, long deliveryFee, @NotEmpty String firstName, @NotEmpty String lastName, @Email @NotNull String username, String phoneNumber, @NotNull String simpleAddress_delivery, long postCode, String city, String comment, long totalProductPrice, long totalPrice, long deliveryDayID, long deliveryGapsID, List<OrderItem> itemList) {
+    public OrderDTO(LocalDateTime orderTime, PaymentType paymentType, boolean status, long deliveryFee, @NotEmpty String firstName, @NotEmpty String lastName, @Email @NotNull String username, String phoneNumber, @NotNull String simpleAddress_delivery, long postCode_delivery, String city_delivery, String comment_delivery, long totalProductPrice, long totalPrice, long deliveryDayID, long deliveryGapsID, List<OrderItem> itemList) {
         this.orderTime = orderTime;
         this.paymentType = paymentType;
         this.status = status;
@@ -49,9 +49,9 @@ public class OrderDTO {
         this.username = username;
         this.phoneNumber = phoneNumber;
         this.simpleAddress_delivery = simpleAddress_delivery;
-        this.postCode = postCode;
-        this.city = city;
-        this.comment = comment;
+        this.postCode_delivery = postCode_delivery;
+        this.city_delivery = city_delivery;
+        this.comment_delivery = comment_delivery;
         this.totalProductPrice = totalProductPrice;
         this.totalPrice = totalPrice;
         this.deliveryDayID = deliveryDayID;
@@ -134,28 +134,28 @@ public class OrderDTO {
         this.simpleAddress_delivery = simpleAddress_delivery;
     }
 
-    public long getPostCode() {
-        return postCode;
+    public long getPostCode_delivery() {
+        return postCode_delivery;
     }
 
-    public void setPostCode(long postCode) {
-        this.postCode = postCode;
+    public void setPostCode_delivery(long postCode_delivery) {
+        this.postCode_delivery = postCode_delivery;
     }
 
-    public String getCity() {
-        return city;
+    public String getCity_delivery() {
+        return city_delivery;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setCity_delivery(String city_delivery) {
+        this.city_delivery = city_delivery;
     }
 
-    public String getComment() {
-        return comment;
+    public String getComment_delivery() {
+        return comment_delivery;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setComment_delivery(String comment_delivery) {
+        this.comment_delivery = comment_delivery;
     }
 
     public List<OrderItem> getItemList() {

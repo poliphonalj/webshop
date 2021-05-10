@@ -89,10 +89,10 @@ HashMap<String,Long>hmap=new HashMap<>();
             orderDTO.setLastName(actualOrder.getLastName());
             orderDTO.setPhoneNumber(actualOrder.getPhoneNumber());
             orderDTO.setUsername(actualOrder.getUsername());
-            orderDTO.setCity(actualOrder.getCity_delivery());
-            orderDTO.setPostCode(actualOrder.getPostCode_delivery());
+            orderDTO.setCity_delivery(actualOrder.getCity_delivery());
+            orderDTO.setPostCode_delivery(actualOrder.getPostCode_delivery());
             orderDTO.setSimpleAddress_delivery(actualOrder.getSimpleAddress_delivery());
-            orderDTO.setComment(actualOrder.getComment_delivery());
+            orderDTO.setComment_delivery(actualOrder.getComment_delivery());
             orderDTO.setDeliveryDayID(actualOrder.getDeliveryDayID());
             orderDTO.setDeliveryGapsID(actualOrder.getDeliveryGapsID());
 
