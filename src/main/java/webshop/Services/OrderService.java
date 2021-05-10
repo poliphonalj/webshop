@@ -14,7 +14,6 @@ import webshop.DTOs.OrderDTO;
 import webshop.DTOs.SumOfItemsForADeliveryDAyDTO;
 import webshop.Model.Order.Order;
 import webshop.Model.Order.OrderItem;
-import webshop.Model.UsersandRole.MyUser;
 import webshop.Repository.OrderItemRepo;
 import webshop.Repository.OrderRepo;
 
@@ -90,10 +89,10 @@ HashMap<String,Long>hmap=new HashMap<>();
             orderDTO.setLastName(actualOrder.getLastName());
             orderDTO.setPhoneNumber(actualOrder.getPhoneNumber());
             orderDTO.setUsername(actualOrder.getUsername());
-            orderDTO.setCity(actualOrder.getCity());
-            orderDTO.setPostCode(actualOrder.getPostCode());
+            orderDTO.setCity(actualOrder.getCity_delivery());
+            orderDTO.setPostCode(actualOrder.getPostCode_delivery());
             orderDTO.setSimpleAddress_delivery(actualOrder.getSimpleAddress_delivery());
-            orderDTO.setComment(actualOrder.getComment());
+            orderDTO.setComment(actualOrder.getComment_delivery());
             orderDTO.setDeliveryDayID(actualOrder.getDeliveryDayID());
             orderDTO.setDeliveryGapsID(actualOrder.getDeliveryGapsID());
 

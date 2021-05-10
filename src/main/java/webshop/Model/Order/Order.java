@@ -3,9 +3,7 @@ package webshop.Model.Order;
 import webshop.Model.UsersandRole.MyUser;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -48,11 +46,11 @@ public class Order {
     //@NotNull
     private String simpleAddress_delivery;
 
-    private long postCode;
+    private long postCode_delivery;
 
-    private String city;
+    private String city_delivery;
 
-    private String comment;
+    private String comment_delivery;
 
     @ManyToOne
     MyUser myUser;
@@ -66,7 +64,7 @@ public class Order {
     public Order() {
     }
 
-    public Order(long id, long deliveryDayID, long deliveryGapsID, LocalDateTime orderTime, PaymentType paymentType, boolean status, long deliveryFee, String productName, String firstName,  String lastName,  String username, String phoneNumber,  String simpleAddress_delivery, long postCode, String city, String comment, MyUser myUser, @NotEmpty List<OrderItem> ordersItemList) {
+    public Order(long id, long deliveryDayID, long deliveryGapsID, LocalDateTime orderTime, PaymentType paymentType, boolean status, long deliveryFee, String productName, String firstName, String lastName, String username, String phoneNumber, String simpleAddress_delivery, long postCode_delivery, String city_delivery, String comment_delivery, MyUser myUser, @NotEmpty List<OrderItem> ordersItemList) {
         this.id = id;
         this.deliveryDayID = deliveryDayID;
         this.deliveryGapsID = deliveryGapsID;
@@ -80,9 +78,9 @@ public class Order {
         this.username = username;
         this.phoneNumber = phoneNumber;
         this.simpleAddress_delivery = simpleAddress_delivery;
-        this.postCode = postCode;
-        this.city = city;
-        this.comment = comment;
+        this.postCode_delivery = postCode_delivery;
+        this.city_delivery = city_delivery;
+        this.comment_delivery = comment_delivery;
         this.myUser = myUser;
         this.ordersItemList = ordersItemList;
     }
@@ -176,28 +174,28 @@ public class Order {
 		this.id = id;
 	}
 
-    public long getPostCode() {
-        return postCode;
+    public long getPostCode_delivery() {
+        return postCode_delivery;
     }
 
-    public void setPostCode(long postCode) {
-        this.postCode = postCode;
+    public void setPostCode_delivery(long postCode_delivery) {
+        this.postCode_delivery = postCode_delivery;
     }
 
-    public String getCity() {
-        return city;
+    public String getCity_delivery() {
+        return city_delivery;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setCity_delivery(String city_delivery) {
+        this.city_delivery = city_delivery;
     }
 
-    public String getComment() {
-        return comment;
+    public String getComment_delivery() {
+        return comment_delivery;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setComment_delivery(String comment_delivery) {
+        this.comment_delivery = comment_delivery;
     }
 
     public MyUser getMyUser() {
