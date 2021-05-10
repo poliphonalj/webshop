@@ -23,6 +23,7 @@ import webshop.Model.Order.Order;
 import webshop.Model.Order.OrderItem;
 import webshop.Model.Product.Product;
 import webshop.Model.Slogan;
+import webshop.Model.UsersandRole.MyUser;
 import webshop.Services.OrderService;
 import webshop.exception.WebshopException;
 
@@ -97,7 +98,7 @@ public class OrderController {
 	}
 
 	@PostMapping("/save")
-	public Order save(@Valid @RequestBody Order order, BindingResult result) throws WebshopException  {
+	public Order save(@Valid @RequestBody MyUser user,Order order, BindingResult result) throws WebshopException  {
 		if(result.hasErrors()) {
 			System.out.println("rossz");
 			List<String> errorMessages = new ArrayList<>();
@@ -106,7 +107,7 @@ public class OrderController {
 			});
 			throw new WebshopException(errorMessages);
 		}
-		order = this.service.save(order);
+		order=this.service.save(order, user);
 
 
 		return order;

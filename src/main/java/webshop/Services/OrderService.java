@@ -14,6 +14,7 @@ import webshop.DTOs.OrderDTO;
 import webshop.DTOs.SumOfItemsForADeliveryDAyDTO;
 import webshop.Model.Order.Order;
 import webshop.Model.Order.OrderItem;
+import webshop.Model.UsersandRole.MyUser;
 import webshop.Repository.OrderItemRepo;
 import webshop.Repository.OrderRepo;
 
@@ -110,7 +111,7 @@ HashMap<String,Long>hmap=new HashMap<>();
     }
 
     @Transactional
-    public Order save(Order order) {
+    public Order save(Order order, MyUser user) {
         order.setOrderTime(LocalDateTime.now());
         List<OrderItem> list = new ArrayList<>();
         list = order.getOrdersItemList();
@@ -118,6 +119,8 @@ HashMap<String,Long>hmap=new HashMap<>();
             actualOrderItem.setOrder(order);
             actualOrderItem.setProductID(actualOrderItem.getProductID());
         }
+       // order.setFirstName(user.getFirstName());
+        order.setMyUser(user);
         return orderRepo.save(order);
     }
 
