@@ -19,7 +19,7 @@ public class DeliveryDay implements Comparable<DeliveryDay>{
     private int dayOfTheMonth;
     private String dayOfWeek;
 
-    @OneToMany(mappedBy = "deliveryDay")
+    @OneToMany(mappedBy = "deliveryDay", cascade = CascadeType.ALL)
     private List<DeliveryGaps>listOfGaps;
 
     private boolean isActive;

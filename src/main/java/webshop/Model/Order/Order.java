@@ -7,7 +7,8 @@ import javax.validation.constraints.NotEmpty;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
+import java.time.*;
+import java.util.*;
 
 //TODO status beallitasa
 
@@ -52,7 +53,6 @@ public class Order {
 
     private String comment_delivery;
 
-    @ManyToOne
     MyUser myUser;
 
     @OneToMany(mappedBy = "order", cascade=CascadeType.ALL)
