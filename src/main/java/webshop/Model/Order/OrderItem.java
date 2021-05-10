@@ -1,6 +1,7 @@
 package webshop.Model.Order;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.jetbrains.annotations.Contract;
 import webshop.Model.Product.Unit;
 
 import javax.persistence.*;
@@ -26,6 +27,7 @@ public class OrderItem {
     @ManyToOne
     private Order order;
 
+    @Contract(pure = true)
     public OrderItem() {
     }
 

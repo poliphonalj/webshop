@@ -77,4 +77,6 @@ public class DeliveryGaps {
     public void setDeliveryGapString(String deliveryGapString) {
         this.deliveryGapString = deliveryGapString;
     }
+
+
 }
