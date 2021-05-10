@@ -83,7 +83,7 @@ public class UserController {
     public ResponseEntity<?> addUser(@RequestBody NewUserDTO newUserDTO) {
         try {
             myUserDetailsService.addUser(newUserDTO);
-            //emailService.successfulRegistration(newUserDTO.getFirstName(), newUserDTO.getUsername());
+            emailService.successfulRegistration(newUserDTO.getFirstName(), newUserDTO.getUsername());
             return ResponseEntity.ok(new FeedbackToFrontend(true));
         } catch (Exception e) {
             l.error("kisnyul", e);

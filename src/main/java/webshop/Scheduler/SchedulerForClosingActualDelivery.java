@@ -18,9 +18,9 @@ public class SchedulerForClosingActualDelivery {
         this.deliveryService = deliveryService;
     }
 
-    @Scheduled(cron = "0 31 16 * * ?")//every day at 10
+    @Scheduled(cron = "0 0 10 * * ?")//every day at 10
         public void runOnceByDay() throws IOException {
-        System.out.println("its 16:00");
+        System.out.println("its 10:00");
             //log.info("The time is now {}", dateFormat.format(new Date()));
         deliveryService.setUp();
         }

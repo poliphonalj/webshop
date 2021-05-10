@@ -43,18 +43,9 @@ public class DeliveryService {
     @Transactional
     public void setUp() throws IOException {
 
-
         //adatok kimentese
 //saveLastDeliveries();
-
-
-//ben rudja torolni
-
         setUpDeliveryDaysAndGaps();
-
-
-//setUpDeliveryDaysAndGapsForTheNextSeconTime();
-
     }
 
 
