@@ -108,8 +108,13 @@ public class OrderController {
 			throw new WebshopException(errorMessages);
 			//return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
 		}
-		this.service.save(order);
-		return ResponseEntity.ok(new FeedbackToFrontend(true));
+		order=this.service.save(order);
+		long orderID=order.getID()+1000;//kamubol tobbet mutasson
+		String IDString=orderID+"";
+		HashMap<String,String>hmap=new HashMap<>();
+		hmap.put("successful","true");
+		hmap.put("ID",IDString);
+		return ResponseEntity.ok(hmap);
 	}
 	
 	@DeleteMapping("/delete/{id}")
