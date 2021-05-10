@@ -98,7 +98,7 @@ public class OrderController {
 	}
 
 	@PostMapping("/save")
-	public Order save(@Valid @RequestBody MyUser user,Order order, BindingResult result) throws WebshopException  {
+	public ResponseEntity<?> save(@Valid @RequestBody Order order, BindingResult result) throws WebshopException  {
 		if(result.hasErrors()) {
 			System.out.println("rossz");
 			List<String> errorMessages = new ArrayList<>();
@@ -106,11 +106,10 @@ public class OrderController {
 				errorMessages.add(e.getField() + " " + e.getDefaultMessage());
 			});
 			throw new WebshopException(errorMessages);
+			//return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
 		}
-		order=this.service.save(order, user);
-
-
-		return order;
+		this.service.save(order);
+		return ResponseEntity.ok(new FeedbackToFrontend(true));
 	}
 	
 	@DeleteMapping("/delete/{id}")

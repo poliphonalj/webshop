@@ -111,7 +111,7 @@ HashMap<String,Long>hmap=new HashMap<>();
     }
 
     @Transactional
-    public Order save(Order order, MyUser user) {
+    public Order save(Order order) {
         order.setOrderTime(LocalDateTime.now());
         List<OrderItem> list = new ArrayList<>();
         list = order.getOrdersItemList();
@@ -119,10 +119,6 @@ HashMap<String,Long>hmap=new HashMap<>();
             actualOrderItem.setOrder(order);
             actualOrderItem.setProductID(actualOrderItem.getProductID());
         }
-        order.setFirstName(user.getFirstName());
-        order.setLastName(user.getLastName());
-        order.setUsername(user.getUsername());
-        order.setSimpleAddress_delivery(user.getMyAddressList().get(1).getSimpleAddress());
         return orderRepo.save(order);
     }
 
