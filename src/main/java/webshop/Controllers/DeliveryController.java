@@ -58,7 +58,7 @@ public class DeliveryController {
 //long deliveryDayID=deliveryDay.getDeliveryDayID();
 //long deliveryGapsID=deliveryGaps.getDeliveryGapsID();
 
-            deliveryService.book(deliveryDayID, deliveryGapsID, orderID);
+            deliveryService.book(deliveryDayID, deliveryGapsID);
 
             //vajon az ordernek van delivery time ja? e akkor mi az az orddertime
             // ezt megkersdezni a lazstol holnap
