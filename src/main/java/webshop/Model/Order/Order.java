@@ -7,8 +7,6 @@ import javax.validation.constraints.NotEmpty;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.time.*;
-import java.util.*;
 
 //TODO status beallitasa
 
@@ -18,7 +16,7 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private long ID;
 
 
     private long deliveryDayID;
@@ -64,8 +62,8 @@ public class Order {
     public Order() {
     }
 
-    public Order(long id, long deliveryDayID, long deliveryGapsID, LocalDateTime orderTime, PaymentType paymentType, boolean status, long deliveryFee, String productName, String firstName, String lastName, String username, String phoneNumber, String simpleAddress_delivery, long postCode_delivery, String city_delivery, String comment_delivery, MyUser myUser, @NotEmpty List<OrderItem> ordersItemList) {
-        this.id = id;
+    public Order(long ID, long deliveryDayID, long deliveryGapsID, LocalDateTime orderTime, PaymentType paymentType, boolean status, long deliveryFee, String productName, String firstName, String lastName, String username, String phoneNumber, String simpleAddress_delivery, long postCode_delivery, String city_delivery, String comment_delivery, MyUser myUser, @NotEmpty List<OrderItem> ordersItemList) {
+        this.ID = ID;
         this.deliveryDayID = deliveryDayID;
         this.deliveryGapsID = deliveryGapsID;
         this.orderTime = orderTime;
@@ -167,11 +165,11 @@ public class Order {
     }
 
 	public long getID() {
-		return id;
+		return ID;
 	}
 
 	public void setID(Long id) {
-		this.id = id;
+		this.ID = id;
 	}
 
     public long getPostCode_delivery() {
