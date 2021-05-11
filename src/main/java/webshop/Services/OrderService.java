@@ -30,6 +30,7 @@ public class OrderService {
     @Autowired
     private OrderRepo orderRepo;
     private OrderItemRepo orderItemRepo;
+    private DeliveryService deliveryService;
 
     @Transactional
     public void setOrderStatusTrue(long ID) {
@@ -112,8 +113,10 @@ HashMap<String,Long>hmap=new HashMap<>();
     @Transactional
     public Order save(Order order) {
         order.setOrderTime(LocalDateTime.now());
+        deliveryService.book(order.getDeliveryDayID(),order.getDeliveryGapsID(),order.getID());
         List<OrderItem> list = new ArrayList<>();
         list = order.getOrdersItemList();
+
         for (OrderItem actualOrderItem : list) {
             actualOrderItem.setOrder(order);
             actualOrderItem.setProductID(actualOrderItem.getProductID());
