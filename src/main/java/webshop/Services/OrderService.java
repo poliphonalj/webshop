@@ -64,13 +64,13 @@ public class OrderService {
                 setParameter("p", deliveryDayID).getResultList();
 
         List<SumOfItemsForADeliveryDAyDTO> listToReturn = new ArrayList<>();
-HashMap<String,Long>hmap=new HashMap<>();
+        HashMap<String, Long> hmap = new HashMap<>();
         for (OrderItem actualOrder : list) {
             System.out.println(actualOrder.getName().toString());
             System.out.println(actualOrder.getQuantity());
-           hmap.putIfAbsent(actualOrder.getName(), actualOrder.getQuantity());
+            hmap.putIfAbsent(actualOrder.getName(), actualOrder.getQuantity());
 
-           hmap.put(actualOrder.getName(), hmap.get(actualOrder.getName()).longValue()+actualOrder.getQuantity());
+            hmap.put(actualOrder.getName(), hmap.get(actualOrder.getName()).longValue() + actualOrder.getQuantity());
 
         }
         return hmap;
@@ -82,6 +82,7 @@ HashMap<String,Long>hmap=new HashMap<>();
         List<OrderDTO> orderDTOList = new ArrayList<>();
         for (Order actualOrder : list) {
             OrderDTO orderDTO = new OrderDTO();
+            orderDTO.setID(actualOrder.getID());
             orderDTO.setOrderTime(actualOrder.getOrderTime());
             orderDTO.setPaymentType(actualOrder.getPaymentType());
             orderDTO.setDeliveryFee(actualOrder.getDeliveryFee());
@@ -114,7 +115,7 @@ HashMap<String,Long>hmap=new HashMap<>();
     public Order save(Order order) {
         order.setOrderTime(LocalDateTime.now());
 
-       //deliveryService.book(order.getDeliveryDayID(),order.getDeliveryGapsID());
+        //deliveryService.book(order.getDeliveryDayID(),order.getDeliveryGapsID());
         List<OrderItem> list = new ArrayList<>();
         list = order.getOrdersItemList();
 

@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class OrderDTO {
+    private long ID;
     private LocalDateTime orderTime;
     private PaymentType paymentType;
     private boolean status;
@@ -39,7 +40,8 @@ public class OrderDTO {
 
     private String sumProductPrice;
 
-    public OrderDTO(LocalDateTime orderTime, PaymentType paymentType, boolean status, long deliveryFee, @NotEmpty String firstName, @NotEmpty String lastName, @Email @NotNull String username, String phoneNumber, @NotNull String simpleAddress_delivery, long postCode_delivery, String city_delivery, String comment_delivery, long totalProductPrice, long totalPrice, long deliveryDayID, long deliveryGapsID, List<OrderItem> itemList) {
+    public OrderDTO(long ID, LocalDateTime orderTime, PaymentType paymentType, boolean status, long deliveryFee, @NotEmpty String firstName, @NotEmpty String lastName, @Email @NotNull String username, String phoneNumber, @NotNull String simpleAddress_delivery, long postCode_delivery, String city_delivery, String comment_delivery, long totalProductPrice, long totalPrice, long deliveryDayID, long deliveryGapsID, List<OrderItem> itemList) {
+        this.ID = ID;
         this.orderTime = orderTime;
         this.paymentType = paymentType;
         this.status = status;
@@ -204,5 +206,13 @@ public class OrderDTO {
 
     public void setDeliveryGapString(String deliveryGapString) {
         this.deliveryGapString = deliveryGapString;
+    }
+
+    public long getID() {
+        return ID;
+    }
+
+    public void setID(long ID) {
+        this.ID = ID;
     }
 }

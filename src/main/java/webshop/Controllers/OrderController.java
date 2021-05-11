@@ -65,7 +65,7 @@ public class OrderController {
 	@GetMapping("/getSumPerDelivery/{deliveryDayID}")
 	public ResponseEntity<?> getSumOfItemsPerDeliveryDay(@PathVariable Long deliveryDayID) {
 
-		HashMap<String,Long>hmap=service. getSumOfItemsForADeliveryDay(deliveryDayID);
+		HashMap<String,Long>hmap=service.getSumOfItemsForADeliveryDay(deliveryDayID);
 		if (hmap != null) {
 			HashMap<String, HashMap<String,Long>> map = new HashMap<>();
 			map.put("list", hmap);
