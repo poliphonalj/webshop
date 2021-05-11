@@ -58,7 +58,7 @@ public class DeliveryService {
 
     //books a day and gap and updates the gaps counter
     @Transactional
-    public void book(long deliveryDayID, long deliveryGapsID, long orderID) {
+    public void book(long deliveryDayID, long deliveryGapsID) {
         //orderidba betenne
 
         //a 8as gaptol mar a 2 napra kell betenni
