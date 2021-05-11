@@ -113,7 +113,8 @@ HashMap<String,Long>hmap=new HashMap<>();
     @Transactional
     public Order save(Order order) {
         order.setOrderTime(LocalDateTime.now());
-        deliveryService.book(order.getDeliveryDayID(),order.getDeliveryGapsID());
+
+       //deliveryService.book(order.getDeliveryDayID(),order.getDeliveryGapsID());
         List<OrderItem> list = new ArrayList<>();
         list = order.getOrdersItemList();
 

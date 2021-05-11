@@ -24,6 +24,7 @@ import webshop.Model.Order.OrderItem;
 import webshop.Model.Product.Product;
 import webshop.Model.Slogan;
 import webshop.Model.UsersandRole.MyUser;
+import webshop.Services.DeliveryService;
 import webshop.Services.OrderService;
 import webshop.exception.WebshopException;
 
@@ -32,6 +33,8 @@ import webshop.exception.WebshopException;
 public class OrderController {
 	@Autowired
 	OrderService service;
+	@Autowired
+	DeliveryService deliveryService;
 
 
 
@@ -109,6 +112,9 @@ public class OrderController {
 			//return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
 		}
 		order=this.service.save(order);
+
+		deliveryService.book(order.getDeliveryDayID(), order.getDeliveryGapsID());////////////////////////////
+
 		long orderID=order.getID()+1000;//kamubol tobbet mutasson
 		String IDString=orderID+"";
 		HashMap<String,String>hmap=new HashMap<>();

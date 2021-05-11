@@ -31,6 +31,8 @@ public class DeliveryService {
         this.deliveryGapsRepo = deliveryGapsRepo;
     }
 
+    public DeliveryService() {
+    }
 
     //ide kell egy olyan metodus ami idozitve van a rendeles zarasokhoz
     //kiirja egy filba az eddigi rendeleseket
