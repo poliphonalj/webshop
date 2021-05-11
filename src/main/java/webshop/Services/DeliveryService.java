@@ -68,7 +68,7 @@ public class DeliveryService {
 
         long counter = dGaps.getCounter();
         counter++;
-
+        System.out.println(counter+"gggggggggggggggggggggggggggggggggggggggg");
         if (counter == 6) {
             dGaps.setAvailable(false);
         } else {
