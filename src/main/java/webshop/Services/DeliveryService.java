@@ -60,7 +60,7 @@ public class DeliveryService {
 
 
 
-   // postmenben a  delivery gaps idt vegeye ki a tombbol es tegye az ele ld pman
+    // postmenben a  delivery gaps idt vegeye ki a tombbol es tegye az ele ld pman
 
     //books a day and gap and updates the gaps counter
     @Transactional
@@ -307,4 +307,3 @@ public class DeliveryService {
         //setUpDeliveryDaysAndGapsForTheNextSeconTime();
     }
 }
-

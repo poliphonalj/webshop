@@ -122,13 +122,13 @@ public class OrderController {
 		hmap.put("ID",IDString);
 		return ResponseEntity.ok(hmap);
 	}
-	
+
 	@DeleteMapping("/delete/{id}")
 	public String delete(@PathVariable("id") Long id) {
 		service.delete(id);
 		return "Ok";
 	}
-	
+
 	@GetMapping("/get/{id}")
 	public Order getOne(@PathVariable("id") Long id) {
 		Order order = service.getOne(id);
