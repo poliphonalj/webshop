@@ -14,21 +14,27 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import webshop.Services.MyUserDetailsService;
+import webshop.Utils.JwtRequestFilter;
 
 import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
+
+
+
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final MyUserDetailsService myUserDetailsService;
-
     @Autowired
-    public SecurityConfig(MyUserDetailsService myUserDetailsService){
+    private JwtRequestFilter jwtRequestFilter;
+    @Autowired
+    public SecurityConfig(MyUserDetailsService myUserDetailsService) {
         this.myUserDetailsService = myUserDetailsService;
 
     }
@@ -41,24 +47,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return  NoOpPasswordEncoder.getInstance();
+        return NoOpPasswordEncoder.getInstance();
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors()         //kell az angularral valo osszekapcsolodashoz
                 .and().csrf().disable().
-                authorizeRequests().antMatchers("/**","/time","/authenticate","image/new", "/v2/api-docs/**",
-                "/swagger-resources/**",
-                "/swagger-ui.html",
-                "/v3/api-docs/**",
-                "/swagger-ui/**",
-                "/webjars/**" ,
-                "/swagger.json").
-                permitAll().anyRequest().authenticated().
-                and().sessionManagement().
-                sessionCreationPolicy(SessionCreationPolicy.STATELESS);       //Spring Sec is not building a session
-         //ask to use the filterchain, works for each request
+                /* authorizeRequests().antMatchers("/**","/time","/authenticate","image/new", "/v2/api-docs/**",
+                 "/swagger-resources/**",
+                 "/swagger-ui.html",
+                 "/v3/api-docs/**",
+                 "/swagger-ui/**",
+                 "/webjars/**" ,
+                 "/swagger.json").
+                 permitAll().anyRequest().authenticated().
+                 and().sessionManagement().*/
+
+                        authorizeRequests().antMatchers("/authenticate").permitAll().
+                        // all other requests need to be authenticated
+                        anyRequest().authenticated().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);       //Spring Sec is not building a session
+        //ask to use the filterchain, works for each request
+
+        // Add a filter to validate the tokens with every request
+        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override
@@ -66,14 +78,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+
     @Bean
     @Qualifier("cors")
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
         configuration.setAllowCredentials(true);
-        configuration.setAllowedOrigins(Arrays.asList("https://farmfalat-frontend.herokuapp.com","http://localhost:8080","http://localhost:63342","http://localhost:4200", "https://farmfalatb.herokuapp.com"));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST","DELETE","PUT","PATCH","HEAD","OPTIONS"));
+        configuration.setAllowedOrigins(Arrays.asList("https://farmfalat-frontend.herokuapp.com", "http://localhost:8080", "http://localhost:63342", "http://localhost:4200", "https://farmfalatb.herokuapp.com"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "DELETE", "PUT", "PATCH", "HEAD", "OPTIONS"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

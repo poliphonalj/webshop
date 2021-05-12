@@ -27,7 +27,6 @@ public class OrderItem {
     @ManyToOne
     private Order order;
 
-    @Contract(pure = true)
     public OrderItem() {
     }
 

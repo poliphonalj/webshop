@@ -24,6 +24,7 @@ import webshop.Model.UsersandRole.MyUser;
 import webshop.Services.AddressService;
 import webshop.Services.EmailService;
 import webshop.Services.MyUserDetailsService;
+import webshop.Utils.JwtTokenUtil;
 
 import java.util.HashMap;
 import java.util.List;
@@ -37,14 +38,16 @@ public class UserController {
     AuthenticationManager authenticationManager;
     AddressService addressService;
     EmailService emailService;
+    JwtTokenUtil jwtTokenUtil;
 
     @Autowired
     public UserController(MyUserDetailsService myUserDetailsService, AuthenticationManager authenticationManager,
-                          AddressService addressService, EmailService emailService) {
+                          AddressService addressService, EmailService emailService, JwtTokenUtil jwtTokenUtil) {
         this.myUserDetailsService = myUserDetailsService;
         this.authenticationManager = authenticationManager;
         this.addressService = addressService;
         this.emailService = emailService;
+        this.jwtTokenUtil=jwtTokenUtil;
     }
 
 
@@ -63,9 +66,12 @@ public class UserController {
                 UserDetails userDetails = (UserDetails) authenticate.getPrincipal();
                 String username = userDetails.getUsername();
                 MyUser myUser = myUserDetailsService.loadUserByUsername(username);
+
+                final String token = jwtTokenUtil.generateToken(userDetails);
+
                 JSONObject jObj = myUserDetailsService.returnForSuccedLogin(myUser.getFirstName(),
                         ((List) (authenticate.getAuthorities())).get(0).toString(),
-                        username, myUser.getUserID());
+                        username, myUser.getUserID(),token);
 
                 return ResponseEntity.ok().body(jObj);
             } else {

@@ -285,7 +285,7 @@ public class MyUserDetailsService implements UserDetailsService {
     }
 
 
-    public JSONObject returnForSuccedLogin(String firstName, String role, String username, long ID) {
+    public JSONObject returnForSuccedLogin(String firstName, String role, String username, long ID,String token) {
         MyUser u = loadUserByUsername(username);
         u.setLastLoggedInAt(LocalDateTime.now());
         userRepo.saveAndFlush(u);
@@ -296,6 +296,7 @@ public class MyUserDetailsService implements UserDetailsService {
         l.setUserID(ID);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("succesful", "true");
+        jsonObject.put("token",token);
         JSONArray list = new JSONArray();
         list.add(l);
         jsonObject.put("list", list);

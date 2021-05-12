@@ -51,18 +51,18 @@ public class Order {
 
     private String comment_delivery;
 
-    MyUser myUser;
+    //MyUser myUser;
 
     @OneToMany(mappedBy = "order", cascade=CascadeType.ALL)
 
-    @NotEmpty
+
     private List<OrderItem> ordersItemList;
 
 
     public Order() {
     }
 
-    public Order(long ID, long deliveryDayID, long deliveryGapsID, LocalDateTime orderTime, PaymentType paymentType, boolean status, long deliveryFee, String productName, String firstName, String lastName, String username, String phoneNumber, String simpleAddress_delivery, long postCode_delivery, String city_delivery, String comment_delivery, MyUser myUser, @NotEmpty List<OrderItem> ordersItemList) {
+    public Order(long ID, long deliveryDayID, long deliveryGapsID, LocalDateTime orderTime, PaymentType paymentType, boolean status, long deliveryFee, String productName, String firstName, String lastName, String username, String phoneNumber, String simpleAddress_delivery, long postCode_delivery, String city_delivery, String comment_delivery,  @NotEmpty List<OrderItem> ordersItemList) {
         this.ID = ID;
         this.deliveryDayID = deliveryDayID;
         this.deliveryGapsID = deliveryGapsID;
@@ -79,7 +79,7 @@ public class Order {
         this.postCode_delivery = postCode_delivery;
         this.city_delivery = city_delivery;
         this.comment_delivery = comment_delivery;
-        this.myUser = myUser;
+        //this.myUser = myUser;
         this.ordersItemList = ordersItemList;
     }
 
@@ -196,13 +196,13 @@ public class Order {
         this.comment_delivery = comment_delivery;
     }
 
-    public MyUser getMyUser() {
-		return myUser;
-	}
+   // public MyUser getMyUser() {
+	//	return myUser;
+	//}
 
-	public void setMyUser(MyUser myUser) {
-		this.myUser = myUser;
-	}
+	//public void setMyUser(MyUser myUser) {
+	//	this.myUser = myUser;
+	//}
 
 	public List<OrderItem> getOrdersItemList() {
 		return ordersItemList;

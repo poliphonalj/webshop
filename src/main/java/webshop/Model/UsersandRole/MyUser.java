@@ -46,7 +46,7 @@ public class MyUser implements UserDetails {
 
 
 
-    @ManyToMany
+    @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "users_ID"),
@@ -57,8 +57,8 @@ public class MyUser implements UserDetails {
     @OneToMany(mappedBy = "myUser")
     private List<Address> myAddressList;
 
-    @OneToMany(mappedBy = "myUser")
-    private List<Order> orderList;
+   // @OneToMany(mappedBy = "myUser")
+    //private List<Order> orderList;
 
 
     public MyUser() {}
