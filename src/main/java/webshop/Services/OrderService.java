@@ -60,18 +60,24 @@ public class OrderService {
     public HashMap<String, Long> getSumOfItemsForADeliveryDay(long deliveryDayID) {
         //em.createQuery("SELECT  orders.deliveryDayID FROM Order orders where ")
         //select name,sum quantity drom orderitem where orderid is in (select orderid from order where orderday=xx)
-        List<OrderItem> list = (List<OrderItem>) em.createQuery("SELECT  orderItems FROM OrderItem orderItems where orderItems.order.deliveryDayID=:p Group By orderItems.name").
+        List<OrderItem> list = (List<OrderItem>) em.createQuery("SELECT  orderItems FROM OrderItem orderItems where orderItems.order.deliveryDayID=:p").
                 setParameter("p", deliveryDayID).getResultList();
 
-        List<SumOfItemsForADeliveryDAyDTO> listToReturn = new ArrayList<>();
+        System.out.println(list.get(0).getQuantity()+"dddddddddddddddddddddddddddd"+list.size());
+
+
         HashMap<String, Long> hmap = new HashMap<>();
         for (OrderItem actualOrder : list) {
-            System.out.println(actualOrder.getName().toString());
-            System.out.println(actualOrder.getQuantity());
-            hmap.putIfAbsent(actualOrder.getName(), actualOrder.getQuantity());
+            System.out.println(actualOrder.getQuantity()+"wwwwwwwwwwwwwwwwwwwww");
 
-            hmap.put(actualOrder.getName(), hmap.get(actualOrder.getName()).longValue() + actualOrder.getQuantity());
 
+            if (hmap.containsKey(actualOrder.getName())) {
+                hmap.put(actualOrder.getName(), hmap.get(actualOrder.getName())+ actualOrder.getQuantity());
+            } else {
+                hmap.put(actualOrder.getName(), actualOrder.getQuantity());
+            }
+           // hmap.putIfAbsent(actualOrder.getName(), actualOrder.getQuantity());
+           //hmap.put(actualOrder.getName(),hmap.get(actualOrder.getName())+actualOrder.getQuantity());
         }
         return hmap;
     }
