@@ -61,7 +61,7 @@ public class DeliveryService {
     //returns the available days and gaps
     public List<DeliveryDay> getAvailableDeliveries() {
         //mutatja az aktivat es apasszivat is
-        List<DeliveryDay> list = deliveryDayRepo.findAll();
+        List<DeliveryDay> list = deliveryDayRepo.findAllByIsActiveTrue();
         return list;
     }
 
@@ -88,6 +88,7 @@ public class DeliveryService {
 
 
     //creates the next 2 delivery empty day with full amount of available gaps
+    @Transactional
     public void setUpDeliveryDaysAndGaps() {
         List<LocalDateTime> localDateTimeList = new ArrayList<>();
         LocalDateTime l = LocalDateTime.now();

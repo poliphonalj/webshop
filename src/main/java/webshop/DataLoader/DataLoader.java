@@ -18,6 +18,7 @@ import webshop.Model.UsersandRole.Role;
 import webshop.Repository.*;
 import webshop.Services.DeliveryService;
 
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +51,7 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
     private DeliveryService deliveryService;
 
     @Autowired
-    public DataLoader(RoleRepo roleRepo, UserRepo userRepo, ProductRepo productRepo, CategoryRepo categoryRepo, SloganRepo sloganRepo, AddressRepo addressRepo, DeliveryGapsRepo deliveryGapsRepo, DeliveryDayRepo deliveryDayRepo) {
+    public DataLoader(RoleRepo roleRepo, UserRepo userRepo, ProductRepo productRepo, CategoryRepo categoryRepo, SloganRepo sloganRepo, AddressRepo addressRepo, DeliveryGapsRepo deliveryGapsRepo, DeliveryDayRepo deliveryDayRepo, DeliveryService deliveryService) {
         this.roleRepo = roleRepo;
         this.userRepo = userRepo;
         this.productRepo = productRepo;
@@ -59,6 +60,7 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
         this.addressRepo = addressRepo;
         this.deliveryGapsRepo = deliveryGapsRepo;
         this.deliveryDayRepo = deliveryDayRepo;
+        this.deliveryService = deliveryService;
     }
 
     @Override
@@ -274,7 +276,7 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
     public void createCategories() {
         if (categoryRepo.count() == 0) {
             gyumolcs = new Category();
-            gyumolcs.setCategoryName("gyumolcs");
+            gyumolcs.setCategoryName("gyümölcs");
             gyumolcs = categoryRepo.saveAndFlush(gyumolcs);
 
             zoldseg = new Category();
@@ -286,100 +288,72 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
     }
 
 
-
     @Transactional
     public void createDeliveryDate() {
-        DeliveryDay d = new DeliveryDay(2021, "május", 8, "szombat");
-        d.setDayOfTheYear(128);
-        DeliveryDay d2 = new DeliveryDay(2021, "május", 11, "kedd");
-        d2.setDayOfTheYear(131);
 
-        DeliveryGaps gap1 = new DeliveryGaps(8);
-        gap1.setDeliveryDay(d);
+        List<LocalDateTime> localDateTimeList = new ArrayList<>();
+        LocalDateTime l = LocalDateTime.now();
 
-        DeliveryGaps gap2 = new DeliveryGaps(10);
-        gap2.setDeliveryDay(d);
+        //hetfon 10 ig leaddott rendelesre meg keddi kiszallitas lehet
+        if (l.getDayOfWeek() == DayOfWeek.MONDAY && l.getHour() <= 9) {
+            deliveryService.convertLocalDatetimeToDeliveryDateAndSaveToDB(l.plusDays(1));
+            deliveryService.convertLocalDatetimeToDeliveryDateAndSaveToDB(l.plusDays(3));
+        }
 
-        DeliveryGaps gap3 = new DeliveryGaps(12);
-        gap3.setDeliveryDay(d);
+        //hetfon 10 utan leadott rendeles kiszallitasa csut v szombat
+        else if (l.getDayOfWeek() == DayOfWeek.MONDAY && l.getHour() > 9) {
+            deliveryService.convertLocalDatetimeToDeliveryDateAndSaveToDB(l.plusDays(2));
+            deliveryService.convertLocalDatetimeToDeliveryDateAndSaveToDB(l.plusDays(5));
+        }
 
-        DeliveryGaps gap4 = new DeliveryGaps(14);
-        gap4.setDeliveryDay(d);
+        //kedd
+        // kov kiszallitas csut v szompat
+        else if (l.getDayOfWeek() == DayOfWeek.TUESDAY) {
+            deliveryService.convertLocalDatetimeToDeliveryDateAndSaveToDB(l.plusDays(2));
+            deliveryService.convertLocalDatetimeToDeliveryDateAndSaveToDB(l.plusDays(4));
+        }
 
-        DeliveryGaps gap5 = new DeliveryGaps(16);
-        gap5.setDeliveryDay(d);
+        //szerdan 10 ig leaddott rendelesre meg csut kiszallitas lehet
+        else if (l.getDayOfWeek() == DayOfWeek.WEDNESDAY && l.getHour() < 9) {
+            deliveryService.convertLocalDatetimeToDeliveryDateAndSaveToDB(l.plusDays(1));
+            deliveryService.convertLocalDatetimeToDeliveryDateAndSaveToDB(l.plusDays(3));
+        }
 
-        DeliveryGaps gap6 = new DeliveryGaps(18);
-        gap6.setDeliveryDay(d);
+        //szerdan 10 utan leadott rendeles kiszallitasa szombat  v kedd
+        else if (l.getDayOfWeek() == DayOfWeek.WEDNESDAY && l.getHour() > 9) {
+            deliveryService.convertLocalDatetimeToDeliveryDateAndSaveToDB(l.plusDays(3));
+            deliveryService.convertLocalDatetimeToDeliveryDateAndSaveToDB(l.plusDays(6));
+        }
 
-        DeliveryGaps gap7 = new DeliveryGaps(20);
-        gap7.setDeliveryDay(d);
+        //csutortok
+        else if (l.getDayOfWeek() == DayOfWeek.THURSDAY) {
+            deliveryService.convertLocalDatetimeToDeliveryDateAndSaveToDB(l.plusDays(2));
+            deliveryService.convertLocalDatetimeToDeliveryDateAndSaveToDB(l.plusDays(5));
+        }
 
+//pentek 10 ig
+        else if (l.getDayOfWeek() == DayOfWeek.FRIDAY && l.getHour() < 9) {
+            deliveryService.convertLocalDatetimeToDeliveryDateAndSaveToDB(l.plusDays(1));
+            deliveryService.convertLocalDatetimeToDeliveryDateAndSaveToDB(l.plusDays(4));
+        }
 
-        DeliveryGaps gap8 = new DeliveryGaps(8);
-        gap8.setDeliveryDay(d2);
-
-        DeliveryGaps gap9 = new DeliveryGaps(10);
-        gap9.setDeliveryDay(d2);
-
-        DeliveryGaps gap10 = new DeliveryGaps(12);
-        gap10.setDeliveryDay(d2);
-
-        DeliveryGaps gap11 = new DeliveryGaps(14);
-        gap11.setDeliveryDay(d2);
-
-        DeliveryGaps gap12 = new DeliveryGaps(16);
-        gap12.setDeliveryDay(d2);
-
-        DeliveryGaps gap13 = new DeliveryGaps(18);
-        gap13.setDeliveryDay(d2);
-
-        DeliveryGaps gap14 = new DeliveryGaps(20);
-        gap14.setDeliveryDay(d2);
-
-
-        List<DeliveryGaps> gapList = new ArrayList<>();
-        List<DeliveryGaps> gapList2 = new ArrayList<>();
-        gapList.add(gap1);
-        gapList.add(gap2);
-        gapList.add(gap3);
-        gapList.add(gap4);
-        gapList.add(gap5);
-        gapList.add(gap6);
-        gapList.add(gap7);
-
-        gapList2.add(gap8);
-        gapList2.add(gap9);
-        gapList2.add(gap10);
-        gapList2.add(gap11);
-        gapList2.add(gap12);
-        gapList2.add(gap13);
-        gapList2.add(gap14);
-
-        d.setListOfGaps(gapList);
-        d2.setListOfGaps(gapList2);
-
-        deliveryDayRepo.saveAndFlush(d);
-        deliveryDayRepo.saveAndFlush(d2);
+        //pentek10 utan leadott rendeles kiszallitasa kedd v csut
+        else if (l.getDayOfWeek() == DayOfWeek.FRIDAY && l.getHour() > 9) {
+            deliveryService.convertLocalDatetimeToDeliveryDateAndSaveToDB(l.plusDays(4));
+            deliveryService.convertLocalDatetimeToDeliveryDateAndSaveToDB(l.plusDays(6));
 
 
-        deliveryGapsRepo.saveAndFlush(gap1);
-        deliveryGapsRepo.saveAndFlush(gap2);
-        deliveryGapsRepo.saveAndFlush(gap3);
-        deliveryGapsRepo.saveAndFlush(gap4);
-        deliveryGapsRepo.saveAndFlush(gap5);
-        deliveryGapsRepo.saveAndFlush(gap6);
-        deliveryGapsRepo.saveAndFlush(gap7);
+            //szombaton leadott rendeles kedd v csut
+        } else if (l.getDayOfWeek() == DayOfWeek.SATURDAY) {
+            deliveryService.convertLocalDatetimeToDeliveryDateAndSaveToDB(l.plusDays(3));
+            deliveryService.convertLocalDatetimeToDeliveryDateAndSaveToDB(l.plusDays(5));
 
-        deliveryGapsRepo.saveAndFlush(gap8);
-        deliveryGapsRepo.saveAndFlush(gap9);
-        deliveryGapsRepo.saveAndFlush(gap10);
-        deliveryGapsRepo.saveAndFlush(gap11);
-        deliveryGapsRepo.saveAndFlush(gap12);
-        deliveryGapsRepo.saveAndFlush(gap13);
-        deliveryGapsRepo.saveAndFlush(gap14);
 
+        } else if (l.getDayOfWeek() == DayOfWeek.SUNDAY) {
+            deliveryService.convertLocalDatetimeToDeliveryDateAndSaveToDB(l.plusDays(2));
+            deliveryService.convertLocalDatetimeToDeliveryDateAndSaveToDB(l.plusDays(4));
+        }
     }
-
-
 }
+
+
