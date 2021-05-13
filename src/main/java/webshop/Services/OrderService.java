@@ -56,6 +56,7 @@ public class OrderService {
         return orderListToOrderDTOList(list);
     }
 
+    //:)
     @Transactional
     public HashMap<String, Long> getSumOfItemsForADeliveryDay(long deliveryDayID) {
         //em.createQuery("SELECT  orders.deliveryDayID FROM Order orders where ")
@@ -63,12 +64,8 @@ public class OrderService {
         List<OrderItem> list = (List<OrderItem>) em.createQuery("SELECT  orderItems FROM OrderItem orderItems where orderItems.order.deliveryDayID=:p").
                 setParameter("p", deliveryDayID).getResultList();
 
-        System.out.println(list.get(0).getQuantity()+"dddddddddddddddddddddddddddd"+list.size());
-
-
         HashMap<String, Long> hmap = new HashMap<>();
         for (OrderItem actualOrder : list) {
-            System.out.println(actualOrder.getQuantity()+"wwwwwwwwwwwwwwwwwwwww");
 
 
             if (hmap.containsKey(actualOrder.getName())) {

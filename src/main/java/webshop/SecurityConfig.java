@@ -54,7 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors()         //kell az angularral valo osszekapcsolodashoz
                 .and().csrf().disable().
-                /* authorizeRequests().antMatchers("/**","/time","/authenticate","image/new", "/v2/api-docs/**",
+                authorizeRequests().antMatchers("/**","/time","/authenticate","image/new", "/v2/api-docs/**",
                  "/swagger-resources/**",
                  "/swagger-ui.html",
                  "/v3/api-docs/**",
@@ -62,8 +62,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                  "/webjars/**" ,
                  "/swagger.json").
                  permitAll().anyRequest().authenticated().
-                 and().sessionManagement().*/
-
+                 and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+/*
                         authorizeRequests().antMatchers("/authenticate").permitAll().
                         // all other requests need to be authenticated
                         anyRequest().authenticated().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);       //Spring Sec is not building a session
@@ -71,6 +71,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         // Add a filter to validate the tokens with every request
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+
+ */
     }
 
     @Override
