@@ -22,7 +22,8 @@ public class ASZFController {
                     " Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia" +
                     " deserunt mollit anim id est laborum ";
             HashMap<String,String>hmap=new HashMap<>();
-            hmap.put(title,text);
+            hmap.put("title",title);
+            hmap.put("subject",text);
             return ResponseEntity.ok().body(hmap);
         }
     }

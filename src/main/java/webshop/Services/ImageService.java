@@ -76,6 +76,7 @@ public class ImageService {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("succesful", "true");
         jsonObject.put("list", retrievedImage);
+        jsonObject.put("ID",retrievedImage.getID());
         return jsonObject;
     }
 

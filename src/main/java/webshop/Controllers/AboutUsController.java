@@ -51,7 +51,8 @@ public class AboutUsController {
                 "Mi házhoz is hozzuk Neked.";
 
         HashMap<String,String>hmap=new HashMap<>();
-        hmap.put(title,text);
+        hmap.put("title",title);
+        hmap.put("subject",text);
         return ResponseEntity.ok().body(hmap);
     }
 }
