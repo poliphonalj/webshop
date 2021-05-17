@@ -1,4 +1,4 @@
-package webshop.Model.Order;
+package webshop.Model.Orders;
 
 public enum PaymentType {
     CASH,

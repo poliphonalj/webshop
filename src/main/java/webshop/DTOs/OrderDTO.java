@@ -1,7 +1,7 @@
 package webshop.DTOs;
 
-import webshop.Model.Order.OrderItem;
-import webshop.Model.Order.PaymentType;
+import webshop.Model.Orders.OrderItem;
+import webshop.Model.Orders.PaymentType;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;

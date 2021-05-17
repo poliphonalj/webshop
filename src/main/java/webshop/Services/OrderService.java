@@ -11,9 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import webshop.DTOs.OrderDTO;
-import webshop.DTOs.SumOfItemsForADeliveryDAyDTO;
-import webshop.Model.Order.Order;
-import webshop.Model.Order.OrderItem;
+import webshop.Model.Orders.Orders;
+import webshop.Model.Orders.OrderItem;
 import webshop.Repository.OrderItemRepo;
 import webshop.Repository.OrderRepo;
 
@@ -34,25 +33,25 @@ public class OrderService {
 
     @Transactional
     public void setOrderStatusTrue(long ID) {
-        Order order = this.getOne(ID);
-        order.setStatus(true);
-        orderRepo.save(order);
+        Orders orders = this.getOne(ID);
+        orders.setStatus(true);
+        orderRepo.save(orders);
     }
 
     public List<OrderDTO> getOrdersPerDeliveryDay(long deliveryDayID) {
-        List<Order> list = orderRepo.findOrdersByDeliveryDayID(deliveryDayID);
+        List<Orders> list = orderRepo.findOrdersByDeliveryDayID(deliveryDayID);
         return orderListToOrderDTOList(list);
     }
 
     @Transactional
     public List<OrderDTO> getAllUndelivered() {
-        List<Order> list = this.orderRepo.findAllByStatusFalse();
+        List<Orders> list = this.orderRepo.findAllByStatusFalse();
         return orderListToOrderDTOList(list);
     }
 
     @Transactional
     public List<OrderDTO> getAll() {
-        List<Order> list = this.orderRepo.findAll();
+        List<Orders> list = this.orderRepo.findAll();
         return orderListToOrderDTOList(list);
     }
 
@@ -78,31 +77,45 @@ public class OrderService {
         }
         return hmap;
     }
-
+@Transactional
+    public List<Orders>getDeliveryOrdersByPostCode(long deliveryDayID){
+    List<Orders> list = (List<Orders>) em.createQuery("SELECT  order FROM order order where order.deliveryDayID=:p ORDER BY order.postCode_delivery").
+            setParameter("p", deliveryDayID).getResultList();
+   return list;
+    }
+//itt torik el
+    @Transactional
+    public List<Orders>getDeliveryOrdersByDeliveryGaps(long deliveryDayID){
+        List<Orders> list = (List<Orders>) em.createQuery("SELECT  orders " +
+                " FROM orders orders "+
+                "where orders.deliveryDayID=:p  ").
+                setParameter("p", deliveryDayID).getResultList();
+        return list;
+    }
 
     @Transactional
-    public List<OrderDTO> orderListToOrderDTOList(List<Order> list) {
+    public List<OrderDTO> orderListToOrderDTOList(List<Orders> list) {
         List<OrderDTO> orderDTOList = new ArrayList<>();
-        for (Order actualOrder : list) {
+        for (Orders actualOrders : list) {
             OrderDTO orderDTO = new OrderDTO();
-            orderDTO.setID(actualOrder.getID());
-            orderDTO.setOrderTime(actualOrder.getOrderTime());
-            orderDTO.setPaymentType(actualOrder.getPaymentType());
-            orderDTO.setDeliveryFee(actualOrder.getDeliveryFee());
+            orderDTO.setID(actualOrders.getID());
+            orderDTO.setOrderTime(actualOrders.getOrderTime());
+            orderDTO.setPaymentType(actualOrders.getPaymentType());
+            orderDTO.setDeliveryFee(actualOrders.getDeliveryFee());
 
-            orderDTO.setFirstName(actualOrder.getFirstName());
-            orderDTO.setLastName(actualOrder.getLastName());
-            orderDTO.setPhoneNumber(actualOrder.getPhoneNumber());
-            orderDTO.setUsername(actualOrder.getUsername());
-            orderDTO.setCity_delivery(actualOrder.getCity_delivery());
-            orderDTO.setPostCode_delivery(actualOrder.getPostCode_delivery());
-            orderDTO.setSimpleAddress_delivery(actualOrder.getSimpleAddress_delivery());
-            orderDTO.setComment_delivery(actualOrder.getComment_delivery());
-            orderDTO.setDeliveryDayID(actualOrder.getDeliveryDayID());
-            orderDTO.setDeliveryGapsID(actualOrder.getDeliveryGapsID());
+            orderDTO.setFirstName(actualOrders.getFirstName());
+            orderDTO.setLastName(actualOrders.getLastName());
+            orderDTO.setPhoneNumber(actualOrders.getPhoneNumber());
+            orderDTO.setUsername(actualOrders.getUsername());
+            orderDTO.setCity_delivery(actualOrders.getCity_delivery());
+            orderDTO.setPostCode_delivery(actualOrders.getPostCode_delivery());
+            orderDTO.setSimpleAddress_delivery(actualOrders.getSimpleAddress_delivery());
+            orderDTO.setComment_delivery(actualOrders.getComment_delivery());
+            orderDTO.setDeliveryDayID(actualOrders.getDeliveryDayID());
+            orderDTO.setDeliveryGapsID(actualOrders.getDeliveryGapsID());
 
-            orderDTO.setItemList(actualOrder.getOrdersItemList());
-            List<OrderItem> itemList = actualOrder.getOrdersItemList();
+            orderDTO.setItemList(actualOrders.getOrdersItemList());
+            List<OrderItem> itemList = actualOrders.getOrdersItemList();
             int totalProductPrice = 0;
             for (OrderItem actualItem : itemList) {
                 totalProductPrice += actualItem.getPrice() * actualItem.getQuantity();
@@ -115,18 +128,18 @@ public class OrderService {
     }
 
     @Transactional
-    public Order save(Order order) {
-        order.setOrderTime(LocalDateTime.now());
+    public Orders save(Orders orders) {
+        orders.setOrderTime(LocalDateTime.now());
 
         //deliveryService.book(order.getDeliveryDayID(),order.getDeliveryGapsID());
         List<OrderItem> list = new ArrayList<>();
-        list = order.getOrdersItemList();
+        list = orders.getOrdersItemList();
 
         for (OrderItem actualOrderItem : list) {
-            actualOrderItem.setOrder(order);
+            actualOrderItem.setOrder(orders);
             actualOrderItem.setProductID(actualOrderItem.getProductID());
         }
-        return orderRepo.save(order);
+        return orderRepo.save(orders);
     }
 
     @Transactional
@@ -134,8 +147,8 @@ public class OrderService {
         orderRepo.deleteById(id);
     }
 
-    public Order getOne(long id) {
-        Optional<Order> opt = orderRepo.findById(id);
+    public Orders getOne(long id) {
+        Optional<Orders> opt = orderRepo.findById(id);
         return opt.isPresent() ? opt.get() : null;
     }
 }

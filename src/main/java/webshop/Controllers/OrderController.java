@@ -20,11 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import webshop.DTOs.OrderDTO;
 import webshop.DTOs.SumOfItemsForADeliveryDAyDTO;
 import webshop.Model.FeedbackToFrontend;
-import webshop.Model.Order.Order;
-import webshop.Model.Order.OrderItem;
-import webshop.Model.Product.Product;
-import webshop.Model.Slogan;
-import webshop.Model.UsersandRole.MyUser;
+import webshop.Model.Orders.Orders;
 import webshop.Services.DeliveryService;
 import webshop.Services.OrderService;
 import webshop.exception.WebshopException;
@@ -32,13 +28,18 @@ import webshop.exception.WebshopException;
 @RestController
 @RequestMapping("/orders")
 public class OrderController {
-    @Autowired
+
     OrderService service;
-    @Autowired
+
     DeliveryService deliveryService;
 
     SumOfItemsForADeliveryDAyDTO sum;
 
+    @Autowired
+    public OrderController(OrderService service, DeliveryService deliveryService) {
+        this.service = service;
+        this.deliveryService = deliveryService;
+    }
 
     @GetMapping("/get/undelivered")
     public ResponseEntity<?> getUnderlivered() {
@@ -53,7 +54,7 @@ public class OrderController {
 
     //ezt akar automatikusan is lehet hivni es emailben is megkerni az eredmenyt
     @GetMapping("/getOrdersPerDeliveryDay/{deliveryDayID}")
-    public ResponseEntity<?> getPerDeliveryDay(@PathVariable Long deliveryDayID) {
+    public ResponseEntity<?> getPerDeliveryDay(@PathVariable long deliveryDayID) {
 
         List<OrderDTO> list = service.getOrdersPerDeliveryDay(deliveryDayID);
         if (list != null) {
@@ -64,12 +65,36 @@ public class OrderController {
         return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
     }
 
+    @GetMapping("/getDeliveryOrderByPostCode/{deliveryDayID}")
+    public ResponseEntity<?> getDeliveryOrderByPostCode(@PathVariable Long deliveryDayID) {
+        List<Orders> list = service.getDeliveryOrdersByPostCode(deliveryDayID);
+        if (!list.isEmpty()) {
+            HashMap<String, List<Orders>> map = new HashMap<>();
+            map.put("list", list);
+            return ResponseEntity.ok().body(map);
+        }
+        return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
+
+    }
+
+    @GetMapping("/getDeliveryOrdersByDeliveryGaps/{deliveryDayID}")
+    public ResponseEntity<?> getDeliveryOrdersByDeliveryGaps(@PathVariable long deliveryDayID) {
+        List<Orders> list = service.getDeliveryOrdersByDeliveryGaps(deliveryDayID);
+        if (!list.isEmpty()) {
+            HashMap<String, List<Orders>> map = new HashMap<>();
+            map.put("list", list);
+            return ResponseEntity.ok().body(map);
+        }
+        return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
+
+    }
+
     @GetMapping("/getSumPerDeliveryDay/{deliveryDayID}")
     public ResponseEntity<?> getSumOfItemsPerDeliveryDay(@PathVariable Long deliveryDayID) {
 
-        HashMap<String,Long>hmap = service.getSumOfItemsForADeliveryDay(deliveryDayID);
+        HashMap<String, Long> hmap = service.getSumOfItemsForADeliveryDay(deliveryDayID);
         if (hmap != null) {
-            HashMap<String,  HashMap<String, Long>> map = new HashMap<>();
+            HashMap<String, HashMap<String, Long>> map = new HashMap<>();
             map.put("list", hmap);
             return ResponseEntity.ok().body(map);
         }
@@ -101,7 +126,7 @@ public class OrderController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<?> save(@Valid @RequestBody Order order, BindingResult result) throws WebshopException {
+    public ResponseEntity<?> save(@Valid @RequestBody Orders orders, BindingResult result) throws WebshopException {
         if (result.hasErrors()) {
             System.out.println("rossz");
             List<String> errorMessages = new ArrayList<>();
@@ -111,11 +136,11 @@ public class OrderController {
             throw new WebshopException(errorMessages);
             //return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
         }
-        order = this.service.save(order);
+        orders = this.service.save(orders);
 
-        deliveryService.book(order.getDeliveryDayID(), order.getDeliveryGapsID());////////////////////////////
+        deliveryService.book(orders.getDeliveryDayID(), orders.getDeliveryGapsID());////////////////////////////
 
-        long orderID = order.getID() + 1000;//kamubol tobbet mutasson
+        long orderID = orders.getID() + 1000;//kamubol tobbet mutasson
         String IDString = orderID + "";
         HashMap<String, String> hmap = new HashMap<>();
         hmap.put("successful", "true");
@@ -130,9 +155,9 @@ public class OrderController {
     }
 
     @GetMapping("/get/{id}")
-    public Order getOne(@PathVariable("id") Long id) {
-        Order order = service.getOne(id);
-        return order;
+    public Orders getOne(@PathVariable("id") Long id) {
+        Orders orders = service.getOne(id);
+        return orders;
     }
 
 

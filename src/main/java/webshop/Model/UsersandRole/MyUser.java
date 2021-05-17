@@ -8,13 +8,10 @@ It even connects to the address table with a one to many relation.
 
 package webshop.Model.UsersandRole;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import webshop.Model.Order.Order;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

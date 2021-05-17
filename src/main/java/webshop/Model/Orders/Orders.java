@@ -1,6 +1,4 @@
-package webshop.Model.Order;
-
-import webshop.Model.UsersandRole.MyUser;
+package webshop.Model.Orders;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -11,8 +9,8 @@ import java.util.List;
 //TODO status beallitasa
 
 @Entity
-@Table(name = "orders")
-public class Order {
+@Table(name = "Orders")
+public class Orders {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -53,16 +51,14 @@ public class Order {
 
     //MyUser myUser;
 
-    @OneToMany(mappedBy = "order", cascade=CascadeType.ALL)
-
-
+    @OneToMany(mappedBy = "orders", cascade=CascadeType.ALL)
     private List<OrderItem> ordersItemList;
 
 
-    public Order() {
+    public Orders() {
     }
 
-    public Order(long ID, long deliveryDayID, long deliveryGapsID, LocalDateTime orderTime, PaymentType paymentType, boolean status, long deliveryFee, String productName, String firstName, String lastName, String username, String phoneNumber, String simpleAddress_delivery, long postCode_delivery, String city_delivery, String comment_delivery,  @NotEmpty List<OrderItem> ordersItemList) {
+    public Orders(long ID, long deliveryDayID, long deliveryGapsID, LocalDateTime orderTime, PaymentType paymentType, boolean status, long deliveryFee, String productName, String firstName, String lastName, String username, String phoneNumber, String simpleAddress_delivery, long postCode_delivery, String city_delivery, String comment_delivery, @NotEmpty List<OrderItem> ordersItemList) {
         this.ID = ID;
         this.deliveryDayID = deliveryDayID;
         this.deliveryGapsID = deliveryGapsID;
