@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import webshop.DTOs.OrderByGapsDTO;
 import webshop.DTOs.OrderDTO;
 import webshop.Model.Orders.Orders;
 import webshop.Model.Orders.OrderItem;
@@ -68,29 +69,97 @@ public class OrderService {
 
 
             if (hmap.containsKey(actualOrder.getName())) {
-                hmap.put(actualOrder.getName(), hmap.get(actualOrder.getName())+ actualOrder.getQuantity());
+                hmap.put(actualOrder.getName(), hmap.get(actualOrder.getName()) + actualOrder.getQuantity());
             } else {
                 hmap.put(actualOrder.getName(), actualOrder.getQuantity());
             }
-           // hmap.putIfAbsent(actualOrder.getName(), actualOrder.getQuantity());
-           //hmap.put(actualOrder.getName(),hmap.get(actualOrder.getName())+actualOrder.getQuantity());
+            // hmap.putIfAbsent(actualOrder.getName(), actualOrder.getQuantity());
+            //hmap.put(actualOrder.getName(),hmap.get(actualOrder.getName())+actualOrder.getQuantity());
         }
         return hmap;
     }
-@Transactional
-    public List<Orders>getDeliveryOrdersByPostCode(long deliveryDayID){
-    List<Orders> list = (List<Orders>) em.createQuery("SELECT  order FROM order order where order.deliveryDayID=:p ORDER BY order.postCode_delivery").
-            setParameter("p", deliveryDayID).getResultList();
-   return list;
-    }
-//itt torik el
+
     @Transactional
-    public List<Orders>getDeliveryOrdersByDeliveryGaps(long deliveryDayID){
-        List<Orders> list = (List<Orders>) em.createQuery("SELECT  orders " +
-                " FROM orders orders "+
-                "where orders.deliveryDayID=:p  ").
+    public List<Orders> getDeliveryOrdersByPostCode(long deliveryDayID) {
+        List<Orders> list = (List<Orders>) em.createQuery("SELECT  order FROM order order where order.deliveryDayID=:p ORDER BY order.postCode_delivery").
                 setParameter("p", deliveryDayID).getResultList();
         return list;
+    }
+
+    //itt torik el
+    @Transactional
+    public List<OrderByGapsDTO> getDeliveryOrdersByDeliveryGaps(long deliveryDayID) {
+
+
+        List<Orders> list = (List<Orders>) em.createQuery("SELECT  o" +
+                " FROM Orders o " +
+                "where o.deliveryDayID=:p ORDER BY o.deliveryGapsID, o.postCode_delivery ASC" ).
+                setParameter("p", deliveryDayID).getResultList();
+
+        List<OrderByGapsDTO> listToReturn = new ArrayList<>();
+
+        for (Orders actualOrders : list) {
+            OrderByGapsDTO oDTO = new OrderByGapsDTO();
+            oDTO.setSimpleaddress_delivery(actualOrders.getSimpleAddress_delivery());
+            oDTO.setPostCode_delivery(actualOrders.getPostCode_delivery());
+            oDTO.setID(actualOrders.getID());
+            oDTO.setPaymentType(actualOrders.getPaymentType());
+
+            switch ((int) actualOrders.getDeliveryGapsID()) {
+                case 1:
+                    oDTO.setDeliveryGapString("8 - 10 között");
+                    break;
+                case 8:
+                    oDTO.setDeliveryGapString("8 - 10 között");
+                    break;
+
+
+                case 2:
+                    oDTO.setDeliveryGapString("10 - 12 között");
+                    break;
+                case 9:
+                    oDTO.setDeliveryGapString("10 - 12 között");
+                    break;
+
+                case 3:
+                    oDTO.setDeliveryGapString("12 - 14 között");
+                    break;
+                case 10:
+                    oDTO.setDeliveryGapString("12 - 14 között");
+                    break;
+
+                case 4:
+                    oDTO.setDeliveryGapString("14 - 16 között");
+                    break;
+                case 11:
+                    oDTO.setDeliveryGapString("14 - 16 között");
+                    break;
+
+                case 5:
+                    oDTO.setDeliveryGapString("16 - 18 között");
+                    break;
+                case 12:
+                    oDTO.setDeliveryGapString("16 - 18 között");
+                    break;
+
+                case 6:
+                    oDTO.setDeliveryGapString("18 - 20 között");
+                    break;
+                case 13:
+                    oDTO.setDeliveryGapString("18 - 20 között");
+                    break;
+
+                case 7:
+                    oDTO.setDeliveryGapString("20 - 22 között");
+                    break;
+                case 14:
+                    oDTO.setDeliveryGapString("20 - 22 között");
+                    break;
+            }
+            listToReturn.add(oDTO);
+        }
+
+        return listToReturn;
     }
 
     @Transactional

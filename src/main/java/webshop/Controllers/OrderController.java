@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import webshop.DTOs.OrderByGapsDTO;
 import webshop.DTOs.OrderDTO;
 import webshop.DTOs.SumOfItemsForADeliveryDAyDTO;
 import webshop.Model.FeedbackToFrontend;
@@ -79,9 +80,9 @@ public class OrderController {
 
     @GetMapping("/getDeliveryOrdersByDeliveryGaps/{deliveryDayID}")
     public ResponseEntity<?> getDeliveryOrdersByDeliveryGaps(@PathVariable long deliveryDayID) {
-        List<Orders> list = service.getDeliveryOrdersByDeliveryGaps(deliveryDayID);
+        List<OrderByGapsDTO> list = service.getDeliveryOrdersByDeliveryGaps(deliveryDayID);
         if (!list.isEmpty()) {
-            HashMap<String, List<Orders>> map = new HashMap<>();
+            HashMap<String, List<OrderByGapsDTO>> map = new HashMap<>();
             map.put("list", list);
             return ResponseEntity.ok().body(map);
         }
