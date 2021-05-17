@@ -39,6 +39,7 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
 
     private Category gyumolcs;
     private Category zoldseg;
+    private Category dio, mez, szorp, tea, savanyusag, virag, exkluziv;
 
     private RoleRepo roleRepo;
     private UserRepo userRepo;
@@ -282,6 +283,37 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
             zoldseg = new Category();
             zoldseg.setCategoryName("zöldség");
             zoldseg = categoryRepo.saveAndFlush(zoldseg);
+
+            dio = new Category();
+            dio.setCategoryName("dió, mogyoró és olajos magvak");
+            dio = categoryRepo.saveAndFlush(dio);
+
+            mez = new Category();
+            mez.setCategoryName("méz");
+            mez = categoryRepo.saveAndFlush(mez);
+
+            szorp = new Category();
+            szorp.setCategoryName("szörp");
+            szorp = categoryRepo.saveAndFlush(szorp);
+
+            tea = new Category();
+            tea.setCategoryName("tea");
+            tea = categoryRepo.saveAndFlush(tea);
+
+            savanyusag = new Category();
+            savanyusag.setCategoryName("savanyúság");
+            savanyusag = categoryRepo.saveAndFlush(savanyusag);
+
+            virag = new Category();
+            virag.setCategoryName("virág");
+            virag = categoryRepo.saveAndFlush(virag);
+
+            exkluziv = new Category();
+            exkluziv.setCategoryName("exkluzív termékek");
+            exkluziv = categoryRepo.saveAndFlush(exkluziv);
+
+
+
         } else {
             zoldseg = categoryRepo.findByCategoryName("zoldseg");
         }

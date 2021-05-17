@@ -234,50 +234,34 @@ public class MyUserDetailsService implements UserDetailsService {
         List<Address> addressList = addressRepo.findAddressByMyUserUserID(ID);
 
         Address a = addressList.stream().filter(address -> address.getAddressType() == AddressType.HOME_ADDRESS).collect(Collectors.toList()).get(0);
-        a.setMyUser(userRepo.findUserByUserID(m.getUserID()));
-        a.setCity(myUser.getCity_home());
-        a.setPostCode(myUser.getPostCode_home());
-        a.setSimpleAddress(myUser.getSimpleAddress_home());
-        a.setComment(myUser.getComment_home());
-        a.setAddressType(AddressType.HOME_ADDRESS);
-        addressRepo.saveAndFlush(a);
+        if (myUser.getPostCode_home()!=0 && myUser.getCity_home()!=null  && myUser.getSimpleAddress_home()!=null) {
+            a.setCity(myUser.getCity_home());
+            a.setPostCode(myUser.getPostCode_home());
+            a.setSimpleAddress(myUser.getSimpleAddress_home());
+            a.setComment(myUser.getComment_delivery());
+            addressRepo.saveAndFlush(a);
+        }
 
         //Address a2=addressRepo.findBydMyUserIDAndAddressType(ID, AddressType.DELIVERY_ADDRESS);
         Address a2 = addressList.stream().filter(address -> address.getAddressType() == AddressType.DELIVERY_ADDRESS).collect(Collectors.toList()).get(0);
-        if ( a2.getPostCode()==0 && a2.getCity()==null && a2.getComment()==null && a2.getSimpleAddress()==null) {
-            a2.setCity(myUser.getCity_home());
-            a2.setPostCode(myUser.getPostCode_home());
-            a2.setSimpleAddress(myUser.getSimpleAddress_home());
-            a2.setComment(myUser.getComment_home());
+        if (myUser.getPostCode_delivery()!=0 && myUser.getCity_delivery()!=null  && myUser.getSimpleAddress_delivery()!=null) {
+            a2.setCity(myUser.getCity_delivery());
+            a2.setPostCode(myUser.getPostCode_delivery());
+            a2.setSimpleAddress(myUser.getSimpleAddress_delivery());
+            a2.setComment(myUser.getComment_delivery());
+            addressRepo.saveAndFlush(a2);
         }
-        else {
-            a2.setMyUser(userRepo.findUserByUserID(m.getUserID()));
-            a2.setCity(a.getCity());
-            a2.setPostCode(a.getPostCode());
-            a2.setSimpleAddress(a.getSimpleAddress());
-            a2.setComment(a.getComment());
-            a2.setAddressType(AddressType.DELIVERY_ADDRESS);
-        }
-        addressRepo.saveAndFlush(a2);
 
         Address a3 = addressList.stream().filter(address -> address.getAddressType() == AddressType.BILLING_ADDRESS).collect(Collectors.toList()).get(0);
-        if ( a3.getPostCode()==0&& a3.getCity()==null && a3.getComment()==null && a3.getSimpleAddress()==null) {
-            a3.setCity(myUser.getCity_home());
-            a3.setPostCode(myUser.getPostCode_home());
-            a3.setSimpleAddress(myUser.getSimpleAddress_home());
-            a3.setComment(myUser.getComment_home());
+        if ( myUser.getPostCode_billing()!=0 && myUser.getCity_billing()!=null && myUser.getSimpleAddress_billing()!=null) {
+            a3.setCity(myUser.getCity_billing());
+            a3.setPostCode(myUser.getPostCode_billing());
+            a3.setSimpleAddress(myUser.getSimpleAddress_billing());
+            a3.setComment(myUser.getComment_billing());
+            addressRepo.saveAndFlush(a3);
+            System.out.println("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
         }
-        else {
-            a3.setMyUser(userRepo.findUserByUserID(m.getUserID()));
-            a3.setCity(a.getCity());
-            a3.setPostCode(a.getPostCode());
-            a3.setSimpleAddress(a.getSimpleAddress());
-            a3.setComment(a.getComment());
-            a3.setAddressType(AddressType.BILLING_ADDRESS);
-        }
-        addressRepo.saveAndFlush(a3);
     }
-
 
     public boolean isStillActive(String username) {
         MyUser myUser = userRepo.findUserByUsername(username);
