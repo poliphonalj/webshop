@@ -1,5 +1,6 @@
 package webshop.DTOs;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import webshop.Model.Orders.OrderItem;
 import webshop.Model.Orders.PaymentType;
 
@@ -59,6 +60,7 @@ public class OrderDTO {
         this.deliveryDayID = deliveryDayID;
         this.deliveryGapsID = deliveryGapsID;
         this.itemList = itemList;
+
     }
 
     public OrderDTO() {

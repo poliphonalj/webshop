@@ -1,5 +1,6 @@
 package webshop.Model.Orders;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import webshop.Model.Product.Unit;
 
@@ -8,7 +9,7 @@ import java.util.Locale;
 
 @Entity
 @Table(name = "order_items")
-@JsonIgnoreProperties({"orders","locale","description","inPromotion","id"})
+@JsonIgnoreProperties({"orders", "locale", "description", "inPromotion", "id", "order"})
 public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,10 +23,9 @@ public class OrderItem {
     private Unit unit;
     private long productID;
 
-
+    @JsonIgnore
     @ManyToOne
     private Orders orders;
-
 
 
     public OrderItem() {
