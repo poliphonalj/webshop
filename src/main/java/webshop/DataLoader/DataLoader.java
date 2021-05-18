@@ -87,7 +87,7 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
         createProducts();
         createDeliveryDate();
         createPartners();
-        createImages();
+        //createImages();
     }
 
     @Transactional
@@ -411,7 +411,7 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
             deliveryService.convertLocalDatetimeToDeliveryDateAndSaveToDB(l.plusDays(4));
         }
     }
-
+/*
     public void createImages() throws IOException {
       //em.createNativeQuery("INSERT INTO Image () VALUES (1, LOAD_FILE(d:\\flower.gif)) ").executeUpdate();
         File file = new File("src/main/resources/eper.png");
@@ -436,7 +436,7 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
         productRepo.saveAndFlush(p);
 
 
-    }
+    }*/
 }
 
 
