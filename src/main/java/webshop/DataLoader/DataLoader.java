@@ -427,10 +427,10 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
         Image dbImage = new Image();
         dbImage.setName(multipartFile.getName());
         dbImage.setByteFlow(multipartFile.getBytes());
-        dbImage.setProduct(productRepo.findProductByID(1));
-        dbImage.setProductID(1);//repo.findimagebyproductid miatt kell
+        dbImage.setProduct(productRepo.findAll().get(0));
+        dbImage.setProductID(productRepo.findAll().get(0).getID());//repo.findimagebyproductid miatt kell
 
-        Product p = productRepo.findProductByID(1);
+        Product p = productRepo.findAll().get(0);
         List<Image> list =new ArrayList<>();
         list.add(dbImage);
         p.setImageList(list);
