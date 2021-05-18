@@ -38,7 +38,7 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
 
     private Category gyumolcs;
     private Category zoldseg;
-    private Category dio, mez, szorp, tea, savanyusag, virag, exkluziv;
+    private Category dio, mez, szorp, tea, savanyusag, virag, exkluziv, csomagok;
 
     private RoleRepo roleRepo;
     private UserRepo userRepo;
@@ -319,6 +319,11 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
             exkluziv = new Category();
             exkluziv.setCategoryName("exkluzív termékek");
             exkluziv = categoryRepo.saveAndFlush(exkluziv);
+
+            csomagok = new Category();
+            csomagok.setCategoryName("csomagok");
+            csomagok = categoryRepo.saveAndFlush(csomagok);
+
 
         } else {
             zoldseg = categoryRepo.findByCategoryName("zoldseg");
