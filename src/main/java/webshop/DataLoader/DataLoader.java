@@ -1,12 +1,16 @@
 package webshop.DataLoader;
 
+import org.apache.poi.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import webshop.Model.Partner;
 import webshop.Model.Product.Category;
+import webshop.Model.Product.Image;
 import webshop.Model.Product.Product;
 import webshop.Model.Product.Unit;
 import webshop.Model.Slogan;
@@ -17,6 +21,11 @@ import webshop.Model.UsersandRole.Role;
 import webshop.Repository.*;
 import webshop.Services.DeliveryService;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -50,9 +59,12 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
     private DeliveryDayRepo deliveryDayRepo;
     private DeliveryService deliveryService;
     private PartnerRepo partnerRepo;
+    private ImageRepo imageRepo;
+    @PersistenceContext
+    EntityManager em;
 
     @Autowired
-    public DataLoader(RoleRepo roleRepo, UserRepo userRepo, ProductRepo productRepo, CategoryRepo categoryRepo, SloganRepo sloganRepo, AddressRepo addressRepo, DeliveryGapsRepo deliveryGapsRepo, DeliveryDayRepo deliveryDayRepo, DeliveryService deliveryService, PartnerRepo partnerRepo) {
+    public DataLoader(RoleRepo roleRepo, UserRepo userRepo, ProductRepo productRepo, CategoryRepo categoryRepo, SloganRepo sloganRepo, AddressRepo addressRepo, DeliveryGapsRepo deliveryGapsRepo, DeliveryDayRepo deliveryDayRepo, DeliveryService deliveryService, PartnerRepo partnerRepo, ImageRepo imageRepo) {
         this.roleRepo = roleRepo;
         this.userRepo = userRepo;
         this.productRepo = productRepo;
@@ -63,6 +75,7 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
         this.deliveryDayRepo = deliveryDayRepo;
         this.deliveryService = deliveryService;
         this.partnerRepo = partnerRepo;
+        this.imageRepo = imageRepo;
     }
 
     @Override
@@ -74,6 +87,7 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
         createProducts();
         createDeliveryDate();
         createPartners();
+        createImages();
     }
 
     @Transactional
@@ -396,6 +410,32 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
             deliveryService.convertLocalDatetimeToDeliveryDateAndSaveToDB(l.plusDays(2));
             deliveryService.convertLocalDatetimeToDeliveryDateAndSaveToDB(l.plusDays(4));
         }
+    }
+
+    public void createImages() throws IOException {
+      //em.createNativeQuery("INSERT INTO Image () VALUES (1, LOAD_FILE(d:\\flower.gif)) ").executeUpdate();
+        File file = new File("src/main/resources/eper.png");
+        FileInputStream input = new FileInputStream(file);
+        MultipartFile multipartFile = new MockMultipartFile("eper",
+                file.getName(), "image/png", IOUtils. toByteArray(input));
+
+
+
+        Image dbImage = new Image();
+        dbImage.setName(multipartFile.getName());
+        dbImage.setByteFlow(multipartFile.getBytes());
+        dbImage.setProduct(productRepo.findProductByID(1));
+        dbImage.setProductID(1);//repo.findimagebyproductid miatt kell
+
+        Product p = productRepo.findProductByID(1);
+        List<Image> list = p.getImageList();
+        list.add(dbImage);
+        p.setImageList(list);
+
+        imageRepo.saveAndFlush(dbImage);
+        productRepo.saveAndFlush(p);
+
+
     }
 }
 

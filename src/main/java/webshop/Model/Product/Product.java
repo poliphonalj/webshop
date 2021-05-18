@@ -30,7 +30,7 @@ public class Product {
     private long promotedPrice;
     private String promotionDescription;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     private List<Image> imageList;
 
     @OneToMany(mappedBy = "product")//ez a mappeles a masik osztaly fieldjere vonatkozik

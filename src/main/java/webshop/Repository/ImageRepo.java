@@ -12,4 +12,5 @@ public interface ImageRepo extends JpaRepository<Image, Long> {
     Image findImageByIDAndIsActiveTrue(long ID);
     Image findByNameAndIsActiveTrue(String imageName);
     List<Image>findImagesByProductIDAndIsActiveTrue(long ID);
+    
 }
