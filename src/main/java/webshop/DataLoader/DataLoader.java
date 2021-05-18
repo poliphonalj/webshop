@@ -59,12 +59,15 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
     private DeliveryDayRepo deliveryDayRepo;
     private DeliveryService deliveryService;
     private PartnerRepo partnerRepo;
-  //  private ImageRepo imageRepo;
-   // @PersistenceContext
-   // EntityManager em;
+   private ImageRepo imageRepo;
+
 
     @Autowired
-    public DataLoader(RoleRepo roleRepo, UserRepo userRepo, ProductRepo productRepo, CategoryRepo categoryRepo, SloganRepo sloganRepo, AddressRepo addressRepo, DeliveryGapsRepo deliveryGapsRepo, DeliveryDayRepo deliveryDayRepo, DeliveryService deliveryService, PartnerRepo partnerRepo) {
+    public DataLoader(RoleRepo roleRepo, UserRepo userRepo, ProductRepo productRepo, CategoryRepo categoryRepo,
+                      SloganRepo sloganRepo, AddressRepo addressRepo, DeliveryGapsRepo deliveryGapsRepo,
+                      DeliveryDayRepo deliveryDayRepo, DeliveryService deliveryService, PartnerRepo partnerRepo,
+                      ImageRepo imageRepo) {
+
         this.roleRepo = roleRepo;
         this.userRepo = userRepo;
         this.productRepo = productRepo;
@@ -75,7 +78,7 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
         this.deliveryDayRepo = deliveryDayRepo;
         this.deliveryService = deliveryService;
         this.partnerRepo = partnerRepo;
-       // this.imageRepo = imageRepo;
+        this.imageRepo = imageRepo;
     }
 
     @Override
@@ -87,7 +90,7 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
         createProducts();
         createDeliveryDate();
         createPartners();
-        //createImages();
+        createImages();
     }
 
     @Transactional
@@ -411,7 +414,7 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
             deliveryService.convertLocalDatetimeToDeliveryDateAndSaveToDB(l.plusDays(4));
         }
     }
-/*
+
     public void createImages() throws IOException {
       //em.createNativeQuery("INSERT INTO Image () VALUES (1, LOAD_FILE(d:\\flower.gif)) ").executeUpdate();
         File file = new File("src/main/resources/eper.png");
@@ -436,7 +439,7 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
         productRepo.saveAndFlush(p);
 
 
-    }*/
+    }
 }
 
 
