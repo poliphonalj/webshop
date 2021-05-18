@@ -431,7 +431,7 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
         dbImage.setProductID(1);//repo.findimagebyproductid miatt kell
 
         Product p = productRepo.findProductByID(1);
-        List<Image> list = p.getImageList();
+        List<Image> list =new ArrayList<>();
         list.add(dbImage);
         p.setImageList(list);
 
