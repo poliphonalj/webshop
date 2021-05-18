@@ -27,10 +27,15 @@ public class ImageController {
 
 
     @CrossOrigin
-   @PostMapping("/image/new")
-    public @ResponseBody String newImage(@RequestParam MultipartFile file) throws IOException {
-        imageservice.addImage(file,1);
-        return "HELLO TEST : "+file.getSize();
+   @PostMapping("/image/new/({productID})")
+    public ResponseEntity<?>  newImage(@RequestParam MultipartFile file, @PathVariable long productID) throws IOException {
+        imageservice.addImage(file,productID);
+        try{
+            imageservice.addImage(file, productID);
+            return ResponseEntity.ok(new FeedbackToFrontend(true));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
+        }
     }
 
         /* ez a jo

@@ -304,16 +304,9 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
             dio = categoryRepo.saveAndFlush(dio);
 
             mez = new Category();
-            mez.setCategoryName("méz");
+            mez.setCategoryName("tea, méz, szörp, lekvár");
             mez = categoryRepo.saveAndFlush(mez);
 
-            szorp = new Category();
-            szorp.setCategoryName("szörp");
-            szorp = categoryRepo.saveAndFlush(szorp);
-
-            tea = new Category();
-            tea.setCategoryName("tea");
-            tea = categoryRepo.saveAndFlush(tea);
 
             savanyusag = new Category();
             savanyusag.setCategoryName("savanyúság");
