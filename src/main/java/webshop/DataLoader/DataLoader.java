@@ -5,8 +5,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import webshop.Model.DeliveryDay;
-import webshop.Model.DeliveryGaps;
+import webshop.Model.Partner;
 import webshop.Model.Product.Category;
 import webshop.Model.Product.Product;
 import webshop.Model.Product.Unit;
@@ -50,9 +49,10 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
     private DeliveryGapsRepo deliveryGapsRepo;
     private DeliveryDayRepo deliveryDayRepo;
     private DeliveryService deliveryService;
+    private PartnerRepo partnerRepo;
 
     @Autowired
-    public DataLoader(RoleRepo roleRepo, UserRepo userRepo, ProductRepo productRepo, CategoryRepo categoryRepo, SloganRepo sloganRepo, AddressRepo addressRepo, DeliveryGapsRepo deliveryGapsRepo, DeliveryDayRepo deliveryDayRepo, DeliveryService deliveryService) {
+    public DataLoader(RoleRepo roleRepo, UserRepo userRepo, ProductRepo productRepo, CategoryRepo categoryRepo, SloganRepo sloganRepo, AddressRepo addressRepo, DeliveryGapsRepo deliveryGapsRepo, DeliveryDayRepo deliveryDayRepo, DeliveryService deliveryService, PartnerRepo partnerRepo) {
         this.roleRepo = roleRepo;
         this.userRepo = userRepo;
         this.productRepo = productRepo;
@@ -62,6 +62,7 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
         this.deliveryGapsRepo = deliveryGapsRepo;
         this.deliveryDayRepo = deliveryDayRepo;
         this.deliveryService = deliveryService;
+        this.partnerRepo = partnerRepo;
     }
 
     @Override
@@ -72,6 +73,7 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
         createSlogan();
         createProducts();
         createDeliveryDate();
+        createPartners();
     }
 
     @Transactional
@@ -117,6 +119,19 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
         } else {
             adminRole = roleRepo.findRoleByRoleName("admin");
             userRole = roleRepo.findRoleByRoleName("user");
+        }
+    }
+
+    @Transactional
+    public void createPartners() {
+        if (partnerRepo.count() == 0) {
+            Partner p = new Partner();
+            p.setName("Réti Judit");
+            p.setDescription("könyvelés mesterfokon");
+            p.setLink("www.jretijudit.hu");
+            p.setPhone("112233");
+            p.setActive(true);
+            partnerRepo.saveAndFlush(p);
         }
     }
 
@@ -311,8 +326,6 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
             exkluziv = new Category();
             exkluziv.setCategoryName("exkluzív termékek");
             exkluziv = categoryRepo.saveAndFlush(exkluziv);
-
-
 
         } else {
             zoldseg = categoryRepo.findByCategoryName("zoldseg");
