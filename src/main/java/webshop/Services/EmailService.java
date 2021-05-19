@@ -29,7 +29,7 @@ public class EmailService {
         mimeMessage.setContent(htmlMsg, "text/html"); /** Use this or below line **/
         //helper.setText(htmlMsg, true);
 
-        helper.setTo("zoltanmarai51@gmail.com");//ide jon a username
+        //helper.setTo("zoltanmarai51@gmail.com");//ide jon a username
         helper.setTo("peteri@t-online.hu");//ide jon a username
         helper.setSubject("Sikeres regisztráció");
 
