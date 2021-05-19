@@ -30,11 +30,12 @@ public class EmailService {
         //helper.setText(htmlMsg, true);
 
         //helper.setTo("zoltanmarai51@gmail.com");//ide jon a username
-        helper.setTo("oliphonalj@freemail.hu");//ide jon a username
+        helper.setTo("poliphonalj@freemail.hu");//ide jon a username
         helper.setSubject("Sikeres regisztráció");
 
         javaMailSender.send(mimeMessage);
     }
+    
 
     public void newPassword(String password, long userID) throws MessagingException {
         MyUser myUser = userRepo.findUserByUserID(userID);
