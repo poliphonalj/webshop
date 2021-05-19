@@ -15,17 +15,19 @@ public class Partner {
     private String link;
     private boolean isActive;
     private String description;
+    private boolean us;
 
-   // private Image image;
+    // private Image image;
 
     public Partner() {
+        us = false;
     }
 
-    public Partner(String name, String phone, String link, String description) {
+    public Partner(String name, String phone, String link, String description, boolean us) {
         this.name = name;
         this.phone = phone;
         this.link = link;
-
+        this.us = us;
         this.description = description;
     }
 
@@ -71,6 +73,14 @@ public class Partner {
 
     public String getDescription() {
         return description;
+    }
+
+    public boolean isUs() {
+        return us;
+    }
+
+    public void setUs(boolean us) {
+        this.us = us;
     }
 
     public void setDescription(String description) {

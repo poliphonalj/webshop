@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import webshop.Model.Partner;
 
 import java.util.HashMap;
 
@@ -12,7 +13,7 @@ public class AboutUsController {
 
     @GetMapping("/aboutUs")
     public ResponseEntity<?> getAboutUs() {
-
+        Partner zoli=new Partner();
         String title = "Rólunk";
         String text = "A Farmfalat.hu három fiatal ember által megálmodott és kivitelezett, kerttől házig történő zöldség-gyümölcs\n" +
                 "kiszállítást végző vállalkozás.\n" +

@@ -8,6 +8,7 @@ import java.util.List;
     @Repository
     public interface PartnerRepo extends JpaRepository<Partner, Long> {
       Partner findByID(long ID);
-      List<Partner> findByIsActiveTrue();
+      List<Partner> findByIsActiveTrueAndUsFalse();
+        List<Partner> findByIsActiveTrueAndUsTrue();
     }
 

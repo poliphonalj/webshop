@@ -33,9 +33,12 @@ public class PartnerService {
 
     @Transactional
     public List<Partner> getPartners(){
-        return pRepo.findByIsActiveTrue();
+        return pRepo.findByIsActiveTrueAndUsFalse();
     }
 
 
-
+    @Transactional
+    public List<Partner> getUsPartners(){
+        return pRepo.findByIsActiveTrueAndUsTrue();
+    }
 }

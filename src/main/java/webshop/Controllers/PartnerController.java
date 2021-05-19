@@ -52,4 +52,16 @@ public class PartnerController {
         }
     }
 
+    @GetMapping("partners/getUs")
+    public ResponseEntity<?> getUsPartners() {
+        List<Partner> list= pService.getUsPartners();
+        if (list.size()!=0) {
+            HashMap<String, List<Partner>>hmap=new HashMap<>();
+            hmap.put("list",list);
+            return ResponseEntity.ok(hmap);
+        } else {
+            return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
+        }
+    }
+
 }

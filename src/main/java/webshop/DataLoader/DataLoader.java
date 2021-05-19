@@ -149,14 +149,30 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
             p.setPhone("112233");
             p.setActive(true);
             partnerRepo.saveAndFlush(p);
+
+            Partner p2 = new Partner();
+            p2.setName("Márai Zoltán");
+            p2.setDescription("értékesítési manager");
+            p2.setLink("www.facebook/marai");
+            p2.setPhone("112233");
+            p2.setActive(true);
+            p2.setUs(true);
+            partnerRepo.saveAndFlush(p2);
+
+            Partner p3 = new Partner();
+            p3.setName("Péteri Gábor");
+            p3.setDescription("beszerzési munkatárs");
+            p3.setLink("www.facebook/peteri");
+            p3.setPhone("112233");
+            p3.setActive(true);
+            p3.setUs(true);
+            partnerRepo.saveAndFlush(p3);
         }
     }
 
 
     @Transactional
     public void createUser() {
-
-
         if (userRepo.count() == 0) {
             sanyi = new MyUser();
             sanyi.setActive(true);
@@ -417,12 +433,10 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
 
     public void createImages() throws IOException {
       //em.createNativeQuery("INSERT INTO Image () VALUES (1, LOAD_FILE(d:\\flower.gif)) ").executeUpdate();
-        File file = new File("src/main/resources/eper.png");
+        File file = new File("src/main/resources/pirosalma.png");
         FileInputStream input = new FileInputStream(file);
-        MultipartFile multipartFile = new MockMultipartFile("eper",
+        MultipartFile multipartFile = new MockMultipartFile("pirosalma",
                 file.getName(), "image/png", IOUtils. toByteArray(input));
-
-
 
         Image dbImage = new Image();
         dbImage.setName(multipartFile.getName());
@@ -434,9 +448,29 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
         List<Image> list =new ArrayList<>();
         list.add(dbImage);
         p.setImageList(list);
-
         imageRepo.saveAndFlush(dbImage);
         productRepo.saveAndFlush(p);
+
+
+
+
+        File file2 = new File("src/main/resources/korte.png");
+        FileInputStream input2 = new FileInputStream(file);
+        MultipartFile multipartFile2 = new MockMultipartFile("korte",
+                file2.getName(), "image/png", IOUtils. toByteArray(input));
+
+        Image dbImage2 = new Image();
+        dbImage2.setName(multipartFile2.getName());
+        dbImage2.setByteFlow(multipartFile2.getBytes());
+        dbImage2.setProduct(productRepo.findAll().get(1));
+        dbImage2.setProductID(productRepo.findAll().get(1).getID());//repo.findimagebyproductid miatt kell
+
+        Product p2 = productRepo.findAll().get(1);
+        List<Image> list2 =new ArrayList<>();
+        list2.add(dbImage2);
+        p2.setImageList(list2);
+        imageRepo.saveAndFlush(dbImage2);
+        productRepo.saveAndFlush(p2);
 
 
     }
