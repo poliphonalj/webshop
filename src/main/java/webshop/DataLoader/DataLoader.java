@@ -455,9 +455,9 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
 
 
         File file2 = new File("src/main/resources/korte.png");
-        FileInputStream input2 = new FileInputStream(file);
+        FileInputStream input2 = new FileInputStream(file2);
         MultipartFile multipartFile2 = new MockMultipartFile("korte",
-                file2.getName(), "image/png", IOUtils. toByteArray(input));
+                file2.getName(), "image/png", IOUtils. toByteArray(input2));
 
         Image dbImage2 = new Image();
         dbImage2.setName(multipartFile2.getName());
