@@ -50,7 +50,7 @@ public class ImageController {
 
     }
 */
-    @GetMapping("/image/get/{imageName}")
+    @GetMapping("/image/getByName/{imageName}")
     public ResponseEntity<?> getImageByName(@PathVariable String imageName) throws IOException {
         try{
             JSONObject jObj=   imageservice.getImageByName(imageName);
@@ -60,10 +60,10 @@ public class ImageController {
         }
     }
 
-    @GetMapping("/image/get/{imageID}")
-    public ResponseEntity<?> getImageByID(@PathVariable long ID) throws IOException {
+    @GetMapping("/image/getByID/{imageID}")
+    public ResponseEntity<?> getImageByID(@PathVariable long imageID) throws IOException {
         try{
-            JSONObject jObj= imageservice.getImageByID(ID);
+            JSONObject jObj= imageservice.getImageByID(imageID);
             return ResponseEntity.ok(jObj);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));

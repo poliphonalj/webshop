@@ -29,7 +29,7 @@ public class PartnerController {
         }
     }
 
-    @DeleteMapping("/partners/remove=({ID})")
+    @DeleteMapping("/partners/remove/({ID})")
     public ResponseEntity<?> remove (@PathVariable long ID) {
         long a = pService.removePartner(ID);
         if (a >= 0) {
