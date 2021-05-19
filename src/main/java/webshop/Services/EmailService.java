@@ -35,7 +35,7 @@ public class EmailService {
 
         javaMailSender.send(mimeMessage);
     }
-    
+
 
     public void newPassword(String password, long userID) throws MessagingException {
         MyUser myUser = userRepo.findUserByUserID(userID);
