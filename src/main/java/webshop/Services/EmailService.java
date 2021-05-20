@@ -31,6 +31,7 @@ public class EmailService {
 
         //helper.setTo("zoltanmarai51@gmail.com");//ide jon a username
         helper.setTo("poliphonalj@freemail.hu");//ide jon a username
+        helper.setTo("zoltanmarai51@gmail.com");
         helper.setSubject("Sikeres regisztráció");
 
         javaMailSender.send(mimeMessage);
