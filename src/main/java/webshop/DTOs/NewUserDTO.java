@@ -16,6 +16,7 @@ public class NewUserDTO {
     private LocalDateTime lastLoggedInAt;
     private LocalDateTime lastPurchasedAt;
     private boolean isActive;
+    private boolean wantEmailNews;
     private Locale locale;
     private String password;
     private Role role;
@@ -297,5 +298,13 @@ public class NewUserDTO {
 
     public void setMyUser(MyUser myUser) {
         this.myUser = myUser;
+    }
+
+    public boolean isWantEmailNews() {
+        return wantEmailNews;
+    }
+
+    public void setWantEmailNews(boolean wantEmailNews) {
+        this.wantEmailNews = wantEmailNews;
     }
 }

@@ -15,5 +15,6 @@ public interface UserRepo extends JpaRepository<MyUser, Long> {
     List<MyUser>findAllByIsActiveTrue();
     //List<MyUser>findAllByIsActiveTrueAndOrderByNumberOfPurchaseDesc();
     List<MyUser>findAll();
+    List<MyUser>findMyUserByWantEmailNewsTrue();
 
 }
