@@ -39,6 +39,18 @@ public class PartnerController {
         }
     }
 
+    @PutMapping("/partners/reAdd/({ID})")
+    public ResponseEntity<?> reAdd (@PathVariable long ID) {
+        long a = pService.reAddPartner(ID);
+        if (a >= 0) {
+            return ResponseEntity.ok(new FeedbackToFrontend(true));
+        } else {
+            return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
+        }
+    }
+
+
+
 
     @GetMapping("partners/get")
     public ResponseEntity<?> getPartners() {

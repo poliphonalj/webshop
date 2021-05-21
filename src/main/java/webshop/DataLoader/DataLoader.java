@@ -310,6 +310,9 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
         p = productRepo.saveAndFlush(p);
     }
 
+//meg kell egyezni a product es a picture namede ezt holnp meg vizsgalni jekk
+
+
 
     public void uplodTheImage(String fileName) throws IOException {
 

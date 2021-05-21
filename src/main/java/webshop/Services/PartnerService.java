@@ -32,6 +32,14 @@ public class PartnerService {
     }
 
     @Transactional
+    public long reAddPartner(long ID){
+        Partner p=pRepo.findByID(ID);
+        p.setActive(true);
+        pRepo.saveAndFlush(p);
+        return ID;
+    }
+
+    @Transactional
     public List<Partner> getPartners(){
         return pRepo.findByIsActiveTrueAndUsFalse();
     }
