@@ -163,21 +163,22 @@ public class EmailService {
     }
 
     public void forgotPassword(String link, long userID) throws MessagingException {
-        System.out.println(userID);
         MyUser m = userRepo.findUserByUserID(userID);
         String firstName = m.getFirstName();
         String username = m.getUsername();
-        System.out.println("visszatert");
 
-        String htmlMsg = " <strong> " + firstName + "</strong>!<br> elfelejtette a jelszavat a " +
-                "<strong>farmfalat.hu</strong> -n. Kérjük kattintson a kovetkezo linkre <br>" +
-                "<a href=" + link + ">elfelejtett jelszo csere</a></br>";
+
+        String htmlMsg =" <body bgcolor=\"#ff704d\" ><img src=\"src/main/resources/farmfalat2.png\" alt=\"FarmFalat.hu\">"  +
+                "<br> Kedves  <strong> " + firstName + "</strong>!<br><br> Úgy tűnik, hogy elfelejtetted a jelszavadat a " +
+                "<strong>farmfalat.hu</strong> -n. Kérjük kattints a kovetkezo linkre: <br>" +
+                "<br><a href=" + link + ">elfelejtett jelszo csere</a></br> <br>És itt válassz egy új jelszót!" +
+                "<br><br>Köszönettel: A FarmFalat.hu Csapata! </body>";
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
         mimeMessage.setContent(htmlMsg, "text/html"); /** Use this or below line **/
         //helper.setText(htmlMsg, true);
         helper.setTo("poliphonalj@freemail.hu");//ide jon a username
-        helper.setSubject("Jelszó módosítás");
+        helper.setSubject("Elfelejtett jelszó");
         javaMailSender.send(mimeMessage);
 
     }

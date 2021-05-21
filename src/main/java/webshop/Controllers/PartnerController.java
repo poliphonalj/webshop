@@ -39,7 +39,7 @@ public class PartnerController {
         }
     }
 
-    @PutMapping("/partners/reAdd/({ID})")
+    @PutMapping("/partners/reActivate/({ID})")
     public ResponseEntity<?> reAdd (@PathVariable long ID) {
         long a = pService.reAddPartner(ID);
         if (a >= 0) {

@@ -139,7 +139,6 @@ public class UserController {
         System.out.println(token);
         try {
             myUserDetailsService.updateResetPasswordToken(token, userID);//saves the token into the db
-
             String resetPasswordLink = "http://localhost:8080/user/reset_password?token=" + token;//generates a link and send it in email
             emailService.forgotPassword(resetPasswordLink, userID);
             return ResponseEntity.ok(new FeedbackToFrontend(true));
