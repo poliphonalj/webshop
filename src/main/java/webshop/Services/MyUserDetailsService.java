@@ -53,13 +53,14 @@ public class MyUserDetailsService implements UserDetailsService {
 
         if (userRepo.findUserByUsername(newUserDTO.getUsername()) == null) {
             System.out.println("nincs meg ilyen user");
-            Role r = roleRepo.findRoleByRoleName("user");
+            Role r = roleRepo.findRoleByRoleName("user");//csak ussert tudunk programbol letrehozni
 
             u.setFirstName(newUserDTO.getFirstName());
             u.setLastName(newUserDTO.getLastName());
             u.setUsername(newUserDTO.getUsername());
             u.setPhoneNumber(newUserDTO.getPhoneNumber());
             u.setPassword(newUserDTO.getPassword());
+            u.setWantEmailNews(newUserDTO.isWantEmailNews());
             List<Role> list = new ArrayList<>();
             list.add(r);
             u.setRoleList(list);

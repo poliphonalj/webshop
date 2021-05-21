@@ -41,7 +41,7 @@ public class MyUser implements UserDetails {
     private String resetPasswordToken;
     private String userRates;
     @JsonIgnore
-    private boolean wantEmailNews=true;
+    private boolean wantEmailNews;
 
 
 
