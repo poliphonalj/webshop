@@ -38,17 +38,6 @@ public class ProductController {
         return "majom";
     }
 
-   // @PostMapping("/product/newfull")
-    public ResponseEntity<?> newProduct(@RequestBody NewProductDTO newProductDTO) {
-        try {
-                //productService.newProduct(newProductDTO);
-
-
-            return ResponseEntity.ok(new FeedbackToFrontend(true));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
-        }
-    }
 
     //-)
     @PostMapping("/product/new")
@@ -61,8 +50,6 @@ public class ProductController {
             JSONObject j=new JSONObject();
             j.put("successful",true);
             j.put("id",ID);
-
-
 
             return ResponseEntity.ok(j);
         } catch (Exception e) {
@@ -194,10 +181,9 @@ public class ProductController {
 
 //:)de ide kell meg teszt
 
-    @PostMapping("/product/modifyProduct/{IDD}")
+    @PostMapping("/product/modifyProduct/({IDD})")
     public ResponseEntity<?> modify(@RequestBody Product product,@PathVariable Long IDD) {
         try {
-            System.out.println(IDD);
             long Id=IDD;
             productService.modifyProduct(product, Id);
             return ResponseEntity.ok(new FeedbackToFrontend(true));
@@ -205,6 +191,27 @@ public class ProductController {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
         }
     }
+
+    @DeleteMapping("/product/remove/({ID})")
+    public ResponseEntity<?> remove(@PathVariable long ID) {
+        try {
+            productService.removeProduct(ID);
+            return ResponseEntity.ok(new FeedbackToFrontend(true));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
+        }
+    }
+
+    @DeleteMapping("/product/reactivate/({ID})")
+    public ResponseEntity<?> reactivate(@PathVariable long ID) {
+        try {
+            productService.reactivateProduct(ID);
+            return ResponseEntity.ok(new FeedbackToFrontend(true));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
+        }
+    }
+
 
 
     public ResponseEntity<?> standartisedReturn(List<Product> list) {

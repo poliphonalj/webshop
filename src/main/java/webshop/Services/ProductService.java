@@ -167,4 +167,18 @@ public class ProductService {
         List<Product> list = productRepo.findAll();
         return list;
     }
+
+    @Transactional
+    public void removeProduct(long ID) {
+        Product p = productRepo.findProductByID(ID);
+        p.setActive(false);
+       productRepo.saveAndFlush(p);
+    }
+
+    @Transactional
+    public void reactivateProduct(long ID) {
+        Product p = productRepo.findProductByID(ID);
+        p.setActive(true);
+        productRepo.saveAndFlush(p);
+    }
 }
