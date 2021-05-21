@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import webshop.DTOs.SumOfItemsForADeliveryDAyDTO;
 import webshop.Model.FeedbackToFrontend;
 import webshop.Model.Orders.Orders;
 import webshop.Services.DeliveryService;
+import webshop.Services.EmailService;
 import webshop.Services.OrderService;
 import webshop.exception.WebshopException;
 
@@ -31,15 +33,16 @@ import webshop.exception.WebshopException;
 public class OrderController {
 
     OrderService service;
-
+EmailService emailService;
     DeliveryService deliveryService;
 
     SumOfItemsForADeliveryDAyDTO sum;
 
     @Autowired
-    public OrderController(OrderService service, DeliveryService deliveryService) {
+    public OrderController(OrderService service, DeliveryService deliveryService, EmailService emailService) {
         this.service = service;
         this.deliveryService = deliveryService;
+        this.emailService=emailService;
     }
 
     @GetMapping("/get/undelivered")
@@ -127,7 +130,7 @@ public class OrderController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<?> save(@Valid @RequestBody Orders orders, BindingResult result) throws WebshopException {
+    public ResponseEntity<?> save(@Valid @RequestBody Orders orders, BindingResult result) throws WebshopException, MessagingException {
         if (result.hasErrors()) {
             System.out.println("rossz");
             List<String> errorMessages = new ArrayList<>();
@@ -141,6 +144,7 @@ public class OrderController {
 
         deliveryService.book(orders.getDeliveryDayID(), orders.getDeliveryGapsID());////////////////////////////
 
+        emailService.sendOutAnOrder(orders);
         long orderID = orders.getID() + 1000;//kamubol tobbet mutasson
         String IDString = orderID + "";
         HashMap<String, String> hmap = new HashMap<>();

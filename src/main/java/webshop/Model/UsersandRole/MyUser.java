@@ -40,6 +40,8 @@ public class MyUser implements UserDetails {
     private long numberOfPurchase;
     private String resetPasswordToken;
     private String userRates;
+    @JsonIgnore
+    private boolean wantEmailNews=true;
 
 
 
@@ -223,5 +225,13 @@ public class MyUser implements UserDetails {
 
     public void setUserRates(String userRates) {
         this.userRates = userRates;
+    }
+
+    public boolean isWantEmailNews() {
+        return wantEmailNews;
+    }
+
+    public void setWantEmailNews(boolean wantEmailNews) {
+        this.wantEmailNews = wantEmailNews;
     }
 }

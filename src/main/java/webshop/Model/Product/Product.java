@@ -185,4 +185,12 @@ public class Product {
     public void setCategoryID(long categoryID) {
         this.categoryID = categoryID;
     }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
 }

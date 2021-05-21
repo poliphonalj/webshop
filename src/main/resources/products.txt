@@ -1,0 +1,3 @@
+alma;nagyon fimom piros alma;500;DARAB;gyümölcs;alma
+körte;mézédes sárga körte;250;CSOMAG;gyümölcs;körte
+lócitrom;egészséges barna lócitrom;300;ADAG;zöldség;lócitrom

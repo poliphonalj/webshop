@@ -21,16 +21,17 @@ import webshop.Model.UsersandRole.Role;
 import webshop.Repository.*;
 import webshop.Services.DeliveryService;
 
+import javax.imageio.ImageIO;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Scanner;
 
 @Component
 public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a @SpringootApplication nel
@@ -59,7 +60,7 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
     private DeliveryDayRepo deliveryDayRepo;
     private DeliveryService deliveryService;
     private PartnerRepo partnerRepo;
-   private ImageRepo imageRepo;
+    private ImageRepo imageRepo;
 
 
     @Autowired
@@ -90,7 +91,8 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
         createProducts();
         createDeliveryDate();
         createPartners();
-        createImages();
+
+
     }
 
     @Transactional
@@ -265,61 +267,142 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
 
     }
 
+
+    //product name|description|price|unit|categoryID|imageName
     @Transactional
-    public void createProducts() {
-        if (productRepo.count() == 0) {
-            product1 = new Product();
-            product1.setName("alma");
-            product1.setDescription("nagyon finom piros alma");
-            product1.setInPromotion(false);
-            product1.setPrice(500);
-            product1.setOutOfSeason(false);
-            product1.setOutOfStock(false);
-            product1.setLocale(Locale.CANADA);
-            product1.setUnit(Unit.DARAB);
-            Category cat = categoryRepo.findCategoryByID(1);
-            product1.setCategory(cat);
-            product1.setCategoryID(cat.getID());
+    public void createProducts() throws IOException {
+        try {
+            File file = new File("src/main/resources/products.txt");
+            Scanner sc = new Scanner(file);
+            while (sc.hasNextLine()) {
+                String actualProductLine = sc.nextLine();
+                String[] actualProductParts = actualProductLine.split(";");
 
-            product1 = productRepo.saveAndFlush(product1);
+                uploadToDBTheProducts(actualProductParts);
+                uplodTheImage(actualProductParts[5]);
 
-            product2 = new Product();
-            product2.setName("körte");
-            product2.setDescription("sárga édes körte");
-            product2.setInPromotion(false);
-            product2.setPrice(200);
-            product2.setOutOfSeason(false);
-            product2.setOutOfStock(false);
-            product2.setLocale(Locale.US);
-            product2.setUnit(Unit.CSOMAG);
-            Category cat2 = categoryRepo.findCategoryByID(1);
-            product2.setCategory(cat2);
-            product2.setCategoryID(cat2.getID());
-
-            product2 = productRepo.saveAndFlush(product2);
-
-
-            product3 = new Product();
-            product3.setName("lócitrom");
-            product3.setDescription("egészseges barna locitrom");
-            product3.setInPromotion(false);
-            product3.setPrice(100);
-            product3.setOutOfSeason(false);
-            product3.setOutOfStock(false);
-            product3.setLocale(Locale.US);
-            product3.setUnit(Unit.ADAG);
-            Category cat3 = categoryRepo.findCategoryByID(2);
-            product3.setCategory(cat3);
-            product3.setCategoryID(cat3.getID());
-
-            product3 = productRepo.saveAndFlush(product3);
-
-        } else {
-            product1 = productRepo.findProductByName("alma");
-            product2 = productRepo.findProductByName("körte");
-            product2 = productRepo.findProductByName("lócitrom");
+            }
+            sc.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
         }
     }
+
+    public void uploadToDBTheProducts(String[] array) {
+        Product p = new Product();
+        p.setName(array[0]);
+        p.setDescription(array[1]);
+        p.setPrice(Long.parseLong(array[2]));
+        System.out.println(array[2] + "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+        p.setUnit(Unit.valueOf(array[3]));
+
+
+        p.setOutOfStock(false);
+        p.setOutOfSeason(false);
+        p.setInPromotion(false);
+        p.setActive(true);
+
+        Category cat = categoryRepo.findByCategoryName(array[4]);
+        p.setCategory(cat);
+        p.setCategoryID(cat.getID());
+
+        p = productRepo.saveAndFlush(p);
+    }
+
+
+    public void uplodTheImage(String fileName) throws IOException {
+
+
+        File file = new File("src/main/resources/images/" + fileName + ".png");
+        FileInputStream input = new FileInputStream(file);
+        MultipartFile multipartFile = new MockMultipartFile(fileName,
+                file.getName(), "image/png", IOUtils.toByteArray(input));
+
+        Image dbImage = new Image();
+        dbImage.setName(multipartFile.getName());
+        dbImage.setByteFlow(multipartFile.getBytes());
+        Product p = productRepo.findProductByName(fileName);
+
+        dbImage.setProduct(p);
+        dbImage.setProductID(p.getID());//repo.findimagebyproductid miatt kell
+
+        List<Image> list = new ArrayList<>();
+        list.add(dbImage);
+        p.setImageList(list);
+        imageRepo.saveAndFlush(dbImage);
+        productRepo.saveAndFlush(p);
+    }
+
+
+
+
+
+/*
+
+
+
+
+
+
+        if(productRepo.count()==0)
+
+    {
+        product1 = new Product();
+        product1.setName("alma");
+        product1.setDescription("nagyon finom piros alma");
+        product1.setInPromotion(false);
+        product1.setPrice(500);
+        product1.setOutOfSeason(false);
+        product1.setOutOfStock(false);
+        product1.setLocale(Locale.CANADA);
+        product1.setUnit(Unit.DARAB);
+        Category cat = categoryRepo.findCategoryByID(1);
+        product1.setCategory(cat);
+        product1.setCategoryID(cat.getID());
+
+        product1 = productRepo.saveAndFlush(product1);
+
+        product2 = new Product();
+        product2.setName("körte");
+        product2.setDescription("sárga édes körte");
+        product2.setInPromotion(false);
+        product2.setPrice(200);
+        product2.setOutOfSeason(false);
+        product2.setOutOfStock(false);
+        product2.setLocale(Locale.US);
+        product2.setUnit(Unit.CSOMAG);
+        Category cat2 = categoryRepo.findCategoryByID(1);
+        product2.setCategory(cat2);
+        product2.setCategoryID(cat2.getID());
+
+        product2 = productRepo.saveAndFlush(product2);
+
+
+        product3 = new Product();
+        product3.setName("lócitrom");
+        product3.setDescription("egészseges barna locitrom");
+        product3.setInPromotion(false);
+        product3.setPrice(100);
+        product3.setOutOfSeason(false);
+        product3.setOutOfStock(false);
+        product3.setLocale(Locale.US);
+        product3.setUnit(Unit.ADAG);
+        Category cat3 = categoryRepo.findCategoryByID(2);
+        product3.setCategory(cat3);
+        product3.setCategoryID(cat3.getID());
+
+        product3 = productRepo.saveAndFlush(product3);
+
+    } else
+
+    {
+        product1 = productRepo.findProductByName("alma");
+        product2 = productRepo.findProductByName("körte");
+        product2 = productRepo.findProductByName("lócitrom");
+    }
+
+}*/
 
     @Transactional
     public void createCategories() {
@@ -430,34 +513,54 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
             deliveryService.convertLocalDatetimeToDeliveryDateAndSaveToDB(l.plusDays(4));
         }
     }
+}
 
-    public void createImages() throws IOException {
-      //em.createNativeQuery("INSERT INTO Image () VALUES (1, LOAD_FILE(d:\\flower.gif)) ").executeUpdate();
-        File file = new File("src/main/resources/pirosalma.png");
-        FileInputStream input = new FileInputStream(file);
-        MultipartFile multipartFile = new MockMultipartFile("pirosalma",
-                file.getName(), "image/png", IOUtils. toByteArray(input));
+/*
+    public List<File> copyImagesFromDirectory() {
+        List<File> list = new ArrayList<>();
+        File dir = new File("src/main/resources/images");
+        for (File f : dir.listFiles(IMAGE_FILTER)) {
+            BufferedImage img = null;
+            list.add(f);
+            try {
+                img = ImageIO.read(f);
 
-        Image dbImage = new Image();
-        dbImage.setName(multipartFile.getName());
-        dbImage.setByteFlow(multipartFile.getBytes());
-        dbImage.setProduct(productRepo.findAll().get(0));
-        dbImage.setProductID(productRepo.findAll().get(0).getID());//repo.findimagebyproductid miatt kell
+                // you probably want something more involved here
+                // to display in your UI
+                System.out.println("image: " + f.getName());
+                System.out.println(" width : " + img.getWidth());
+                System.out.println(" height: " + img.getHeight());
+                System.out.println(" size  : " + f.length());
 
-        Product p = productRepo.findAll().get(0);
-        List<Image> list =new ArrayList<>();
-        list.add(dbImage);
-        p.setImageList(list);
-        imageRepo.saveAndFlush(dbImage);
-        productRepo.saveAndFlush(p);
+            } catch (final IOException e) {
+                // handle errors here
+
+            }
+        }
+        return list;
+
+    }
+
+    // filter to identify images based on their extensions
+    public FilenameFilter IMAGE_FILTER = new FilenameFilter() {
+
+        @Override
+        public boolean accept(File dir, String name) {
+            if (name.endsWith(".png")) {
+                return (true);
+            }
+            return (false);
+        }
+    };
 
 
+    public void createImages(List<File> list) throws IOException {
 
 
-        File file2 = new File("src/main/resources/korte.png");
+        File file2 = new File("src/main/resources/körte.png");
         FileInputStream input2 = new FileInputStream(file2);
         MultipartFile multipartFile2 = new MockMultipartFile("korte",
-                file2.getName(), "image/png", IOUtils. toByteArray(input2));
+                file2.getName(), "image/png", IOUtils.toByteArray(input2));
 
         Image dbImage2 = new Image();
         dbImage2.setName(multipartFile2.getName());
@@ -466,7 +569,7 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
         dbImage2.setProductID(productRepo.findAll().get(1).getID());//repo.findimagebyproductid miatt kell
 
         Product p2 = productRepo.findAll().get(1);
-        List<Image> list2 =new ArrayList<>();
+        List<Image> list2 = new ArrayList<>();
         list2.add(dbImage2);
         p2.setImageList(list2);
         imageRepo.saveAndFlush(dbImage2);
@@ -474,6 +577,6 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
 
 
     }
-}
+}*/
 
 
