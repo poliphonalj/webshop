@@ -200,7 +200,8 @@ public class EmailService {
         String[] arr = new String[list.size()];
         for (int i = 0; i < list.size(); i++) {
             arr[i] = list.get(i).getUsername();
-            //helper.setTo(arr);najd kesobb betenni
+            //helper.setTo(arr);najd kesobb betennixxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            ezt kesobb betenni
         }
 
         helper.setTo("poliphonalj@freemail.hu");//ide jon a username
