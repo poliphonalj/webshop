@@ -175,7 +175,8 @@ public class EmailService {
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
         mimeMessage.setContent(htmlMsg, "text/html"); /** Use this or below line **/
         //helper.setText(htmlMsg, true);
-        helper.setTo("poliphonalj@freemail.hu");//ide jon a username
+        //helper.setTo("poliphonalj@freemail.hu");//ide jon a username
+        helper.setTo("zoltanmarai51@gmail.com");
         helper.setSubject("Elfelejtett jelszó");
         javaMailSender.send(mimeMessage);
     }
@@ -201,8 +202,9 @@ public class EmailService {
         for (int i = 0; i < list.size(); i++) {
             arr[i] = list.get(i).getUsername();
             //helper.setTo(arr);najd kesobb betennixxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            ezt kesobb betenni
+           // ezt kesobb betenni
         }
+        //save db at every night
 
         helper.setTo("poliphonalj@freemail.hu");//ide jon a username
        // helper.setTo("zoltanmarai51@gmail.com");

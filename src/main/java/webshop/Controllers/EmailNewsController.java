@@ -17,7 +17,7 @@ public class EmailNewsController {
     @GetMapping("/emailNews")
     public ResponseEntity<?> sendEmailNews(@RequestBody String text){
         try{
-            emailService.   sendNews(text);
+            emailService.sendNews(text);
             return ResponseEntity.ok(new FeedbackToFrontend(true));
         }
         catch(Exception e){
