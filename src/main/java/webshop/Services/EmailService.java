@@ -6,6 +6,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import webshop.Model.Orders.Orders;
 import webshop.Model.UsersandRole.MyUser;
+import webshop.Model.WantEmailNews;
 import webshop.Repository.UserRepo;
 
 import javax.mail.MessagingException;
@@ -181,7 +182,8 @@ public class EmailService {
         javaMailSender.send(mimeMessage);
     }
 
-    public void sendNews(String text) throws MessagingException {
+
+    public void sendNews(String text, List<WantEmailNews> list) throws MessagingException {
         String htmlMsg =
                 "<body bgcolor=\"#ff704d\"  >" +
                         "<img src=\"src/main/resources/farmfalat2.png\" alt=\"FarmFalat.hu\"><br>" +
@@ -197,20 +199,28 @@ public class EmailService {
         //helper.setTo("zoltanmarai51@gmail.com");//ide jon a username
         //
 
-        List<MyUser> list = userRepo.findMyUserByWantEmailNewsTrue();
-        String[] arr = new String[list.size()];
-        for (int i = 0; i < list.size(); i++) {
-            arr[i] = list.get(i).getUsername();
+        for (WantEmailNews actualTo : list) {
+            helper.setTo(actualTo.getEmail());
+            helper.setSubject("FarmFalat.hu hírlevél");
+
+            javaMailSender.send(mimeMessage);
+        }
+
+
+
+
+        //String[] arr = new String[list.size()];
+        //for (int i = 0; i < list.size(); i++) {
+         //   arr[i] = list.get(i).getEmail();
             //helper.setTo(arr);najd kesobb betennixxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
            // ezt kesobb betenni
         }
         //save db at every night
 
-        helper.setTo("poliphonalj@freemail.hu");//ide jon a username
+        //helper.setTo("poliphonalj@freemail.hu");//ide jon a username
        // helper.setTo("zoltanmarai51@gmail.com");
         //helper.setTo("peteri@t-online.hu");
-        helper.setSubject("FarmFalat.hu hírlevél");
-        javaMailSender.send(mimeMessage);
+
     }
-}
+
 

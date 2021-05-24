@@ -4,6 +4,7 @@ package webshop.Controllers;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.smattme.MysqlExportService;
 import net.bytebuddy.utility.RandomString;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -21,13 +22,19 @@ import webshop.DTOs.*;
 import webshop.Model.FeedbackToFrontend;
 import webshop.Model.Product.Product;
 import webshop.Model.UsersandRole.MyUser;
+import webshop.Model.WantEmailNews;
 import webshop.Services.AddressService;
 import webshop.Services.EmailService;
 import webshop.Services.MyUserDetailsService;
+import webshop.Services.WantEmailService;
 import webshop.Utils.JwtTokenUtil;
 
+import java.io.File;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Properties;
 
 
 @RestController
@@ -39,15 +46,17 @@ public class UserController {
     AddressService addressService;
     EmailService emailService;
     JwtTokenUtil jwtTokenUtil;
+    WantEmailService wantEmailService;
 
     @Autowired
     public UserController(MyUserDetailsService myUserDetailsService, AuthenticationManager authenticationManager,
-                          AddressService addressService, EmailService emailService, JwtTokenUtil jwtTokenUtil) {
+                          AddressService addressService, EmailService emailService, JwtTokenUtil jwtTokenUtil, WantEmailService wantEmailService) {
         this.myUserDetailsService = myUserDetailsService;
         this.authenticationManager = authenticationManager;
         this.addressService = addressService;
         this.emailService = emailService;
         this.jwtTokenUtil=jwtTokenUtil;
+        this.wantEmailService=wantEmailService;
     }
 
 
@@ -56,7 +65,10 @@ public class UserController {
 
     //ok-csak az aktivak lephetnek be
     @PostMapping("/authenticate")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequestDTO authenticationRequestDTO) {
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequestDTO authenticationRequestDTO) throws SQLException, IOException, ClassNotFoundException {
+
+
+
         try {
             String u = authenticationRequestDTO.getUsername();
             if (myUserDetailsService.isStillActive(u)) {
@@ -90,6 +102,27 @@ public class UserController {
         try {
             myUserDetailsService.addUser(newUserDTO);
             emailService.successfulRegistration(newUserDTO.getFirstName(), newUserDTO.getUsername());
+            //ha fel akar iratkozni a hirlevelre
+            //TODO
+            //hirlevelrefeliratkozni itt es a myuserDetSrvizbe is atpasszolni ezt!!!
+
+
+
+
+// ki kell kerni a zolitol egy valtozot hogy aktiv e ez a newUserDTO ba megy
+            WantEmailNews wa=new WantEmailNews();
+            wa.setEmail(newUserDTO.getUsername());
+            wa.setName(newUserDTO.getFirstName());
+           // wa.setActive(newUserDTO.isActive());
+            wantEmailService.save(wa);//egyszer regisztraciobol kaphatja a feliratkozasra valo kerest
+
+
+
+
+
+
+
+
             return ResponseEntity.ok(new FeedbackToFrontend(true));
         } catch (Exception e) {
             l.error("kisnyul", e);
@@ -265,6 +298,7 @@ public class UserController {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
         }
     }
+
 
 
 }
