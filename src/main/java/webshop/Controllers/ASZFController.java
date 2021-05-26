@@ -10,11 +10,12 @@ import java.util.HashMap;
 @RestController
 public class ASZFController {
 
-
+//TODO aszf adatvedelmi tajekoztato
         @GetMapping("/ASZF")
         public ResponseEntity<?> getAFSZ(){
             String title="ÁSZF";
-            String text=" Lorem ipsum dolor sit amet, consectetur adipiscing elit," +
+            String text=
+                    " Lorem ipsum dolor sit amet, consectetur adipiscing elit," +
                     " sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." +
                     " Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi" +
                     " ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit" +
