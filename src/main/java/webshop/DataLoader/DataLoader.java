@@ -278,8 +278,8 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
                 String actualProductLine = sc.nextLine();
                 String[] actualProductParts = actualProductLine.split(";");
 
-                uploadToDBTheProducts(actualProductParts);
-                uplodTheImage(actualProductParts[5]);
+                long id=uploadToDBTheProducts(actualProductParts);
+                uplodTheImage(actualProductParts[5],id);
 
             }
             sc.close();
@@ -289,7 +289,7 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
         }
     }
 
-    public void uploadToDBTheProducts(String[] array) {
+    public long uploadToDBTheProducts(String[] array) {
         Product p = new Product();
         p.setName(array[0]);
         p.setDescription(array[1]);
@@ -307,28 +307,30 @@ public class DataLoader implements ApplicationRunner { //a run()-t lefuttatja a 
         p.setCategory(cat);
         p.setCategoryID(cat.getID());
 
-        p = productRepo.saveAndFlush(p);
+        productRepo.saveAndFlush(p);
+        return productRepo.findProductByName(array[0]).getID();
     }
 
 //meg kell egyezni a product es a picture namede ezt holnp meg vizsgalni jekk
 
 
 
-    public void uplodTheImage(String fileName) throws IOException {
+    public void uplodTheImage(String imageName, long ID) throws IOException {
 
 
-        File file = new File("src/main/resources/images/" + fileName + ".png");
+        File file = new File("src/main/resources/images/" + imageName + ".png");
         FileInputStream input = new FileInputStream(file);
-        MultipartFile multipartFile = new MockMultipartFile(fileName,
+        MultipartFile multipartFile = new MockMultipartFile(imageName,
                 file.getName(), "image/png", IOUtils.toByteArray(input));
 
         Image dbImage = new Image();
         dbImage.setName(multipartFile.getName());
         dbImage.setByteFlow(multipartFile.getBytes());
-        Product p = productRepo.findProductByName(fileName);
+        Product p=productRepo.findProductByID(ID);
+        //Product p = productRepo.findProductByName(fileName);
 
         dbImage.setProduct(p);
-        dbImage.setProductID(p.getID());//repo.findimagebyproductid miatt kell
+        dbImage.setProductID(ID);//repo.findimagebyproductid miatt kell
 
         List<Image> list = new ArrayList<>();
         list.add(dbImage);

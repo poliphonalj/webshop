@@ -181,11 +181,12 @@ public class ProductController {
 
 //:)de ide kell meg teszt
 
-    @PostMapping("/product/modifyProduct/({IDD})")
-    public ResponseEntity<?> modify(@RequestBody Product product,@PathVariable Long IDD) {
+    @PostMapping("/product/modifyProduct/{ID}")
+    public ResponseEntity<?> modify(@RequestBody Product product,@PathVariable Long ID) {
         try {
-            long Id=IDD;
-            productService.modifyProduct(product, Id);
+            System.out.println(ID);
+            // long Id=IDD;
+            productService.modifyProduct(product, ID);
             return ResponseEntity.ok(new FeedbackToFrontend(true));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));

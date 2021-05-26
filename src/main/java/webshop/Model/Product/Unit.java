@@ -12,7 +12,8 @@ public enum Unit {
     ZSÁK,
     ADAG,
     CSUPOR,
-    DOBOZ
+    DOBOZ,
+
 
 
 }

@@ -1,3 +1,24 @@
-alma;nagyon fimom piros alma;500;DARAB;gyümölcs;alma
-körte;mézédes sárga körte;250;CSOMAG;gyümölcs;körte
-lócitrom;egészséges barna lócitrom;300;ADAG;zöldség;lócitrom
+áfonya; Rendkívűl ízletes és egészséges gyümölcs, műanyag dobozban;500;CSOMAG;gyümölcs;fruits/afonya
+ananász; Egyenesen a trópusokról az asztalodra. Rendelhető db kiszerelésben.;500;DARAB;gyümölcs;fruits/ananasz
+banán;Az egyes banán-fürtök kg-ban rendelhetőek tőlünk.;500;KG;gyümölcs;fruits/banan
+barack;Lédús őszi barack, kilós adagokban rendelhető.;500;KG;gyümölcs;fruits/barack
+citrom;Savanyú, sárga citrom tökéletes választás teához, süteményekhez, sültekhez.;500;DARAB;gyümölcs;fruits/citrom
+cseresznye;Ropogós és mosolygós cseresznye, egyenesen a fáról szedve érkezik kg-os egységekben.;500;KG;gyümölcs;fruits/cseresznye
+dinnye;Mézédes dinnye, mely hidegen tálalva a legjobb választás a nyári forróságban...;500;KG;gyümölcs;fruits/dinnye
+egres;Igazi gyümölcs kuriózum, jellemzö fanyarkás íze miatt ínyenceknek ajánljuk.;500;KG;gyümölcs;fruits/egres
+eper;Egyeneses Lajosmizséről - mézédes magyar eper, csak Neked.;500;KG;gyümölcs;fruits/eper
+fehérszőllő;Pazar fürtjei, édes szemei élménnyé teszik a fogyasztását.;500;KG;gyümölcs;fruits/feherszollo
+gránátalma;Egy igazi antioxidáns bomba, ami darabonként rendelhető meg.;500;DARAB;gyümölcs;fruits/granatalma
+grapefruit;Magas rost és C vitamin tartalmával, egzotikus ízével kiváló választás nyári estékre.;500;DARAB;gyümölcs;fruits/grapefruit
+kékszőllő;Zamatos fürtjei elhozzák a szüret hangulatát a konyhádba.;500;KG;gyümölcs;fruits/kekszollo
+kiwi;Magas C-vitamin tartalmával, egészségünk alappilérei lehetnek.;500;KG;gyümölcs;fruits/kiwi
+körte;Mézédes sárga körte;500;KG;gyümölcs;fruits/korte
+málna;Gazdag B-, és K-vitamin forrás, mellesleg finom és üdítő szemes gyümölcs, 250 g/doboz kiszerelésben.;500;DOBOZ;gyümölcs;fruits/malna
+mandarin;Lédús mandarin, finom és könnyű gyümölcs-nasi kg-os kiszerelésben.;500;KG;gyümölcs;fruits/mandarin
+meggy;Ezt a finom frissítő gyümölcsöt kg-os kiszerelésben tudod megrendelni tőlunk.;500;KG;gyümölcs;fruits/meggy
+narancs;A legismertebb déli gyümölcs, melyhez kg-os kiszerelésben juttatunk el Hozzád.;500;KG;gyümölcs;fruits/narancs
+nektarin;A "csupasz barack" sokak kedvence. Kg-os csomagolásban juthat el Hozzád, ha megkívántad ezt a gyümölcsöt.;500;KG;gyümölcs;fruits/nektarin
+piros alma;Nagyon fimom piros alma, kg-os egységekben rendelhetőek.;500;KG;gyümölcs;fruits/pirosalma
+sárgabarack;Személyes kedvencünk, melyből 1 kg-os csomagok rendelhetőek. De vajon elegendő ez ebből a finom gyümölcsből?;500;KG;gyümölcs;fruits/sargabarack
+sárgadinnye;A görögdinnye "kistestvére" a mediterrán konyha egyik alap-gyümölcse. Nyáron hűtve nagyon kellemes frissitő étel.;500;DARAB;gyümölcs;fruits/sargabarack
+szilva;Ha ősz akkor szilva. Széles körben felhasználható gyümölcs, mely kedvelt alapanyaga a süteményeknek, lekvároknak és pálinkáknak is:);500;KG;gyümölcs;fruits/szilva

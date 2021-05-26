@@ -102,16 +102,47 @@ public class ProductService {
     @Transactional
     public void modifyProduct(Product product, long ID) {
         Product p = productRepo.findProductByID(ID);
-        p.setName(product.getName());
-        p.setDescription(product.getDescription());
-        p.setPrice(product.getPrice());
-        p.setInPromotion(product.isInPromotion());
-        p.setPromotedPrice(product.getPromotedPrice());
-        p.setOutOfSeason(product.isOutOfSeason());
-        p.setOutOfStock(product.isOutOfStock());
-        p.setImageList(product.getImageList());
-        p.setUnit(product.getUnit());
-        p.setLocale(product.getLocale());
+        if (product.getName() != null) {
+            p.setName(product.getName());
+        }
+        if (product.getDescription() != null) {
+            p.setDescription(product.getDescription());
+        }
+        if (product.getPrice() != 0) {
+            p.setPrice(product.getPrice());
+        }
+        if (product.getPrice() != 0) {
+            p.setPrice(product.getPrice());
+        }
+
+        if (product.isInPromotion() != false) {
+            p.setInPromotion(product.isInPromotion());
+        }
+
+        if (product.getPromotedPrice()!=0) {
+            p.setPromotedPrice(product.getPromotedPrice());
+        }
+
+        if (product.isOutOfSeason()!=false) {
+            p.setOutOfSeason(product.isOutOfSeason());
+        }
+
+        if(product.isOutOfStock()!=false){
+            p.setOutOfStock(product.isOutOfStock());
+        }
+
+        if(product.getImageList()!=null){
+            p.setImageList(product.getImageList());
+        }
+
+        if(product.getUnit()!=null){
+            p.setUnit(product.getUnit());
+        }
+
+        if(product.getLocale()!=null){
+            p.setLocale(product.getLocale());
+        }
+
 
         productRepo.saveAndFlush(p);
     }
@@ -172,7 +203,7 @@ public class ProductService {
     public void removeProduct(long ID) {
         Product p = productRepo.findProductByID(ID);
         p.setActive(false);
-       productRepo.saveAndFlush(p);
+        productRepo.saveAndFlush(p);
     }
 
     @Transactional
