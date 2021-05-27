@@ -21,7 +21,7 @@ public class EmailNewsController {
     @Autowired
     WantEmailService wService;
 
-    @GetMapping("/emailNews/sendANew")
+    @PostMapping("/emailNews/sendANew")
     public ResponseEntity<?> sendEmailNews(@RequestBody String text) {
         try {
             List<WantEmailNews> list = wService.getAllWhoWantsEmailNews();
