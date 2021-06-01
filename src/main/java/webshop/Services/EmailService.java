@@ -21,7 +21,7 @@ public class EmailService {
     private WantEmailRepo wrepo;
 
     @Autowired
-    public EmailService(JavaMailSender javaMailSender, UserRepo userRepo, WantEmailService wrepo) {
+    public EmailService(JavaMailSender javaMailSender, UserRepo userRepo, WantEmailRepo wrepo) {
         this.userRepo = userRepo;
         this.javaMailSender = javaMailSender;
         this.wrepo = wrepo;
@@ -193,7 +193,7 @@ public class EmailService {
                         "Szia! <br><br>" + text +
 
 
-                        "";
+                        " htmlMsg.concat(\"</body>\");";
 
 
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
@@ -210,7 +210,7 @@ public class EmailService {
             WantEmailNews w= wrepo.findWantEmailNewsByEmail(actualTo);
 
 
-            htmlMsg.concat("</body>");
+
             javaMailSender.send(mimeMessage);
         }
 
