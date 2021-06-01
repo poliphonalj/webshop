@@ -21,8 +21,8 @@ public class WantEmailNews {
     public WantEmailNews() {
     }
 
-    public WantEmailNews(long ID, String email, String name, boolean active) {
-        this.ID = ID;
+    public WantEmailNews( String email, String name, boolean active) {
+
         this.email = email;
         this.name = name;
         this.active = active;

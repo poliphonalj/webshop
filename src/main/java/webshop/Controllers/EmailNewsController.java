@@ -24,8 +24,9 @@ public class EmailNewsController {
     @PostMapping("/emailNews/sendANew")
     public ResponseEntity<?> sendEmailNews(@RequestBody String text) {
         try {
-            List<WantEmailNews> list = wService.getAllWhoWantsEmailNews();
-            emailService.sendNews(text, list);
+            List<String> emails = wService.getAllWhoWantsEmailNews();
+            emailService.sendNews(text,emails);
+
             return ResponseEntity.ok(new FeedbackToFrontend(true));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
@@ -35,27 +36,28 @@ public class EmailNewsController {
     @GetMapping("/emailNews/allActives")
     public ResponseEntity<?> getAllActives() {
         try {
-            List<WantEmailNews> list = wService.getAllWhoWantsEmailNews();
+            List<String> list = wService.getAllWhoWantsEmailNews();
             return ResponseEntity.ok(list);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
         }
     }
 
-
+//jo
     //a regisztracio soran is be tud jelentkezni a mostani mukodes alapjan
     @PostMapping("/emailNews/signUp")
-    public ResponseEntity<?> signUp(@RequestBody String email, String name) {
+    public ResponseEntity<?> signUp(@RequestBody WantEmailNews w) {
         try {
-            if (wService.wantEmailNewsByEmail(email) != null) {
-                wService.reactivate(email);
+            if (wService.wantEmailNewsByEmail(w.getEmail()) != null) {
+                wService.reactivate(w.getEmail());
                 return ResponseEntity.ok(new FeedbackToFrontend(true));
             } else {
-                WantEmailNews w = new WantEmailNews();
-                w.setEmail(email);
-                w.setName(name);
-                w.setActive(true);
-                wService.save(w);
+
+                WantEmailNews w1 = new WantEmailNews();
+                w1.setEmail(w.getEmail());
+                w1.setName(w.getName());
+                w1.setActive(true);
+                wService.save(w1);
                 return ResponseEntity.ok(new FeedbackToFrontend(true));
             }
         } catch (Exception e) {
@@ -64,12 +66,14 @@ public class EmailNewsController {
 
     }
 
+    //jo
     @PostMapping("/emailNews/signOff")
-    public ResponseEntity<?> signOff(@RequestBody String email) {
+    public ResponseEntity<?> signOff(@RequestBody WantEmailNews w) {
         try {
-            WantEmailNews w = wService.wantEmailNewsByEmail(email);
-            w.setActive(false);
-            wService.save(w);
+            System.out.println(w.getEmail());
+            WantEmailNews w1 = wService.wantEmailNewsByEmail(w.getEmail());
+            w1.setActive(false);
+            wService.save(w1);
             return ResponseEntity.ok(new FeedbackToFrontend(true));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));

@@ -8,6 +8,7 @@ import webshop.Model.Orders.Orders;
 import webshop.Model.UsersandRole.MyUser;
 import webshop.Model.WantEmailNews;
 import webshop.Repository.UserRepo;
+import webshop.Repository.WantEmailRepo;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -17,11 +18,13 @@ import java.util.List;
 public class EmailService {
     final JavaMailSender javaMailSender;
     public UserRepo userRepo;
+    private WantEmailRepo wrepo;
 
     @Autowired
-    public EmailService(JavaMailSender javaMailSender, UserRepo userRepo) {
+    public EmailService(JavaMailSender javaMailSender, UserRepo userRepo, WantEmailService wrepo) {
         this.userRepo = userRepo;
         this.javaMailSender = javaMailSender;
+        this.wrepo = wrepo;
     }
 
     public void successfulRegistration(String firstname, String username) throws MessagingException {
@@ -183,12 +186,14 @@ public class EmailService {
     }
 
 
-    public void sendNews(String text, List<WantEmailNews> list) throws MessagingException {
+    public void sendNews(String text, List<String> list) throws MessagingException {
         String htmlMsg =
                 "<body bgcolor=\"#ff704d\"  >" +
                         "<img src=\"src/main/resources/farmfalat2.png\" alt=\"FarmFalat.hu\"><br>" +
                         "Szia! <br><br>" + text +
-                        "</body>";
+
+
+                        "";
 
 
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
@@ -199,28 +204,29 @@ public class EmailService {
         //helper.setTo("zoltanmarai51@gmail.com");//ide jon a username
         //
 
-        for (WantEmailNews actualTo : list) {
-            helper.setTo(actualTo.getEmail());
-            helper.setSubject("FarmFalat.hu hírlevél");
+        for (String actualTo : list) {//actualto=emailaddress
+            helper.setTo(actualTo);
+           helper.setSubject("FarmFalat.hu hírlevél");
+            WantEmailNews w= wrepo.findWantEmailNewsByEmail(actualTo);
 
+
+            htmlMsg.concat("</body>");
             javaMailSender.send(mimeMessage);
         }
 
 
-
-
         //String[] arr = new String[list.size()];
         //for (int i = 0; i < list.size(); i++) {
-         //   arr[i] = list.get(i).getEmail();
-            //helper.setTo(arr);najd kesobb betennixxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-           // ezt kesobb betenni
-        }
-        //save db at every night
-
-        //helper.setTo("poliphonalj@freemail.hu");//ide jon a username
-       // helper.setTo("zoltanmarai51@gmail.com");
-        //helper.setTo("peteri@t-online.hu");
-
+        //   arr[i] = list.get(i).getEmail();
+        //helper.setTo(arr);najd kesobb betennixxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        // ezt kesobb betenni
     }
+    //save db at every night
+
+    //helper.setTo("poliphonalj@freemail.hu");//ide jon a username
+    // helper.setTo("zoltanmarai51@gmail.com");
+    //helper.setTo("peteri@t-online.hu");
+
+}
 
 

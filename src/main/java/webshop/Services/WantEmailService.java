@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import webshop.Model.WantEmailNews;
 import webshop.Repository.WantEmailRepo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -16,8 +17,13 @@ public class WantEmailService {
         this.wantEmailRepo = wantEmailRepo;
     }
 
-    public List<WantEmailNews> getAllWhoWantsEmailNews(){
-        return wantEmailRepo.findWantEmailNewsByActiveTrue();
+    public List<String> getAllWhoWantsEmailNews(){
+        List<String>emails =new ArrayList<>();
+        List <WantEmailNews> list=wantEmailRepo.findWantEmailNewsByActiveTrue();
+        for (WantEmailNews actualuser : list) {
+            emails.add(actualuser.getEmail());
+        }
+        return emails;
     }
 
     public void save(WantEmailNews w){
