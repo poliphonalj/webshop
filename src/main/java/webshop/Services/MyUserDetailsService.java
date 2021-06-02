@@ -199,8 +199,8 @@ public class MyUserDetailsService implements UserDetailsService {
     }
 
 
-    public void updateResetPasswordToken(String token, long userID) throws Exception {
-        MyUser myUser = userRepo.findUserByUserID(userID);
+    public void updateResetPasswordToken(String token, String email) throws Exception {
+        MyUser myUser = userRepo.findUserByUsername(email);
         if (myUser != null) {
             myUser.setResetPasswordToken(token);
             userRepo.save(myUser);

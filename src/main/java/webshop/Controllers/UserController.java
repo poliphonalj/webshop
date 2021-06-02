@@ -165,16 +165,21 @@ public class UserController {
     //ezen kitoltes utan visszajn a reste pw re egy request, benne a token es a pass es en azonositas utan atirom a jelszot ok
 
     //generates a token and send it in an email as a link
-    @PostMapping("/user/forgot_password")
+    @PostMapping("/user/forgot-password")
     public ResponseEntity<?> processForgotPassword(@RequestBody JSONObject jObj) {///userID van a reqben csak
-        long userID = Long.parseLong(jObj.get("userID").toString());
+       //emailcim alapjan kikeresni az id-t username:email   DONE
+
+
+        // long userID = Long.parseLong(jObj.get("userID").toString());
+        String email=jObj.get("email").toString();
         String token = RandomString.make(30);
-        System.out.println(token);
+        System.out.println(token+email);
+
         try {
-            myUserDetailsService.updateResetPasswordToken(token, userID);//saves the token into the db
+            myUserDetailsService.updateResetPasswordToken(token, email);//saves the token into the db, email=username
             //String resetPasswordLink = "https://localhost:8080/user/reset_password?token=" + token;//generates a link and send it in email
-            String resetPasswordLink = "http://farmfalat-frontend.herokuapp.com/forgot-password/" + token;
-            emailService.forgotPassword(resetPasswordLink, userID);
+            String resetPasswordLink = "https://farmfalat-frontend.herokuapp.com/forgot-password/" + token;
+            emailService.forgotPassword(resetPasswordLink, email);
             return ResponseEntity.ok(new FeedbackToFrontend(true));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));
@@ -182,7 +187,7 @@ public class UserController {
     }
 
     //get the password and checks it and saves it to the db
-    @PostMapping("/user/reset_password")
+    @PostMapping("/user/reset-password")
     public void processResetPassword(@RequestBody JSONObject jObj) {
 
         String token = jObj.get("token").toString();

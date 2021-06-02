@@ -1,11 +1,10 @@
 package webshop.Controllers;
 
+import jdk.jfr.ContentType;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import webshop.Model.FeedbackToFrontend;
 import webshop.Model.WantEmailNews;
@@ -22,10 +21,13 @@ public class EmailNewsController {
     WantEmailService wService;
 
     @PostMapping("/emailNews/sendANew")
-    public ResponseEntity<?> sendEmailNews(@RequestBody String text) {
+    public ResponseEntity<?> sendEmailNews(@RequestBody JSONObject j) {
         try {
+
+            String text=j.get("text").toString();
+
             List<String> emails = wService.getAllWhoWantsEmailNews();
-            emailService.sendNews(text,emails);
+           emailService.sendNews(text,emails);
 
             return ResponseEntity.ok(new FeedbackToFrontend(true));
         } catch (Exception e) {
@@ -68,10 +70,10 @@ public class EmailNewsController {
 
     //jo
     @PostMapping("/emailNews/signOff")
-    public ResponseEntity<?> signOff(@RequestBody WantEmailNews w) {
+    public ResponseEntity<?> signOff( @RequestParam String email ) {
         try {
-            System.out.println(w.getEmail());
-            WantEmailNews w1 = wService.wantEmailNewsByEmail(w.getEmail());
+            System.out.println(email);
+            WantEmailNews w1 = wService.wantEmailNewsByEmail(email);
             w1.setActive(false);
             wService.save(w1);
             return ResponseEntity.ok(new FeedbackToFrontend(true));

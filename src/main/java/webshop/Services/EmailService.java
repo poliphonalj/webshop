@@ -164,8 +164,8 @@ public class EmailService {
         javaMailSender.send(mimeMessage);
     }
 
-    public void forgotPassword(String link, long userID) throws MessagingException {
-        MyUser m = userRepo.findUserByUserID(userID);
+    public void forgotPassword(String link, String email) throws MessagingException {
+        MyUser m = userRepo.findUserByUsername(email);
         String firstName = m.getFirstName();
         String username = m.getUsername();
 
@@ -190,15 +190,12 @@ public class EmailService {
         String htmlMsg =
                 "<body bgcolor=\"#ff704d\"  >" +
                         "<img src=\"src/main/resources/farmfalat2.png\" alt=\"FarmFalat.hu\"><br>" +
-                        "Szia! <br><br>" + text +
-
-
-                        " htmlMsg.concat(\"</body>\");";
+                        "Szia! <br><br>"+text;
 
 
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
-        mimeMessage.setContent(htmlMsg, "text/html"); /** Use this or below line **/
+
         //helper.setText(htmlMsg, true);
 
         //helper.setTo("zoltanmarai51@gmail.com");//ide jon a username
@@ -211,7 +208,16 @@ public class EmailService {
 
 
 
-            javaMailSender.send(mimeMessage);
+//itt van a link majd ahonnan torolheti magat
+htmlMsg+=(" kattint ide ha törölni szeretnéd magad a hírlevélről!  <FORM action=\"https://farmfalatb.herokuapp.com/emailNews/signOff\" method=\"POST\">\n" +
+        "    <input type=\"text\" disabled hidden  id=\"email\" name=\"email\" value="+actualTo+"><br><br>\n" +
+        "    <input type=\"submit\" value=\"törlöm magam a hírlevélről\">\n" +
+        "</FORM></BODY>");
+
+
+            System.out.println(htmlMsg);
+            mimeMessage.setContent(htmlMsg, "text/html"); /** Use this or below line **/
+        javaMailSender.send(mimeMessage);
         }
 
 
