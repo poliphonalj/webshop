@@ -210,7 +210,7 @@ public class EmailService {
 
 //itt van a link majd ahonnan torolheti magat
 htmlMsg+=(" kattint ide ha törölni szeretnéd magad a hírlevélről!  <FORM action=\"https://farmfalatb.herokuapp.com/emailNews/signOff\" method=\"POST\">\n" +
-        "    <input type=\"text\" disabled hidden  id=\"email\" name=\"email\" value="+actualTo+"><br><br>\n" +
+        "    <input type=\"text\" class=\"form-control\"  disabled hidden  id=\"email\" name=\"email\" value="+actualTo+"><br><br>\n" +
         "    <input type=\"submit\" value=\"törlöm magam a hírlevélről\">\n" +
         "</FORM></BODY>");
 
