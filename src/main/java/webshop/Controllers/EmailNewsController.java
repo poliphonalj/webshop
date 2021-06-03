@@ -70,8 +70,8 @@ public class EmailNewsController {
 
     //jo
     @PostMapping("/emailNews/signOff")
-    public ResponseEntity<?> signOff(@RequestParam String email) {
-        System.out.println("emaildddddddddddddd"+email);
+    public ResponseEntity<?> signOff() {
+        System.out.println("emaildddddddddddddd");
 
         try {
 //String email=jobj.get("email").toString();
