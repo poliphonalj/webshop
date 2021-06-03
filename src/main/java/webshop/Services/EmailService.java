@@ -189,7 +189,7 @@ public class EmailService {
     public void sendNews(String text, List<String> list) throws MessagingException {
         String htmlMsg =
                 "<body bgcolor=\"#ff704d\"  >" +
-                        "<img src=\"src/main/resources/farmfalat2.png\" alt=\"FarmFalat.hu\"><br>" +
+                        "<img src=\"https://farmfalatb.herokuapp.com/src/main/resources/farmfalat2.png\" alt=\"FarmFalat.hu\"><br>" +
                         "Szia! <br><br>"+text;
 
 
