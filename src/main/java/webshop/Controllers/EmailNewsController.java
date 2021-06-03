@@ -70,9 +70,9 @@ public class EmailNewsController {
 
     //jo
     @PostMapping("/emailNews/signOff")
-    public ResponseEntity<?> signOff(@RequestBody JSONObject jobj) {
+    public ResponseEntity<?> signOff(@RequestParam String email) {
         try {
-String email=jobj.get("email").toString();
+//String email=jobj.get("email").toString();
             System.out.println(email);
 
             WantEmailNews w1 = wService.wantEmailNewsByEmail(email);

@@ -209,12 +209,15 @@ public class EmailService {
 
 
 //itt van a link majd ahonnan torolheti magat
-htmlMsg+=(" kattint ide ha törölni szeretnéd magad a hírlevélről!  <FORM action=\"https://farmfalatb.herokuapp.com/emailNews/signOff\" method=\"POST\">\n" +
+htmlMsg+=(" kattint ide ha törölni szeretnéd magad a hírlevélről!  " +
+        "<FORM role=\"form\" action=\"https://farmfalatb.herokuapp.com/src/main/java/webshop/Controllers/EmailNewsController/emailNews/signOff\" method=\"POST\">\n" +
+        "<div class=\"form-group\">"+
         "    <input type=\"text\" class=\"form-control\"  disabled hidden  id=\"email\" name=\"email\" value="+actualTo+"><br><br>\n" +
         "    <input type=\"submit\" value=\"törlöm magam a hírlevélről\">\n" +
+        "  </div>"+
         "</FORM></BODY>");
 
-
+//talan egy requestbodyt irni
             System.out.println(htmlMsg);
             mimeMessage.setContent(htmlMsg, "text/html"); /** Use this or below line **/
         javaMailSender.send(mimeMessage);
