@@ -77,9 +77,9 @@ public class EmailNewsController {
 //String email=jobj.get("email").toString();
 
 
-            WantEmailNews w1 = wService.wantEmailNewsByEmail(email);
-            w1.setActive(false);
-            wService.save(w1);
+           // WantEmailNews w1 = wService.wantEmailNewsByEmail(email);
+            //w1.setActive(false);
+            //wService.save(w1);
             return ResponseEntity.ok(new FeedbackToFrontend(true));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new FeedbackToFrontend(false));

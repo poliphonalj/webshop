@@ -192,7 +192,7 @@ public class EmailService {
                         "<img src=\"https://farmfalatb.herokuapp.com/src/main/resources/farmfalat2.png\" alt=\"FarmFalat.hu\"><br>" +
                         "Szia! <br><br>"+text;
 
-hova linkeljek
+
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
 

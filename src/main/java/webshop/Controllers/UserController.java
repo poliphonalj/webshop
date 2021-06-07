@@ -166,7 +166,7 @@ public class UserController {
 
     //generates a token and send it in an email as a link
     @PostMapping("/user/forgot-password")
-    public ResponseEntity<?> processForgotPassword(@RequestBody JSONObject jObj) {///userID van a reqben csak
+    public ResponseEntity<?> processForgotPassword(@RequestBody JSONObject jObj) {///emil van a reqben csak
        //emailcim alapjan kikeresni az id-t username:email   DONE
 
 
